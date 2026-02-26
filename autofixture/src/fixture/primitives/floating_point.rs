@@ -1,6 +1,6 @@
 #![allow(non_camel_case_types)]
 
-use std::{default, ops::Range};
+use std::ops::Range;
 
 use rand::RngExt;
 
