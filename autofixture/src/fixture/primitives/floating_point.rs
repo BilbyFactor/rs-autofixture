@@ -1,75 +1,12 @@
 #![allow(non_camel_case_types)]
 
-use std::ops::Range;
+use crate::fixture::primitives::{create_numeric_builder, impl_autofixture_random};
 
-use rand::RngExt;
+impl_autofixture_random!(f32, f64);
+create_numeric_builder!(f32, f64);
 
-use crate::fixture::{
-    Fixture,
-    auto_fixture::AutoFixture,
-    builder::{BuilderCondition, FixtureBuilder, RandomRangeCondition},
-};
-
-impl AutoFixture for f32 {
-    fn create(f: &mut Fixture) -> Self {
-        f.rng().random()
-    }
-}
-
-pub struct f32Builder<'b> {
-    fixture: &'b mut Fixture,
-    condition: RandomRangeCondition<f32>,
-}
-
-impl<'b> FixtureBuilder<'b> for f32Builder<'b> {
-    type F = f32;
-
-    fn new(f: &'b mut Fixture) -> Self {
-        Self {
-            fixture: f,
-            condition: RandomRangeCondition::default(),
-        }
-    }
-
-    fn create(&mut self) -> Self::F {
-        self.condition.apply(self.fixture)
-    }
-}
-
-impl<'b> f32Builder<'b> {
-    pub fn with_range(&mut self, range: Range<f32>) {
-        self.condition.range(range)
-    }
-}
-
-impl AutoFixture for f64 {
-    fn create(f: &mut Fixture) -> Self {
-        f.rng().random()
-    }
-}
-
-pub struct f64Builder<'b> {
-    fixture: &'b mut Fixture,
-    condition: RandomRangeCondition<f64>,
-}
-
-impl<'b> FixtureBuilder<'b> for f64Builder<'b> {
-    type F = f64;
-
-    fn new(f: &'b mut Fixture) -> Self {
-        Self {
-            fixture: f,
-            condition: RandomRangeCondition::default(),
-        }
-    }
-
-    fn create(&mut self) -> Self::F {
-        self.condition.apply(self.fixture)
-    }
-}
-
-impl<'b> f64Builder<'b> {
-    pub fn with_range(&mut self, range: Range<f64>) {
-        self.condition.range(range)
-    }
+#[cfg(feature = "nightly-float")]
+pub mod nightly_float {
+    impl_autofixture_random!(f16, f128);
+    create_numeric_builder!(f16, f128);
 }

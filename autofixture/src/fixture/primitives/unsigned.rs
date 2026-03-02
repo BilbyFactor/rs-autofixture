@@ -7,9 +7,9 @@ use rand::RngExt;
 use crate::fixture::{
     Fixture,
     auto_fixture::AutoFixture,
-    builder::{BuilderCondition, FixtureBuilder, RandomRangeCondition},
+    builder::{conditions::BuilderCondition, FixtureBuilder, conditions::numeric::RandomRangeCondition},
 };
-
+/*
 impl AutoFixture for u8 {
     fn create(f: &mut Fixture) -> Self {
         f.rng().random()
@@ -189,3 +189,4 @@ impl<'b> FixtureBuilder<'b> for usizeBuilder<'b> {
         Self::F::create(self.fixture)
     }
 }
+*/

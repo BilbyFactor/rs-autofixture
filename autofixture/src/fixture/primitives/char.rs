@@ -1,21 +1,10 @@
 #![allow(non_camel_case_types)]
 
-use std::ops::Range;
+use crate::fixture::primitives::impl_autofixture_random;
 
-use rand::RngExt;
+impl_autofixture_random!(char);
 
-use crate::fixture::{
-    Fixture,
-    auto_fixture::AutoFixture,
-    builder::{BuilderCondition, FixtureBuilder, RandomRangeCondition},
-};
-
-impl AutoFixture for char {
-    fn create(f: &mut Fixture) -> Self {
-        f.rng().random()
-    }
-}
-
+/*
 pub struct charBuilder<'b> {
     fixture: &'b mut Fixture,
     condition: RandomRangeCondition<char>,
@@ -41,3 +30,4 @@ impl<'b> charBuilder<'b> {
         self.condition.range(range)
     }
 }
+*/

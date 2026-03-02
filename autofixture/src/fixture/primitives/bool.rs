@@ -1,23 +1,20 @@
 #![allow(non_camel_case_types)]
 
-use rand::RngExt;
-
 use crate::fixture::{
     Fixture,
     auto_fixture::AutoFixture,
     builder::FixtureBuilder,
+    primitives::impl_autofixture_random,
 };
 
-impl AutoFixture for bool {
-    fn create(f: &mut Fixture) -> Self {
-        f.rng().random()
-    }
+impl_autofixture_random!(bool);
+
+pub struct boolBuilder<'b> {
+    fixture: &'b mut Fixture,
 }
 
-pub struct boolBuilder<'b> { fixture: &'b mut Fixture }
-
 impl<'b> FixtureBuilder<'b> for boolBuilder<'b> {
-    type F = isize;
+    type F = bool;
 
     fn new(f: &'b mut Fixture) -> Self {
         Self { fixture: f }

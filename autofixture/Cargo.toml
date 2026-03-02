@@ -3,6 +3,10 @@ name = "rs-autofixture"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+nightly-float = []
+
 [dependencies]
+paste = "1.0"
 rand = "0.10"
 uuid = { version = "1.0", features = ["v4"] }
