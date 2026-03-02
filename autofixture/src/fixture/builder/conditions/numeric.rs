@@ -26,7 +26,7 @@ where
     }
 }
 
-impl<T: AutoFixture> RandomRangeCondition<T>
+impl<T> RandomRangeCondition<T>
 where
     T: SampleUniform + AutoFixture,
 {

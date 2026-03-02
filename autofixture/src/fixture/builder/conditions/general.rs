@@ -1,7 +1,8 @@
 use rand::seq::IndexedRandom;
 
 use crate::fixture::{
-    Fixture, auto_fixture::AutoFixture,
+    Fixture,
+    auto_fixture::AutoFixture,
     builder::conditions::BuilderCondition,
 };
 
@@ -24,7 +25,7 @@ where
     }
 }
 
-impl<T: AutoFixture> OptionsCondition<T>
+impl<T> OptionsCondition<T>
 where
     T: AutoFixture + Clone,
 {
@@ -48,7 +49,7 @@ where
     fn apply(&self, f: &mut Fixture) -> Option<T> {
         self.options
             .choose(f.rng())
-            .map(|i| i.to_owned())
+            .map(|i| i.clone())
     }
 
     fn clear(&mut self) {
