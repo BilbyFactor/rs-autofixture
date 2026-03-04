@@ -3,11 +3,13 @@ use crate::fixture::{Fixture, auto_fixture::AutoFixture, builder::FixtureBuilder
 // Required for implementing enum types with () fed as a template.
 
 impl AutoFixture for () {
+    type Builder<'b> = UnitTypeBuilder<'b>;
+
     fn create(_: &mut crate::fixture::Fixture) -> Self {
         ()
     }
 
-    fn build<'b>(f: &'b mut Fixture) -> impl FixtureBuilder<'b> {
+    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         UnitTypeBuilder::new(f)
     }
 }

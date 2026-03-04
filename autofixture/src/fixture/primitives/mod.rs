@@ -8,8 +8,10 @@ pub mod unit_type;
 pub mod unsigned;
 
 macro_rules! impl_autofixture_random{
-    ($($prim:ty => $b:ty), *) => { $(
+    ($($prim:ty => $b:ident), *) => { $(
         impl crate::fixture::auto_fixture::AutoFixture for $prim {
+            type Builder<'b> = $b<'b>;
+
             #[inline]
             fn create(f: &mut crate::fixture::Fixture) -> Self {
                 use rand::RngExt;
@@ -19,7 +21,7 @@ macro_rules! impl_autofixture_random{
 
             #[inline]
             fn build<'b>(f: &'b mut crate::fixture::Fixture)
-                -> impl crate::fixture::builder::FixtureBuilder<'b>
+                -> Self::Builder<'b>
             {
                 use crate::fixture::builder::FixtureBuilder;
 
@@ -30,8 +32,10 @@ macro_rules! impl_autofixture_random{
 }
 
 macro_rules! impl_autofixture_random_dyn {
-    ($($prim:ty => $b:ty), *) => { $(
+    ($($prim:ty => $b:ident), *) => { $(
         impl crate::fixture::auto_fixture::AutoFixture for $prim {
+            type Builder<'b> = $b<'b>;
+
             #[inline]
             fn create(f: &mut crate::fixture::Fixture) -> Self {
                 use rand::RngExt;
@@ -41,7 +45,7 @@ macro_rules! impl_autofixture_random_dyn {
 
             #[inline]
             fn build<'b>(f: &'b mut crate::fixture::Fixture)
-                -> impl crate::fixture::builder::FixtureBuilder<'b>
+                -> Self::Builder<'b>
             {
                 use crate::fixture::builder::FixtureBuilder;
                 

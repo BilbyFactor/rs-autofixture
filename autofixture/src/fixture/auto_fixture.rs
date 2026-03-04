@@ -1,6 +1,8 @@
 use crate::fixture::{Fixture, builder::FixtureBuilder};
 
 pub trait AutoFixture {
+    type Builder<'b>: FixtureBuilder<'b, F = Self>;
+
     /// Creates a new randomly populated implementation of Self.
     /// 
     /// # Arguments
@@ -11,5 +13,5 @@ pub trait AutoFixture {
     /// 
     /// # Arguments
     /// * `f` - the base `Fixture` struct.
-    fn build<'b>(f: &'b mut Fixture) -> impl FixtureBuilder<'b>;
+    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b>;
 }

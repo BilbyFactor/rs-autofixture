@@ -3,10 +3,7 @@ use rand::RngExt;
 use crate::fixture::{
     Fixture,
     auto_fixture::AutoFixture,
-    builder::{
-        FixtureBuilder,
-        conditions::BuilderCondition,
-    },
+    builder::FixtureBuilder,
 };
 
 pub struct ResultBuilder<'b, T, E>
@@ -59,6 +56,8 @@ where
     T: AutoFixture + Clone,
     E: AutoFixture + Clone,
 {
+    type Builder<'b> = ResultBuilder<'b, T, E>;
+
     /// rs-autofixture will randomly pick `Ok(T::create())` or `Err(E::create())`.
     /// 
     /// The logic is that if you are choosing to use a fixture for an Option
@@ -77,7 +76,7 @@ where
         }
     }
 
-    fn build<'b>(f: &'b mut Fixture) -> impl FixtureBuilder<'b> {
+    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         ResultBuilder::<T, E>::new(f)
     }
 }

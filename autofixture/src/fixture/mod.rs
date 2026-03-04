@@ -6,7 +6,6 @@ use rand::rngs::ThreadRng;
 
 use crate::fixture::{
     auto_fixture::AutoFixture,
-    builder::FixtureBuilder,
 };
 
 /// The main `Fixture` structure that maintains any state and the RNG engine.
@@ -23,7 +22,7 @@ impl Fixture {
     /// Creates a new `FixtureBuilder` for type `F`, where `F` is a
     /// type that implements `AutoFixture`. This includes all Rust primitive
     /// types, and can be derived on a struct or enum with `#[derive(AutoFixture)]`.
-    pub fn build<'b, F: AutoFixture>(&'b mut self) -> impl FixtureBuilder<'b> {
+    pub fn build<'b, F: AutoFixture>(&'b mut self) -> F::Builder<'b> {
         F::build(self)
     }
 

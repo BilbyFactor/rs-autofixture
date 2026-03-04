@@ -30,13 +30,12 @@ where
     /// 
     /// # Example
     /// ```
-    /// use rs_autofixture::fixture::Fixture;
+    /// use rs_autofixture::fixture::{Fixture, builder::FixtureBuilder};
     /// 
     /// let mut fixture = Fixture::new();
+    /// let mut result_fixture = fixture.build::<Option<()>>();
     /// 
-    /// let result = fixture.build::<Option<()>>()
-    ///     .without()
-    ///     .create();
+    /// assert_eq!(result_fixture.without().create(), None);
     /// ```
     pub fn without(&mut self) -> &mut Self {
         self.condition.without();
@@ -67,6 +66,8 @@ impl<T> AutoFixture for Option<T>
 where
     T: AutoFixture + Clone,
 {
+    type Builder<'b> = OptionBuilder<'b, T>;
+
     /// Unlike the C# version of AutoFixture, rs-autofixture will
     /// randomly pick `None` or `Some(T::create())`.
     /// 
@@ -86,7 +87,7 @@ where
         }
     }
 
-    fn build<'b>(f: &'b mut Fixture) -> impl FixtureBuilder<'b> {
+    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         OptionBuilder::<'b, T>::new(f)
     }
 }
