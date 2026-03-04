@@ -3,7 +3,7 @@ Rust equivelant of the popular .NET [Autofixture](https://github.com/AutoFixture
 
 ## Planned TODO:
  * Finish main implementation of primitives
- * Create derive for AutoFixture
+ * Create derive macro for AutoFixture
  * Unit testing
  * Docstrings
  * Cargo crate submission
