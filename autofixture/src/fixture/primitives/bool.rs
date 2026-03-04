@@ -7,8 +7,6 @@ use crate::fixture::{
     primitives::impl_autofixture_random,
 };
 
-impl_autofixture_random!(bool);
-
 // Requires a very basic builder...
 pub struct boolBuilder<'b> {
     fixture: &'b mut Fixture,
@@ -25,3 +23,5 @@ impl<'b> FixtureBuilder<'b> for boolBuilder<'b> {
         Self::F::create(self.fixture)
     }
 }
+
+impl_autofixture_random!(bool => boolBuilder);

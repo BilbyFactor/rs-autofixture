@@ -6,6 +6,10 @@ impl AutoFixture for () {
     fn create(_: &mut crate::fixture::Fixture) -> Self {
         ()
     }
+
+    fn build<'b>(f: &'b mut Fixture) -> impl FixtureBuilder<'b> {
+        UnitTypeBuilder::new(f)
+    }
 }
 
 pub struct UnitTypeBuilder<'b> {

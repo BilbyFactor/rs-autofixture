@@ -20,11 +20,11 @@ impl Fixture {
         Self { rng: ThreadRng::default() }
     }
 
-    /// Creates a new `FixtureBuilder` for type `B`, where `B` is a
-    /// type that implements `FixtureBuilder`. This includes all Rust primitive
+    /// Creates a new `FixtureBuilder` for type `F`, where `F` is a
+    /// type that implements `AutoFixture`. This includes all Rust primitive
     /// types, and can be derived on a struct or enum with `#[derive(AutoFixture)]`.
-    pub fn build<'b, B: FixtureBuilder<'b>>(&'b mut self) -> B {
-        B::new(self)
+    pub fn build<'b, F: AutoFixture>(&'b mut self) -> impl FixtureBuilder<'b> {
+        F::build(self)
     }
 
     /// Creates a new randomly populated implementation of the given type `F`

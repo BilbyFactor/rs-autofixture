@@ -5,5 +5,5 @@ use crate::fixture::primitives::{
     impl_autofixture_random,
 };
 
-impl_autofixture_random!(char);
 create_general_builder!(char);
+impl_autofixture_random!(char => charBuilder);

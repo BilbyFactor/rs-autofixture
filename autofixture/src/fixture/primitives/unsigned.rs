@@ -7,8 +7,13 @@ use crate::fixture::primitives::{
     impl_autofixture_random_dyn,
 };
 
-impl_autofixture_random!(u8, u16, u32, u64, u128);
 create_numeric_builder!(u8, u16, u32, u64, u128);
+impl_autofixture_random!(
+    u8 => u8Builder,
+    u16 => u16Builder,
+    u32 => u32Builder,
+    u64 => u64Builder,
+    u128 => u128Builder);
 
-impl_autofixture_random_dyn!(usize);
 create_general_builder!(usize);
+impl_autofixture_random_dyn!(usize => usizeBuilder);

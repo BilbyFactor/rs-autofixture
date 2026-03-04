@@ -2,12 +2,13 @@ pub mod bool;
 pub mod char;
 pub mod floating_point;
 pub mod signed;
-pub mod std_enums;
+pub mod std_option;
+pub mod std_result;
 pub mod unit_type;
 pub mod unsigned;
 
 macro_rules! impl_autofixture_random{
-    ($($prim:ty), *) => { $(
+    ($($prim:ty => $b:ty), *) => { $(
         impl crate::fixture::auto_fixture::AutoFixture for $prim {
             #[inline]
             fn create(f: &mut crate::fixture::Fixture) -> Self {
@@ -15,18 +16,36 @@ macro_rules! impl_autofixture_random{
 
                 f.rng().random()
             }
+
+            #[inline]
+            fn build<'b>(f: &'b mut crate::fixture::Fixture)
+                -> impl crate::fixture::builder::FixtureBuilder<'b>
+            {
+                use crate::fixture::builder::FixtureBuilder;
+
+                <$b>::new(f)
+            }
         }
     )* };
 }
 
 macro_rules! impl_autofixture_random_dyn {
-    ($($prim:ty), *) => { $(
+    ($($prim:ty => $b:ty), *) => { $(
         impl crate::fixture::auto_fixture::AutoFixture for $prim {
             #[inline]
             fn create(f: &mut crate::fixture::Fixture) -> Self {
                 use rand::RngExt;
 
                 <$prim>::from_ne_bytes(f.rng().random())
+            }
+
+            #[inline]
+            fn build<'b>(f: &'b mut crate::fixture::Fixture)
+                -> impl crate::fixture::builder::FixtureBuilder<'b>
+            {
+                use crate::fixture::builder::FixtureBuilder;
+                
+                <$b>::new(f)
             }
         }
     )* };
@@ -47,8 +66,10 @@ macro_rules! create_general_builder {
                 #[doc = ""]
                 #[doc = "# Arguments"]
                 #[doc = " * `options` - A `Vec<" $prim ">` of items to be added to the builder set."]
-                pub fn with_options(&mut self, options: &mut Vec<$prim>) {
+                pub fn with_options(&mut self, options: &mut Vec<$prim>) -> &mut Self {
                     self.options_condition.options(options);
+
+                    self
                 }
             }
 
@@ -109,11 +130,13 @@ macro_rules! create_numeric_builder {
                 #[doc = " # Other conditions"]
                 #[doc = " * `with_options` - Any options conditions given to the builder"]
                 #[doc = "   are cleared when this condition is used."]
-                pub fn with_range(&mut self, range: std::ops::Range<$prim>) {
+                pub fn with_range(&mut self, range: std::ops::Range<$prim>) -> &mut Self {
                     use crate::fixture::builder::conditions::BuilderCondition;
 
                     self.range_condition.range(range);
                     self.options_condition.clear();
+
+                    self
                 }
 
                 #[doc = "Specified the builder should pick from a given set."]
@@ -126,11 +149,13 @@ macro_rules! create_numeric_builder {
                 #[doc = " # Other conditions"]
                 #[doc = " * `with_range` - Any range conditions given to the builder"]
                 #[doc = "   are cleared when this condition is used."]
-                pub fn with_options(&mut self, options: &mut Vec<$prim>) {
+                pub fn with_options(&mut self, options: &mut Vec<$prim>) -> &mut Self {
                     use crate::fixture::builder::conditions::BuilderCondition;
 
                     self.options_condition.options(options);
                     self.range_condition.clear();
+
+                    self
                 }
             }
 
