@@ -1,7 +1,10 @@
-use crate::fixture::{Fixture, auto_fixture::AutoFixture, builder::FixtureBuilder};
+use crate::fixture::{
+    Fixture,
+    auto_fixture::AutoFixture,
+    builder::FixtureBuilder,
+};
 
-// Required for implementing enum types with () fed as a template.
-
+/// Required for implementing enum types with () fed as a templated type.
 impl AutoFixture for () {
     type Builder<'b> = UnitTypeBuilder<'b>;
 
