@@ -9,6 +9,7 @@ use crate::fixture::{
 
 impl_autofixture_random!(bool);
 
+// Requires a very basic builder...
 pub struct boolBuilder<'b> {
     fixture: &'b mut Fixture,
 }

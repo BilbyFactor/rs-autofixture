@@ -2,9 +2,11 @@ pub mod bool;
 pub mod char;
 pub mod floating_point;
 pub mod signed;
+pub mod std_enums;
+pub mod unit_type;
 pub mod unsigned;
 
-macro_rules! impl_autofixture_random {
+macro_rules! impl_autofixture_random{
     ($($prim:ty), *) => { $(
         impl crate::fixture::auto_fixture::AutoFixture for $prim {
             #[inline]
