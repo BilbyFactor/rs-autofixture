@@ -2,7 +2,6 @@ use crate::fixture::{Fixture, auto_fixture::AutoFixture};
 
 pub mod general;
 pub mod numeric;
-pub mod option;
 
 /// A trait for allowing the application of custom builder conditions
 /// by a `FixtureBuilder`.

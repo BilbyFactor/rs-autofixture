@@ -3,30 +3,43 @@ use rand::RngExt;
 use crate::fixture::{
     Fixture,
     auto_fixture::AutoFixture,
-    builder::{
-        FixtureBuilder,
-        conditions::BuilderCondition,
-        conditions::option::OptionCondition,
-    },
+    builder::FixtureBuilder,
 };
 
 pub struct OptionBuilder<'b, T>
 where
-    T: AutoFixture,
+    T: AutoFixture + Clone,
 {
     fixture: &'b mut Fixture,
-    condition: OptionCondition<T>,
+    condition: Option<Option<T>>,
 }
 
 impl<'b, T> OptionBuilder<'b, T>
 where
-    T: AutoFixture,
+    T: AutoFixture + Clone,
 {
-    pub fn with(&mut self) -> &mut Self {
+    /// Forces `create()` to produce `Some(some)`.
+    /// 
+    /// # Example
+    /// ```
+    /// use rs_autofixture::fixture::{Fixture, builder::FixtureBuilder};
+    /// 
+    /// let mut fixture = Fixture::new();
+    /// let mut result_fixture = fixture.build::<Option<bool>>();
+    /// 
+    /// assert_eq!(result_fixture.with(true).create(), Some(true));
+    /// assert_eq!(result_fixture.with(false).create(), Some(false));
+    /// ```
+    /// 
+    /// # Arguments
+    /// * `some` - The value to force the result of `create()` to be.
+    pub fn with(&mut self, some: T) -> &mut Self {
+        self.condition = Some(Some(some));
+
         self
     }
 
-    /// Force `create` to produce None.
+    /// Forces `create()` to produce None.
     /// 
     /// # Example
     /// ```
@@ -38,7 +51,7 @@ where
     /// assert_eq!(result_fixture.without().create(), None);
     /// ```
     pub fn without(&mut self) -> &mut Self {
-        self.condition.without();
+        self.condition = Some(None);
 
         self
     }
@@ -53,12 +66,15 @@ where
     fn new(f: &'b mut Fixture) -> Self {
         Self {
             fixture: f,
-            condition: OptionCondition::<T>::default(),
+            condition: None,
         }
     }
 
     fn create(&mut self) -> Self::F {
-        self.condition.apply(self.fixture)
+        match &self.condition {
+            Some(c) => c.clone(),
+            None => Self::F::create(self.fixture),
+        }
     }
 }
 
