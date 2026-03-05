@@ -1,5 +1,5 @@
 # rs-autofixture
-Rust equivelant of the popular .NET [Autofixture](https://github.com/AutoFixture/AutoFixture/) library for quickly automatically generating data fixtures.
+Rust equivalent of the popular .NET [Autofixture](https://github.com/AutoFixture/AutoFixture/) library for quickly automatically generating data fixtures.
 
 ## Planned TODO:
  * Finish main implementation of primitives
