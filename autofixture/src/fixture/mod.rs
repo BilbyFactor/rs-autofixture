@@ -1,5 +1,6 @@
 pub mod auto_fixture;
 pub mod builder;
+pub mod collections;
 pub mod primitives;
 
 use rand::rngs::ThreadRng;

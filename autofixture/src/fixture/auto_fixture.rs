@@ -15,3 +15,54 @@ pub trait AutoFixture {
     /// * `f` - the base `Fixture` struct.
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b>;
 }
+
+macro_rules! impl_autofixture_random{
+    ($($prim:ty => $b:ident), *) => { $(
+        impl crate::fixture::auto_fixture::AutoFixture for $prim {
+            type Builder<'b> = $b<'b>;
+
+            #[inline]
+            fn create(f: &mut crate::fixture::Fixture) -> Self {
+                use rand::RngExt;
+
+                f.rng().random()
+            }
+
+            #[inline]
+            fn build<'b>(f: &'b mut crate::fixture::Fixture)
+                -> Self::Builder<'b>
+            {
+                use crate::fixture::builder::FixtureBuilder;
+
+                <$b>::new(f)
+            }
+        }
+    )* };
+}
+
+macro_rules! impl_autofixture_random_dyn {
+    ($($prim:ty => $b:ident), *) => { $(
+        impl crate::fixture::auto_fixture::AutoFixture for $prim {
+            type Builder<'b> = $b<'b>;
+
+            #[inline]
+            fn create(f: &mut crate::fixture::Fixture) -> Self {
+                use rand::RngExt;
+
+                <$prim>::from_ne_bytes(f.rng().random())
+            }
+
+            #[inline]
+            fn build<'b>(f: &'b mut crate::fixture::Fixture)
+                -> Self::Builder<'b>
+            {
+                use crate::fixture::builder::FixtureBuilder;
+                
+                <$b>::new(f)
+            }
+        }
+    )* };
+}
+
+pub(crate) use impl_autofixture_random;
+pub(crate) use impl_autofixture_random_dyn;

@@ -2,10 +2,10 @@
 
 use crate::fixture::{
     Fixture,
-    auto_fixture::AutoFixture,
+    auto_fixture::{AutoFixture, impl_autofixture_random},
     builder::FixtureBuilder,
-    primitives::impl_autofixture_random,
 };
+
 
 // Requires a very basic builder...
 pub struct boolBuilder<'b> {
