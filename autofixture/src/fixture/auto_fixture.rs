@@ -25,6 +25,8 @@ macro_rules! impl_autofixture_random{
                 #[inline]
                 fn create(f: &mut crate::fixture::Fixture) -> Self {
                     use rand::RngExt;
+                    
+                    use crate::fixture::FixtureExt;
 
                     f.rng().random()
                 }
@@ -51,6 +53,8 @@ macro_rules! impl_autofixture_random_dyn {
                 #[inline]
                 fn create(f: &mut crate::fixture::Fixture) -> Self {
                     use rand::RngExt;
+
+                    use crate::fixture::FixtureExt;
 
                     <$prim>::from_ne_bytes(f.rng().random())
                 }

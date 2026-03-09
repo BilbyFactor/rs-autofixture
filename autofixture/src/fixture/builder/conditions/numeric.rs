@@ -10,6 +10,7 @@ use rand::{RngExt, distr::uniform::SampleUniform};
 
 use crate::fixture::{
     Fixture,
+    FixtureExt,
     auto_fixture::AutoFixture,
     builder::conditions::BuilderCondition,
 };

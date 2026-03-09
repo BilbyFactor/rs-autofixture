@@ -2,6 +2,7 @@ use rand::seq::IndexedRandom;
 
 use crate::fixture::{
     Fixture,
+    FixtureExt,
     auto_fixture::AutoFixture,
     builder::conditions::BuilderCondition,
 };

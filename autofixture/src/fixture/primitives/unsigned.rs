@@ -6,6 +6,7 @@ use crate::fixture::{
 };
 
 create_numeric_builder!(u8, u16, u32, u64, u128);
+
 impl_autofixture_random!(
     u8 => u8Builder,
     u16 => u16Builder,

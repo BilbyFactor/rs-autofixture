@@ -7,6 +7,7 @@ use rand::{RngExt, distr::Alphanumeric};
 
 use crate::fixture::{
     Fixture,
+    FixtureExt,
     auto_fixture::AutoFixture,
     builder::FixtureBuilder,
 };
