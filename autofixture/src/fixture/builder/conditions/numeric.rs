@@ -1,4 +1,4 @@
-use std::ops::Range;
+use std::ops::RangeBounds;
 
 use rand::{RngExt, distr::uniform::SampleUniform};
 
@@ -14,7 +14,7 @@ pub struct RandomRangeCondition<T>
 where
     T: SampleUniform + AutoFixture,
 {
-    range: Option<Range<T>>,
+    range: Option<RangeBounds<T>>,
 }
 
 impl<T> Default for RandomRangeCondition<T>
@@ -38,7 +38,7 @@ where
     /// 
     /// # Examples
     /// `range(1..10)`, `range(..10)`, `range(-10..)`, `range(1.123..5.678)`, etc
-    pub fn range(&mut self, range: Range<T>) {
+    pub fn range<R: RangeBounds<T>>(&mut self, range: R) {
         self.range = Some(range);
     }
 }

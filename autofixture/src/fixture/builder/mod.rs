@@ -89,13 +89,16 @@ macro_rules! create_numeric_builder {
                 #[doc = "Specifies the builder should use a range on `create()`."]
                 #[doc = ""]
                 #[doc = "# Arguments"]
-                #[doc = " * `range` - a range of values in `std::Range<T>` format (`(start..end)`),"]
+                #[doc = " * `range` - a range of values in `std::Range<T>` format (`({start}..{end})`)"]
+                #[doc = "   or in `std::RangeInclusive<T>` format (`({start}..={end})`)"]
                 #[doc = "   where `T` is the base type for the builder."]
                 #[doc = ""]
                 #[doc = " # Other conditions"]
                 #[doc = " * `with_options` - Any options conditions given to the builder"]
                 #[doc = "   are cleared when this condition is used."]
-                pub fn with_range(&mut self, range: std::ops::Range<$prim>) -> &mut Self {
+                pub fn with_range<R: std::ops::RangeBounds<$prim>>(&mut self, range: R)
+                    -> &mut Self
+                {
                     use crate::fixture::builder::conditions::BuilderCondition;
 
                     self.range_condition.range(range);
