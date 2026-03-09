@@ -1,4 +1,4 @@
-use rand::{RngExt, distr::Alphanumeric, rng};
+use rand::{RngExt, distr::Alphanumeric};
 use std::collections::HashSet;
 
 use crate::fixture::{
