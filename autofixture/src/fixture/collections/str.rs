@@ -29,7 +29,9 @@ pub struct StringBuilder<'b, S> {
 }
 
 impl<'b, S> StringBuilder<'b, S> {
-    /// Sets the desired string size for on create...
+    /// Sets the desired string size for on create.
+    /// Defaults is `16`. Will be ignored by the default UUID v4
+    /// generator. 
     pub fn with_size(&mut self, size: usize) -> &mut Self {
         self.size = size;
 
@@ -38,7 +40,8 @@ impl<'b, S> StringBuilder<'b, S> {
 
     /// Sets the String generator to use UUID v4 generation.
     /// 
-    /// Will ignore other `with` and `without` builder calls if set.
+    /// Will ignore other `with()`, `without()` and `with_size()`
+    /// builder calls if set.
     /// 
     /// Default generator is UUID v4.
     pub fn with_uuid_v4_generator(&mut self) -> &mut Self {
@@ -49,7 +52,7 @@ impl<'b, S> StringBuilder<'b, S> {
 
     /// Sets the String generator to use `rand::dist::Alphabetic` generation.
     /// 
-    /// `with` and `without` builder calls are additive to the default set.
+    /// `with()` and `without()` builder calls are additive to the default set.
     /// 
     /// Default generator is UUID v4.
     pub fn with_alphabetic_generator(&mut self) -> &mut Self {
@@ -60,7 +63,7 @@ impl<'b, S> StringBuilder<'b, S> {
 
     /// Sets the String generator to use `rand::dist::Alphanumeric` generation.
     /// 
-    /// `with` and `without` builder calls are additive to the default set.
+    /// `with()` and `without()` builder calls are additive to the default set.
     /// 
     /// Default generator is UUID v4.
     pub fn with_alphanumeric_generator(&mut self) -> &mut Self {
@@ -108,7 +111,7 @@ where
             string_generation: StringGeneration::Uuid4,
             with: HashSet::new(),
             without: HashSet::new(),
-            size: 32,
+            size: 16,
             _phantom: PhantomData,
         }
     }
