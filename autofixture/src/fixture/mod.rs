@@ -117,3 +117,9 @@ impl FixtureExt for Fixture {
             .expect("expecting one `&[T]` to have just been registered...")
     }
 }
+
+impl Default for Fixture {
+    fn default() -> Self {
+        Self::new()
+    }
+}
