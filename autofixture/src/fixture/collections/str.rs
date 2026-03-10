@@ -36,6 +36,39 @@ impl<'b, S> StringBuilder<'b, S> {
         self
     }
 
+    /// Sets the String generator to use UUID v4 generation.
+    /// 
+    /// Will ignore other `with` and `without` builder calls if set.
+    /// 
+    /// Default generator is UUID v4.
+    pub fn with_uuid_v4_generator(&mut self) -> &mut Self {
+        self.string_generation = StringGeneration::Uuid4;
+
+        self
+    }
+
+    /// Sets the String generator to use `rand::dist::Alphabetic` generation.
+    /// 
+    /// `with` and `without` builder calls are additive to the default set.
+    /// 
+    /// Default generator is UUID v4.
+    pub fn with_alphabetic_generator(&mut self) -> &mut Self {
+        self.string_generation = StringGeneration::Alphbetic;
+
+        self
+    }
+
+    /// Sets the String generator to use `rand::dist::Alphanumeric` generation.
+    /// 
+    /// `with` and `without` builder calls are additive to the default set.
+    /// 
+    /// Default generator is UUID v4.
+    pub fn with_alphanumeric_generator(&mut self) -> &mut Self {
+        self.string_generation = StringGeneration::Alphanumeric;
+
+        self
+    }
+
     /// Adds characters that are allowed to appear in generated strings.
     ///
     /// This call is additive across multiple uses.
@@ -135,3 +168,5 @@ macro_rules! impl_autofixture_string_like {
 }
 
 impl_autofixture_string_like!(Box<str>, Arc<str>, Rc<str>);
+
+// TODO: Work out how to `impl Autofixture for &str`...
