@@ -3,7 +3,8 @@ use std::marker::PhantomData;
 use std::rc::Rc;
 use std::sync::Arc;
 
-use rand::{RngExt, distr::Alphanumeric};
+use rand::{RngExt, distr::{Alphabetic, Alphanumeric}};
+use uuid::Uuid;
 
 use crate::fixture::{
     Fixture,
@@ -12,8 +13,15 @@ use crate::fixture::{
     builder::FixtureBuilder,
 };
 
+enum StringGeneration {
+    Alphbetic,
+    Alphanumeric,
+    Uuid4,
+}
+
 pub struct StringBuilder<'b, S> {
     fixture: &'b mut Fixture,
+    string_generation: StringGeneration,
     with: HashSet<char>,
     without: HashSet<char>,
     size: usize,
@@ -64,6 +72,7 @@ where
     fn new(f: &'b mut Fixture) -> Self {
         Self {
             fixture: f,
+            string_generation: StringGeneration::Uuid4,
             with: HashSet::new(),
             without: HashSet::new(),
             size: 32,
@@ -72,13 +81,26 @@ where
     }
 
     fn create(&mut self) -> Self::F {
-        self.fixture
-            .rng()
-            .sample_iter(&Alphanumeric)
-            .take(self.size)
-            .map(char::from)
-            .collect::<String>()
-            .into()
+        match self.string_generation {
+            StringGeneration::Uuid4
+                => Uuid::new_v4().to_string().into(),
+            StringGeneration::Alphanumeric
+                => self.fixture
+                    .rng()
+                    .sample_iter(&Alphanumeric)
+                    .take(self.size)
+                    .map(char::from)
+                    .collect::<String>()
+                    .into(),
+            StringGeneration::Alphbetic
+                => self.fixture
+                    .rng()
+                    .sample_iter(&Alphabetic)
+                    .take(self.size)
+                    .map(char::from)
+                    .collect::<String>()
+                    .into(),
+        }
     }
 }
 
