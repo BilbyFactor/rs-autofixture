@@ -8,9 +8,7 @@ use crate::fixture::{
 impl AutoFixture for () {
     type Builder<'b> = UnitTypeBuilder<'b>;
 
-    fn create(_: &mut crate::fixture::Fixture) -> Self {
-        ()
-    }
+    fn create(_: &mut crate::fixture::Fixture) -> Self {}
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         UnitTypeBuilder::new(f)

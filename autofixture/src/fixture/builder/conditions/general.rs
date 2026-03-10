@@ -50,7 +50,7 @@ where
     fn apply(&self, f: &mut Fixture) -> Option<T> {
         self.options
             .choose(f.rng())
-            .map(|i| i.clone())
+            .cloned()
     }
 
     fn clear(&mut self) {

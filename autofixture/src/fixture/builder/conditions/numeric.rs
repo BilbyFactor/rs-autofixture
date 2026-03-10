@@ -86,15 +86,17 @@ where
     T: SampleUniform + AutoFixture + PartialOrd + Clone,
 {
     fn apply(&self, f: &mut Fixture) -> Option<T> {
-        if let Some(range) = &self.range {
-            Some(match range {
-                StdRangeType::Range(r) => f.rng().random_range(r.clone()),
-                StdRangeType::RangeInclusive(ri) => f.rng().random_range(ri.clone()),
+        self.range
+            .as_ref()
+            .map(|range| match range
+            {
+                StdRangeType::Range(r) => f
+                    .rng()
+                    .random_range(r.clone()),
+                StdRangeType::RangeInclusive(ri) => f
+                    .rng()
+                    .random_range(ri.clone()),
             })
-        }
-        else {
-            None
-        }
     }
 
     fn clear(&mut self) {
