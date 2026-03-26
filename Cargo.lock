@@ -51,9 +51,9 @@ dependencies = [
 
 [[package]]
 name = "convert_case"
-version = "0.10.0"
+version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "633458d4ef8c78b72454de2d54fd6ab2e60f9e02be22f3c6104cdc8a4e0fceb9"
+checksum = "affbf0190ed2caf063e3def54ff444b449371d55c58e513a95ab98eca50adb49"
 dependencies = [
  "unicode-segmentation",
 ]
@@ -251,11 +251,12 @@ dependencies = [
  "num-traits",
  "paste",
  "rand",
+ "rs-autofixture-derive",
  "uuid",
 ]
 
 [[package]]
-name = "rs-autofixture-macro"
+name = "rs-autofixture-derive"
 version = "0.1.0"
 dependencies = [
  "case",

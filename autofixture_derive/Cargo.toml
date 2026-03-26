@@ -1,5 +1,5 @@
 [package]
-name = "rs-autofixture-macro"
+name = "rs-autofixture-derive"
 version = "0.1.0"
 edition = "2024"
 
@@ -8,6 +8,6 @@ proc-macro = true
 
 [dependencies]
 case = "1.0"
-convert_case = "0.10"
+convert_case = "0.11"
 quote = "1.0"
 syn = "2.0"
