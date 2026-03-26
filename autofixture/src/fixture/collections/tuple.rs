@@ -80,7 +80,7 @@ impl_tuple_fixtures!(
 );
 
 // 😈 Extends to up to 16 tuple arities.
-#[cfg(feature = "double_tuples")]
+#[cfg(feature = "double-tuples")]
 impl_tuple_fixtures!(
     A, B, C, D, E, F, G, H, I;
     A, B, C, D, E, F, G, H, I, J;
@@ -93,7 +93,7 @@ impl_tuple_fixtures!(
 );
 
 // 😈😈 Extends to up to 32 tuple arities.
-#[cfg(feature = "tripple_tuples")]
+#[cfg(feature = "tripple-tuples")]
 impl_tuple_fixtures!(
     A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q;
     A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R;
