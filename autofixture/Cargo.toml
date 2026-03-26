@@ -8,6 +8,7 @@ derive = ["rs-autofixture-derive"]
 nightly-float = []
 double-tuples = []
 tripple-tuples = ["double-tuples"]
+way-too-many-tuples = ["tripple-tuples"]
 
 [dependencies]
 rs-autofixture-derive = { path = "../autofixture_derive", optional = true }
