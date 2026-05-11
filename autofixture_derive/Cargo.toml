@@ -2,6 +2,11 @@
 name = "rs-autofixture-derive"
 version = "0.1.0"
 edition = "2024"
+description = "Derive macro for rs-autofixture - automatically implement AutoFixture for structs, enums, and unions"
+license = "MIT"
+repository = "https://github.com/BilbyFactor/rs-autofixture"
+keywords = ["testing", "fixture", "derive", "autofixture"]
+categories = ["development-tools::testing"]
 
 [lib]
 proc-macro = true

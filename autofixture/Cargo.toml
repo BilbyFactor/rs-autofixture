@@ -2,6 +2,12 @@
 name = "rs-autofixture"
 version = "0.1.0"
 edition = "2024"
+description = "Rust equivalent of .NET AutoFixture - quickly generate randomised test data fixtures"
+license = "MIT"
+repository = "https://github.com/BilbyFactor/rs-autofixture"
+readme = "../README.md"
+keywords = ["testing", "fixture", "autofixture", "random", "mock"]
+categories = ["development-tools::testing"]
 
 [features]
 derive = ["rs-autofixture-derive"]
@@ -11,7 +17,7 @@ tripple-tuples = ["double-tuples"]
 way-too-many-tuples = ["tripple-tuples"]
 
 [dependencies]
-rs-autofixture-derive = { path = "../autofixture_derive", optional = true }
+rs-autofixture-derive = { version = "0.1.0", path = "../autofixture_derive", optional = true }
 num-traits = "0.2"
 paste = "1.0"
 rand = "0.10"

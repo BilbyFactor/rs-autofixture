@@ -118,7 +118,7 @@ let customer = Customer {
  * ~~Create derive macro for AutoFixture~~
  * ~~Unit testing~~
  * ~~Docstrings~~
- * Cargo crate submission
+ * ~~Cargo crate submission~~
  * Github Actions release pipeline
  * AutoMoq implementation
  * Fixture freezing
