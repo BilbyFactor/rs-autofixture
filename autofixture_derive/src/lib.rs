@@ -3,23 +3,19 @@ mod r#struct;
 mod r#union;
 
 use proc_macro::TokenStream;
-use quote::quote;
-use syn::Ident;
+use syn::{parse_macro_input, DeriveInput, Data};
 
 #[proc_macro_derive(AutoFixture, attributes(serde, sfs))]
 pub fn derive_request(item: TokenStream) -> TokenStream {
-    let u = MyUnion {
-        //lol: 123.45,
-        something_else: 123,
+    let input = parse_macro_input!(item as DeriveInput);
+    let name = &input.ident;
+    let generics = &input.generics;
+
+    let expanded = match &input.data {
+        Data::Struct(data) => r#struct::expand(name, generics, data),
+        Data::Enum(data) => r#enum::expand(name, generics, data),
+        Data::Union(data) => r#union::expand(name, generics, data),
     };
 
-
-
-    quote! {
-    }.into()
-}
-
-union MyUnion {
-    pub lol: f64,
-    pub something_else: i128,
+    expanded.into()
 }
