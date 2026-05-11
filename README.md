@@ -5,7 +5,7 @@ Rust equivalent of the popular .NET [Autofixture](https://github.com/AutoFixture
  * ~~Finish main implementation of primitives~~
  * ~~Create derive macro for AutoFixture~~
  * ~~Unit testing~~
- * Docstrings
+ * ~~Docstrings~~
  * Cargo crate submission
  * Github Actions release pipeline
  * AutoMoq implementation
