@@ -6,3 +6,4 @@ publish = false
 
 [dependencies]
 rs-autofixture = { path = "../autofixture", features = ["derive"] }
+paste = "1.0"

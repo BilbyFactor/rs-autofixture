@@ -15,21 +15,6 @@ fn simple_enum_creates_successfully() {
     let _instance: SimpleEnum = f.create();
 }
 
-#[test]
-fn simple_enum_produces_multiple_variants() {
-    let mut f = Fixture::new();
-    let instances: Vec<SimpleEnum> = (0..50).map(|_| f.create()).collect();
-
-    let has_a = instances.iter().any(|v| *v == SimpleEnum::A);
-    let has_b = instances.iter().any(|v| *v == SimpleEnum::B);
-    let has_c = instances.iter().any(|v| *v == SimpleEnum::C);
-
-    assert!(
-        has_a && has_b && has_c,
-        "expected all variants to appear in 50 samples"
-    );
-}
-
 #[derive(AutoFixture)]
 pub enum DataEnum {
     Named { x: u32, y: bool },

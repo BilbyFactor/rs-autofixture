@@ -4,4 +4,9 @@ mod tests {
     mod structs;
     mod enums;
     mod unions;
+    mod primitives;
+    mod collections;
+    mod strings;
+    mod option_result;
+    mod builders;
 }
