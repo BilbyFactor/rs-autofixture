@@ -4,7 +4,7 @@ use syn::{DataStruct, Fields, Ident, Generics};
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStream {
     let create_body = struct_create_body(&data.fields);
-    let builder_name = quote::format_ident!("{}Builder", name);
+    let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
     quote! {

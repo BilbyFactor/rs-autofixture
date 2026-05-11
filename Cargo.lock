@@ -270,7 +270,6 @@ dependencies = [
 name = "rs-autofixture-tests"
 version = "0.1.0"
 dependencies = [
- "rand",
  "rs-autofixture",
 ]
 

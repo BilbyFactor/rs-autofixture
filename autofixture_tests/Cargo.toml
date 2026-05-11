@@ -6,4 +6,3 @@ publish = false
 
 [dependencies]
 rs-autofixture = { path = "../autofixture", features = ["derive"] }
-rand = "0.10"

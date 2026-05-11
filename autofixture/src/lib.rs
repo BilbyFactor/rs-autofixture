@@ -10,6 +10,8 @@
 
 pub mod fixture;
 
+pub use rand;
+
 // Re-export #[derive(AutoFixture)].
 #[cfg(feature = "derive")]
 extern crate rs_autofixture_derive;

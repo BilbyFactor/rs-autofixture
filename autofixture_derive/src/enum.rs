@@ -4,7 +4,7 @@ use syn::{DataEnum, Fields, Ident, Generics};
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream {
     let variant_count = data.variants.len();
-    let builder_name = quote::format_ident!("{}Builder", name);
+    let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
     let variant_arms = data.variants.iter().enumerate().map(|(i, v)| {
@@ -24,7 +24,7 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
             fn create(f: &mut rs_autofixture::fixture::Fixture) -> Self {
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
                 use rs_autofixture::fixture::FixtureExt;
-                use rand::RngExt;
+                use rs_autofixture::rand::RngExt;
 
                 let variant: usize = f.rng().random_range(0..#variant_count);
 

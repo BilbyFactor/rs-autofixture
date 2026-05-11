@@ -4,7 +4,7 @@ use syn::{DataUnion, Ident, Generics};
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStream {
     let field_count = data.fields.named.len();
-    let builder_name = quote::format_ident!("{}Builder", name);
+    let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
     let field_arms = data.fields.named.iter().enumerate().map(|(i, f)| {
@@ -28,7 +28,7 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStrea
             fn create(f: &mut rs_autofixture::fixture::Fixture) -> Self {
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
                 use rs_autofixture::fixture::FixtureExt;
-                use rand::RngExt;
+                use rs_autofixture::rand::RngExt;
 
                 let field: usize = f.rng().random_range(0..#field_count);
 
