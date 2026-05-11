@@ -267,6 +267,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "rs-autofixture-tests"
+version = "0.1.0"
+dependencies = [
+ "rand",
+ "rs-autofixture",
+]
+
+[[package]]
 name = "rustversion"
 version = "1.0.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"

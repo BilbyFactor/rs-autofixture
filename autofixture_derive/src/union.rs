@@ -13,21 +13,21 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStrea
 
         quote! {
             #i => Self {
-                #field_name: <#ty as autofixture::fixture::auto_fixture::AutoFixture>::create(f),
+                #field_name: <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f),
             }
         }
     });
 
     quote! {
-        impl #impl_generics autofixture::fixture::auto_fixture::AutoFixture for #name
+        impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
             #ty_generics
             #where_clause
         {
             type Builder<'_afb> = #builder_name<'_afb>;
 
-            fn create(f: &mut autofixture::fixture::Fixture) -> Self {
-                use autofixture::fixture::auto_fixture::AutoFixture;
-                use autofixture::fixture::FixtureExt;
+            fn create(f: &mut rs_autofixture::fixture::Fixture) -> Self {
+                use rs_autofixture::fixture::auto_fixture::AutoFixture;
+                use rs_autofixture::fixture::FixtureExt;
                 use rand::RngExt;
 
                 let field: usize = f.rng().random_range(0..#field_count);
@@ -38,28 +38,28 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStrea
                 }
             }
 
-            fn build<'_afb>(f: &'_afb mut autofixture::fixture::Fixture)
+            fn build<'_afb>(f: &'_afb mut rs_autofixture::fixture::Fixture)
                 -> Self::Builder<'_afb>
             {
-                use autofixture::fixture::builder::FixtureBuilder;
+                use rs_autofixture::fixture::builder::FixtureBuilder;
 
                 #builder_name::new(f)
             }
         }
 
         pub struct #builder_name<'_afb> {
-            fixture: &'_afb mut autofixture::fixture::Fixture,
+            fixture: &'_afb mut rs_autofixture::fixture::Fixture,
         }
 
-        impl<'_afb> autofixture::fixture::builder::FixtureBuilder<'_afb> for #builder_name<'_afb> {
+        impl<'_afb> rs_autofixture::fixture::builder::FixtureBuilder<'_afb> for #builder_name<'_afb> {
             type F = #name;
 
-            fn new(f: &'_afb mut autofixture::fixture::Fixture) -> Self {
+            fn new(f: &'_afb mut rs_autofixture::fixture::Fixture) -> Self {
                 Self { fixture: f }
             }
 
             fn create(&mut self) -> Self::F {
-                use autofixture::fixture::auto_fixture::AutoFixture;
+                use rs_autofixture::fixture::auto_fixture::AutoFixture;
 
                 <Self::F as AutoFixture>::create(self.fixture)
             }

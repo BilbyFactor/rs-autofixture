@@ -12,9 +12,9 @@ pub mod fixture;
 
 // Re-export #[derive(AutoFixture)].
 #[cfg(feature = "derive")]
-extern crate autofixture_derive;
+extern crate rs_autofixture_derive;
 
 /// Derive macro available if rs-autofixture is built with `features = ["derive"]`.
 #[cfg(feature = "derive")]
 #[cfg_attr(docsrs, doc(cfg(feature = "derive")))]
-pub use autofixture_derive::{AutoFixture};
+pub use rs_autofixture_derive::AutoFixture;
