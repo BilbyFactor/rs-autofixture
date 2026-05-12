@@ -25,7 +25,7 @@ use crate::fixture::{
     builder::FixtureBuilder,
 };
 
-macro_rules! impl_chrono_autofixture {
+macro_rules! impl_chrono_autofixture_builder {
     ($($ty:ty => $builder:ident), *) => {
         $(
             pub struct $builder<'b> {
@@ -47,7 +47,7 @@ macro_rules! impl_chrono_autofixture {
     };
 }
 
-impl_chrono_autofixture!(
+impl_chrono_autofixture_builder!(
     NaiveDate => NaiveDateBuilder,
     NaiveTime => NaiveTimeBuilder,
     NaiveDateTime => NaiveDateTimeBuilder,
