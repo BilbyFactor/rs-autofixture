@@ -6,6 +6,7 @@ pub mod chrono;
 
 pub mod collections;
 pub mod primitives;
+pub mod uuid;
 
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
