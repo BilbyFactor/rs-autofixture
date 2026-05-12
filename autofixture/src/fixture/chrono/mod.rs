@@ -1,4 +1,10 @@
-//! AutoFixture implementations for `chrono` date/time types.
+//! AutoFixture implementations for [`chrono`](https://docs.rs/chrono) date/time types.
+//!
+//! Provides `AutoFixture` for: `NaiveDate`, `NaiveTime`, `NaiveDateTime`,
+//! `DateTime<Utc>`, `DateTime<FixedOffset>`, `DateTime<Local>`, `FixedOffset`,
+//! `TimeDelta`, `Weekday`, `Month`, `Days`, and `Months`.
+//!
+//! Requires the `chrono` feature to be enabled.
 
 use chrono::{
     DateTime,

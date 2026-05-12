@@ -1,4 +1,9 @@
-//! AutoFixture implementation for `uuid::Uuid`.
+//! AutoFixture implementation for [`Uuid`](https://docs.rs/uuid).
+//!
+//! By default, `create()` and the builder produce v4 (random) UUIDs.
+//!
+//! With the `uuid-extra` feature enabled, the builder gains version selection
+//! methods: `with_v1`, `with_v3`, `with_v5`, `with_v6`, `with_v7`, and `with_v8`.
 
 use uuid::Uuid;
 
