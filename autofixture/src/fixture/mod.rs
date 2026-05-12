@@ -1,5 +1,9 @@
 pub mod auto_fixture;
 pub mod builder;
+
+#[cfg(feature = "chrono")]
+pub mod chrono;
+
 pub mod collections;
 pub mod primitives;
 

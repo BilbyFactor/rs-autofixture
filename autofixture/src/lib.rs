@@ -198,7 +198,7 @@
 //! ```
 //!
 //! [LICENSE-MIT]: https://opensource.org/licenses/MIT
-//!
+
 #![cfg_attr(feature = "nightly-float", feature(f16, f128))]
 
 pub mod fixture;
