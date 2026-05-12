@@ -115,6 +115,18 @@ let customer = Customer {
 };
 ```
 
+## Feature Flags
+
+| Feature | Description |
+|---------|-------------|
+| `derive` | Enables `#[derive(AutoFixture)]` for structs, enums, and unions. |
+| `chrono` | Adds `AutoFixture` implementations for [`chrono`](https://docs.rs/chrono) types: `NaiveDate`, `NaiveTime`, `NaiveDateTime`, `DateTime<Utc>`, `DateTime<FixedOffset>`, `DateTime<Local>`, `FixedOffset`, `TimeDelta`, `Weekday`, `Month`, `Days`, and `Months`. |
+| `uuid-extra` | Extends the `Uuid` builder with version selection (`with_v1`, `with_v3`, `with_v5`, `with_v6`, `with_v7`, `with_v8`). Without this feature the builder only produces v4 (random) UUIDs. |
+| `nightly-float` | Enables `f16` and `f128` support (requires nightly Rust). |
+| `double-tuples` | Adds `AutoFixture` for tuples up to 16 elements. |
+| `tripple-tuples` | Adds `AutoFixture` for tuples up to 32 elements. |
+| `way-too-many-tuples` | Adds `AutoFixture` for tuples up to 128 elements. |
+
 ## Planned TODO:
  * ~~Finish main implementation of primitives~~
  * ~~Create derive macro for AutoFixture~~
