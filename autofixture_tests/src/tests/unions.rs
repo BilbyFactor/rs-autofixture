@@ -17,8 +17,15 @@ fn simple_union_creates_successfully() {
 #[test]
 fn simple_union_fields_vary() {
     let mut f = Fixture::new();
-    let instances: Vec<SimpleUnion> = (0..10).map(|_| f.create()).collect();
-    let all_same = instances.windows(2).all(|w| unsafe { w[0].a == w[1].a });
+
+    let instances: Vec<SimpleUnion> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = instances
+        .windows(2)
+        .all(|w| unsafe { w[0].a == w[1].a });
+    
     assert!(!all_same, "expected union values to vary across 10 instances");
 }
 

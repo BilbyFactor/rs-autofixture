@@ -21,9 +21,9 @@ fn vec_creates_with_default_size() {
 #[test]
 fn vec_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Vec<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<Vec<u32>>()
         .with_size(7)
         .create();
 
@@ -40,9 +40,9 @@ fn vec_deque_creates_with_default_size() {
 #[test]
 fn vec_deque_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<VecDeque<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<VecDeque<u32>>()
         .with_size(5)
         .create();
 
@@ -59,9 +59,9 @@ fn linked_list_creates_with_default_size() {
 #[test]
 fn linked_list_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<LinkedList<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<LinkedList<u32>>()
         .with_size(4)
         .create();
 
@@ -78,9 +78,9 @@ fn hashset_creates_with_default_size() {
 #[test]
 fn hashset_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<HashSet<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<HashSet<u32>>()
         .with_size(6)
         .create();
 
@@ -97,9 +97,9 @@ fn btreeset_creates_with_default_size() {
 #[test]
 fn btreeset_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<BTreeSet<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<BTreeSet<u32>>()
         .with_size(5)
         .create();
 
@@ -116,9 +116,9 @@ fn binary_heap_creates_with_default_size() {
 #[test]
 fn binary_heap_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<BinaryHeap<u32>>();
 
-    let v = builder
+    let v = f
+        .build::<BinaryHeap<u32>>()
         .with_size(8)
         .create();
 
@@ -135,9 +135,9 @@ fn hashmap_creates_with_default_size() {
 #[test]
 fn hashmap_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<HashMap<u32, bool>>();
 
-    let v = builder
+    let v = f
+        .build::<HashMap<u32, bool>>()
         .with_size(5)
         .create();
 
@@ -154,9 +154,9 @@ fn btreemap_creates_with_default_size() {
 #[test]
 fn btreemap_builder_with_size() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<BTreeMap<u32, bool>>();
 
-    let v = builder
+    let v = f
+        .build::<BTreeMap<u32, bool>>()
         .with_size(4)
         .create();
     

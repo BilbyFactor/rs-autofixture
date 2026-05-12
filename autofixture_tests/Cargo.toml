@@ -1,11 +1,12 @@
 [package]
 name = "rs-autofixture-tests"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2024"
 publish = false
 
 [dependencies]
-rs-autofixture = { path = "../autofixture", features = ["derive", "chrono", "uuid-extra"] }
+rs-autofixture = { path = "../autofixture", features = ["derive", "chrono", "uuid-extra", "lettre"] }
 chrono = "0.4"
+lettre = "0.11"
 paste = "1.0"
 uuid = "1.0"

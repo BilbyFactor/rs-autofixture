@@ -28,32 +28,10 @@ use crate::fixture::{
     AutoFixture,
     Fixture,
     FixtureExt,
-    builder::FixtureBuilder,
+    builder::{FixtureBuilder, create_basic_builder},
 };
 
-macro_rules! impl_chrono_autofixture_builder {
-    ($($ty:ty => $builder:ident), *) => {
-        $(
-            pub struct $builder<'b> {
-                fixture: &'b mut Fixture,
-            }
-
-            impl<'b> FixtureBuilder<'b> for $builder<'b> {
-                type F = $ty;
-
-                fn new(f: &'b mut Fixture) -> Self {
-                    Self { fixture: f }
-                }
-
-                fn create(&mut self) -> Self::F {
-                    <$ty as AutoFixture>::create(self.fixture)
-                }
-            }
-        )*
-    };
-}
-
-impl_chrono_autofixture_builder!(
+create_basic_builder!(
     NaiveDate => NaiveDateBuilder,
     NaiveTime => NaiveTimeBuilder,
     NaiveDateTime => NaiveDateTimeBuilder,

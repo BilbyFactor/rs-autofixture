@@ -63,18 +63,18 @@ where
             range.end_bound().cloned(),
         )
         {
-            (Bound::Included(s), Bound::Included(e)) =>
-                StdRangeType::RangeInclusive(s..=e),
-            (Bound::Included(s), Bound::Excluded(e)) => 
-                StdRangeType::Range(s..e),
-            (Bound::Included(s), Bound::Unbounded) =>
-                StdRangeType::RangeInclusive(s..=T::max_value()),
-            (Bound::Unbounded, Bound::Included(e)) =>
-                StdRangeType::RangeInclusive(T::min_value()..=e),
-            (Bound::Unbounded, Bound::Excluded(e)) =>
-                StdRangeType::Range(T::min_value()..e),
-            (Bound::Unbounded, Bound::Unbounded) =>
-                StdRangeType::RangeInclusive(T::min_value()..=T::max_value()),
+            (Bound::Included(s), Bound::Included(e))
+                => StdRangeType::RangeInclusive(s..=e),
+            (Bound::Included(s), Bound::Excluded(e))
+                => StdRangeType::Range(s..e),
+            (Bound::Included(s), Bound::Unbounded)
+                => StdRangeType::RangeInclusive(s..=T::max_value()),
+            (Bound::Unbounded, Bound::Included(e))
+                => StdRangeType::RangeInclusive(T::min_value()..=e),
+            (Bound::Unbounded, Bound::Excluded(e))
+                => StdRangeType::Range(T::min_value()..e),
+            (Bound::Unbounded, Bound::Unbounded)
+                => StdRangeType::RangeInclusive(T::min_value()..=T::max_value()),
             _ =>
                 panic!("a starting `Bound::Excluded` cannot be parsed..."),
         });

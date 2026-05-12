@@ -1,14 +1,18 @@
 #[cfg(test)]
 #[allow(dead_code)] // Supress warnings stemming from test fixtures...
 mod tests {
-    mod structs;
-    mod enums;
-    mod unions;
-    mod primitives;
-    mod collections;
-    mod strings;
-    mod option_result;
     mod builders;
-    mod chrono;
-    mod uuid;
+    mod collections;
+    mod enums;
+    mod option_result;
+    mod primitives;
+    mod strings;
+    mod structs;
+    mod unions;
+
+    mod third_party {
+        mod chrono;
+        mod lettre;
+        mod uuid;
+    }
 }

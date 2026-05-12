@@ -5,6 +5,10 @@ pub mod builder;
 pub mod chrono;
 
 pub mod collections;
+
+#[cfg(feature = "lettre")]
+pub mod lettre;
+
 pub mod primitives;
 pub mod uuid;
 

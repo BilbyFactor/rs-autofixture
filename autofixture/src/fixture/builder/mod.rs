@@ -14,6 +14,18 @@ pub trait FixtureBuilder<'f> {
     /// Returns a built implementation of type `F`, following any builder rules
     /// specified beforehand.
     fn create(&mut self) -> Self::F;
+
+    /// Returns `n` built implementations of type `F`, following any builder
+    /// rules specified beforehand.
+    ///
+    /// # Arguments
+    /// * `n`: The number of items to create.
+    fn create_many(&mut self, n: usize) -> impl Iterator<Item = Self::F> {
+        (0..n)
+            .map(|_| self.create())
+            .collect::<Vec<_>>()
+            .into_iter()
+    }
 }
 
 macro_rules! create_general_builder {
@@ -173,5 +185,28 @@ macro_rules! create_numeric_builder {
     };
 }
 
+macro_rules! create_basic_builder {
+    ($($ty:ty => $builder:ident), *) => {
+        $(
+            pub struct $builder<'b> {
+                fixture: &'b mut crate::fixture::Fixture,
+            }
+
+            impl<'b> crate::fixture::builder::FixtureBuilder<'b> for $builder<'b> {
+                type F = $ty;
+
+                fn new(f: &'b mut crate::fixture::Fixture) -> Self {
+                    Self { fixture: f }
+                }
+
+                fn create(&mut self) -> Self::F {
+                    <$ty as crate::fixture::auto_fixture::AutoFixture>::create(self.fixture)
+                }
+            }
+        )*
+    };
+}
+
 pub(crate) use create_general_builder;
 pub(crate) use create_numeric_builder;
+pub(crate) use create_basic_builder;

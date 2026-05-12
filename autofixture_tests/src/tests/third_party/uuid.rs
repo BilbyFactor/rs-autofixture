@@ -12,8 +12,15 @@ fn uuid_creates_successfully() {
 #[test]
 fn uuid_values_vary() {
     let mut f = Fixture::new();
-    let values: Vec<Uuid> = (0..10).map(|_| f.create()).collect();
-    let all_same = values.windows(2).all(|w| w[0] == w[1]);
+
+    let values: Vec<Uuid> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
+
     assert!(!all_same, "expected Uuid values to vary");
 }
 
@@ -39,7 +46,8 @@ fn uuid_builder_default_is_v4() {
 fn uuid_builder_v1() {
     let mut f = Fixture::new();
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v1()
         .create();
 
@@ -51,7 +59,8 @@ fn uuid_builder_v3() {
     let mut f = Fixture::new();
     let ns = Uuid::NAMESPACE_DNS;
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v3(ns, b"example.com")
         .create();
 
@@ -63,7 +72,8 @@ fn uuid_builder_v5() {
     let mut f = Fixture::new();
     let ns = Uuid::NAMESPACE_URL;
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v5(ns, b"https://example.com")
         .create();
 
@@ -74,7 +84,8 @@ fn uuid_builder_v5() {
 fn uuid_builder_v6() {
     let mut f = Fixture::new();
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v6()
         .create();
 
@@ -85,7 +96,8 @@ fn uuid_builder_v6() {
 fn uuid_builder_v7() {
     let mut f = Fixture::new();
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v7()
         .create();
 
@@ -103,7 +115,8 @@ fn uuid_builder_v8() {
         0x0d, 0x0e, 0x0f, 0x10,
     ];
 
-    let id = f.build::<Uuid>()
+    let id = f
+        .build::<Uuid>()
         .with_v8(buf)
         .create();
     

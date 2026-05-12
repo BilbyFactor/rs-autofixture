@@ -31,7 +31,7 @@ macro_rules! test_signed {
                 #[test]
                 fn [< $ty _values_vary >]() {
                     let mut f = Fixture::new();
-                    let values: Vec<$ty> = (0..10).map(|_| f.create()).collect();
+                    let values: Vec<$ty> = f.create_many(10).collect();
                     let all_same = values.windows(2).all(|w| w[0] == w[1]);
                     assert!(!all_same, concat!("expected ", stringify!($ty), " to vary"));
                 }
@@ -55,7 +55,7 @@ macro_rules! test_unsigned {
                 #[test]
                 fn [< $ty _values_vary >]() {
                     let mut f = Fixture::new();
-                    let values: Vec<$ty> = (0..10).map(|_| f.create()).collect();
+                    let values: Vec<$ty> = f.create_many(10).collect();
                     let all_same = values.windows(2).all(|w| w[0] == w[1]);
                     assert!(!all_same, concat!("expected ", stringify!($ty), " to vary"));
                 }
@@ -79,7 +79,7 @@ macro_rules! test_float {
                 #[test]
                 fn [< $ty _values_vary >]() {
                     let mut f = Fixture::new();
-                    let values: Vec<$ty> = (0..10).map(|_| f.create()).collect();
+                    let values: Vec<$ty> = f.create_many(10).collect();
                     let all_same = values.windows(2).all(|w| w[0] == w[1]);
                     assert!(!all_same, concat!("expected ", stringify!($ty), " to vary"));
                 }

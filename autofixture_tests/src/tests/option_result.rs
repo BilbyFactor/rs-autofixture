@@ -10,9 +10,9 @@ fn option_creates_successfully() {
 #[test]
 fn option_builder_with_forces_some() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Option<u32>>();
 
-    let result = builder
+    let result = f
+        .build::<Option<u32>>()
         .with(42)
         .create();
 
@@ -22,9 +22,9 @@ fn option_builder_with_forces_some() {
 #[test]
 fn option_builder_without_forces_none() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Option<u32>>();
 
-    let result = builder
+    let result = f
+        .build::<Option<u32>>()
         .without()
         .create();
 
@@ -40,9 +40,9 @@ fn result_creates_successfully() {
 #[test]
 fn result_builder_with_ok_forces_ok() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Result<u32, i32>>();
 
-    let result = builder
+    let result = f
+        .build::<Result<u32, i32>>()
         .with_ok(Some(99))
         .create();
 
@@ -52,9 +52,9 @@ fn result_builder_with_ok_forces_ok() {
 #[test]
 fn result_builder_with_ok_none_creates_random_ok() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Result<u32, i32>>();
 
-    let result = builder
+    let result = f
+        .build::<Result<u32, i32>>()
         .with_ok(None)
         .create();
 
@@ -64,9 +64,9 @@ fn result_builder_with_ok_none_creates_random_ok() {
 #[test]
 fn result_builder_with_err_forces_err() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Result<u32, i32>>();
 
-    let result = builder
+    let result = f
+        .build::<Result<u32, i32>>()
         .with_err(Some(-1))
         .create();
 
@@ -76,9 +76,9 @@ fn result_builder_with_err_forces_err() {
 #[test]
 fn result_builder_with_err_none_creates_random_err() {
     let mut f = Fixture::new();
-    let mut builder = f.build::<Result<u32, i32>>();
 
-    let result = builder
+    let result = f
+        .build::<Result<u32, i32>>()
         .with_err(None)
         .create();
     

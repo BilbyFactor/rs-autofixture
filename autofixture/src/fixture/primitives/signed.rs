@@ -12,7 +12,8 @@ impl_autofixture_random!(
     i16 => i16Builder,
     i32 => i32Builder,
     i64 => i64Builder,
-    i128 => i128Builder);
+    i128 => i128Builder
+);
 
 create_general_builder!(isize);
 impl_autofixture_random_dyn!(isize => isizeBuilder);
