@@ -12,7 +12,9 @@ let mut fixture = Fixture::new();
 let value: u32 = fixture.create();
 
 // Create many at once:
-let values: Vec<i64> = fixture.create_many(5).collect();
+let values: Vec<i64> = fixture
+    .create_many(5)
+    .collect();
 ```
 
 ## Builder Pattern
