@@ -1,6 +1,6 @@
 [package]
 name = "rs-autofixture"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 description = "Rust equivalent of .NET AutoFixture - quickly generate randomised test data fixtures"
 license = "MIT"
@@ -10,15 +10,25 @@ keywords = ["testing", "fixture", "autofixture", "random", "mock"]
 categories = ["development-tools::testing"]
 
 [features]
+# AutoFixture impls for chrono date/time types (NaiveDate, DateTime<Utc>, etc.)
+chrono = ["dep:chrono"]
+# Enables #[derive(AutoFixture)] for structs, enums, and unions.
 derive = ["rs-autofixture-derive"]
+# Extends the Uuid builder with version selection (v1, v3, v5, v6, v7, v8).
+uuid-extra = ["uuid/v1", "uuid/v3", "uuid/v5", "uuid/v6", "uuid/v7", "uuid/v8"]
+# Enables f16 and f128 support (requires nightly Rust).
 nightly-float = []
+# Adds AutoFixture for tuples up to 16 elements.
 double-tuples = []
+# Adds AutoFixture for tuples up to 32 elements.
 tripple-tuples = ["double-tuples"]
+# Adds AutoFixture for tuples up to 128 elements.
 way-too-many-tuples = ["tripple-tuples"]
 
 [dependencies]
-rs-autofixture-derive = { version = "0.1.0", path = "../autofixture_derive", optional = true }
+chrono = { version = "0.4", optional = true }
 num-traits = "0.2"
 paste = "1.0"
 rand = "0.10"
+rs-autofixture-derive = { version = "0.1.1", path = "../autofixture_derive", optional = true }
 uuid = { version = "1.0", features = ["v4"] }
