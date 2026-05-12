@@ -190,15 +190,8 @@ impl AutoFixture for Weekday {
     type Builder<'b> = WeekdayBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        match f.rng().random_range(0..7) {
-            0 => Weekday::Mon,
-            1 => Weekday::Tue,
-            2 => Weekday::Wed,
-            3 => Weekday::Thu,
-            4 => Weekday::Fri,
-            5 => Weekday::Sat,
-            _ => Weekday::Sun,
-        }
+        Weekday::try_from(f.rng().random_range(0..7u8))
+            .expect(EXPECT_VALID_RANGE_MSG)
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -210,20 +203,8 @@ impl AutoFixture for Month {
     type Builder<'b> = MonthBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        match f.rng().random_range(0..12) {
-            0 => Month::January,
-            1 => Month::February,
-            2 => Month::March,
-            3 => Month::April,
-            4 => Month::May,
-            5 => Month::June,
-            6 => Month::July,
-            7 => Month::August,
-            8 => Month::September,
-            9 => Month::October,
-            10 => Month::November,
-            _ => Month::December,
-        }
+        Month::try_from(f.rng().random_range(1..=12u8))
+            .expect(EXPECT_VALID_RANGE_MSG)
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
