@@ -795,6 +795,7 @@ name = "rs-autofixture-tests"
 version = "0.2.0"
 dependencies = [
  "chrono",
+ "lettre",
  "paste",
  "rs-autofixture",
  "uuid",

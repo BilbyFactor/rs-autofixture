@@ -12,6 +12,7 @@ mod tests {
 
     mod third_party {
         mod chrono;
+        mod lettre;
         mod uuid;
     }
 }
