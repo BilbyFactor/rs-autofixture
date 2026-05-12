@@ -58,7 +58,8 @@ impl_chrono_autofixture_builder!(
     Weekday => WeekdayBuilder,
     Month => MonthBuilder,
     Days => DaysBuilder,
-    Months => MonthsBuilder
+    Months => MonthsBuilder,
+    FixedOffset => FixedOffsetBuilder
 );
 
 const EXPECT_VALID_RANGE_MSG: &str = "the data range here should always be valid.";
@@ -233,5 +234,18 @@ impl AutoFixture for Months {
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         MonthsBuilder::new(f)
+    }
+}
+
+impl AutoFixture for FixedOffset {
+    type Builder<'b> = FixedOffsetBuilder<'b>;
+
+    fn create(f: &mut Fixture) -> Self {
+        let offset_secs = f.rng().random_range(MIN_UTC_OFFSET_SECS..=MAX_UTC_OFFSET_SECS);
+        FixedOffset::east_opt(offset_secs).expect(EXPECT_VALID_RANGE_MSG)
+    }
+
+    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
+        FixedOffsetBuilder::new(f)
     }
 }
