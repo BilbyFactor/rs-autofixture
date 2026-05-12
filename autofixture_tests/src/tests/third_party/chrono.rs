@@ -1,7 +1,18 @@
 use chrono::{
-    DateTime, Days, FixedOffset, Local, Month, Months, NaiveDate, NaiveDateTime, NaiveTime,
-    TimeDelta, Utc, Weekday,
+    DateTime,
+    Days,
+    FixedOffset,
+    Local,
+    Month,
+    Months,
+    NaiveDate,
+    NaiveDateTime,
+    NaiveTime,
+    TimeDelta,
+    Utc,
+    Weekday,
 };
+
 use rs_autofixture::fixture::Fixture;
 
 macro_rules! test_chrono_creates {
@@ -37,7 +48,11 @@ macro_rules! test_chrono_varies {
             #[test]
             fn $name() {
                 let mut f = Fixture::new();
-                let values: Vec<$ty> = (0..10).map(|_| f.create()).collect();
+
+                let values: Vec<$ty> = f
+                    .create_many(10)
+                    .collect();
+
                 let all_same = values.windows(2).all(|w| w[0] == w[1]);
                 assert!(!all_same, concat!("expected ", stringify!($ty), " values to vary"));
             }
@@ -59,13 +74,21 @@ test_chrono_varies!(
 #[test]
 fn create_many_naive_dates() {
     let mut f = Fixture::new();
-    let dates: Vec<NaiveDate> = f.create_many(5).collect();
+
+    let dates: Vec<NaiveDate> = f
+        .create_many(5)
+        .collect();
+
     assert_eq!(dates.len(), 5);
 }
 
 #[test]
 fn create_many_date_time_utc() {
     let mut f = Fixture::new();
-    let dates: Vec<DateTime<Utc>> = f.create_many(5).collect();
+
+    let dates: Vec<DateTime<Utc>> = f
+        .create_many(5)
+        .collect();
+
     assert_eq!(dates.len(), 5);
 }
