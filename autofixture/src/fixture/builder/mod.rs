@@ -14,6 +14,18 @@ pub trait FixtureBuilder<'f> {
     /// Returns a built implementation of type `F`, following any builder rules
     /// specified beforehand.
     fn create(&mut self) -> Self::F;
+
+    /// Returns `n` built implementations of type `F`, following any builder
+    /// rules specified beforehand.
+    ///
+    /// # Arguments
+    /// * `n`: The number of items to create.
+    fn create_many(&mut self, n: usize) -> impl Iterator<Item = Self::F> {
+        (0..n)
+            .map(|_| self.create())
+            .collect::<Vec<_>>()
+            .into_iter()
+    }
 }
 
 macro_rules! create_general_builder {
