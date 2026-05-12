@@ -185,7 +185,7 @@ macro_rules! create_numeric_builder {
     };
 }
 
-#[allow(dead_code)] // Supress warnings stemming from lack of features...
+#[cfg(any(feature = "chrono", feature = "lettre"))]
 macro_rules! create_basic_builder {
     ($($ty:ty => $builder:ident), *) => {
         $(
@@ -210,3 +210,6 @@ macro_rules! create_basic_builder {
 
 pub(crate) use create_general_builder;
 pub(crate) use create_numeric_builder;
+
+#[cfg(any(feature = "chrono", feature = "lettre"))]
+pub(crate) use create_basic_builder;

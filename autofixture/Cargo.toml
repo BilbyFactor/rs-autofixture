@@ -1,6 +1,6 @@
 [package]
 name = "rs-autofixture"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2024"
 description = "Rust equivalent of .NET AutoFixture - quickly generate randomised test data fixtures"
 license = "MIT"
