@@ -9,4 +9,6 @@ mod tests {
     mod strings;
     mod option_result;
     mod builders;
+    mod chrono;
+    mod uuid;
 }

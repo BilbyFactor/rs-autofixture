@@ -339,8 +339,10 @@ dependencies = [
 name = "rs-autofixture-tests"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "paste",
  "rs-autofixture",
+ "uuid",
 ]
 
 [[package]]
