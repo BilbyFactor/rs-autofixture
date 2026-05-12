@@ -18,8 +18,15 @@ fn named_struct_creates_successfully() {
 #[test]
 fn named_struct_fields_vary() {
     let mut f = Fixture::new();
-    let instances: Vec<NamedFields> = (0..10).map(|_| f.create()).collect();
-    let all_same_a = instances.windows(2).all(|w| w[0].a == w[1].a);
+
+    let instances: Vec<NamedFields> = f
+        .create_many(10)
+        .collect();
+
+    let all_same_a = instances
+        .windows(2)
+        .all(|w| w[0].a == w[1].a);
+
     assert!(!all_same_a, "expected field `a` to vary across 10 instances");
 }
 
@@ -35,8 +42,15 @@ fn tuple_struct_creates_successfully() {
 #[test]
 fn tuple_struct_fields_vary() {
     let mut f = Fixture::new();
-    let instances: Vec<TupleStruct> = (0..10).map(|_| f.create()).collect();
-    let all_same = instances.windows(2).all(|w| w[0].2 == w[1].2);
+
+    let instances: Vec<TupleStruct> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = instances
+        .windows(2)
+        .all(|w| w[0].2 == w[1].2);
+    
     assert!(!all_same, "expected tuple field 2 to vary across 10 instances");
 }
 
@@ -64,7 +78,11 @@ fn nested_struct_creates_successfully() {
 #[test]
 fn create_many_returns_correct_count() {
     let mut f = Fixture::new();
-    let items: Vec<NamedFields> = f.create_many(5).collect();
+
+    let items: Vec<NamedFields> = f
+        .create_many(5)
+        .collect();
+
     assert_eq!(items.len(), 5);
 }
 
