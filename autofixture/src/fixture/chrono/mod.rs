@@ -63,12 +63,24 @@ impl_chrono_autofixture!(
 
 const EXPECT_VALID_RANGE_MSG: &str = "the data range here should always be valid.";
 
+const NANOS_PER_SEC: u32 = 1_000_000_000;
+const SECS_PER_MIN: u32 = 60;
+const MINS_PER_HOUR: u32 = 60;
+const HOURS_PER_DAY: u32 = 24;
+const DAYS_PER_YEAR: u32 = 365;
+const SECS_PER_HOUR: i32 = (SECS_PER_MIN * MINS_PER_HOUR) as i32;
+const SECS_PER_DAY: i64 = SECS_PER_HOUR as i64 * HOURS_PER_DAY as i64;
+
+// UTC offset bounds: UTC-12:00 to UTC+14:00, in seconds.
+const MIN_UTC_OFFSET_SECS: i32 = -12 * SECS_PER_HOUR;
+const MAX_UTC_OFFSET_SECS: i32 = 14 * SECS_PER_HOUR;
+
 impl AutoFixture for NaiveDate {
     type Builder<'b> = NaiveDateBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
         let year = f.rng().random_range(1970..=2100);
-        let ordinal = f.rng().random_range(1..=365);
+        let ordinal = f.rng().random_range(1..=DAYS_PER_YEAR);
 
         NaiveDate::from_yo_opt(year, ordinal)
             .unwrap_or(NaiveDate::from_yo_opt(year, 1)
@@ -85,10 +97,10 @@ impl AutoFixture for NaiveTime {
     type Builder<'b> = NaiveTimeBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let hour = f.rng().random_range(0..24);
-        let min = f.rng().random_range(0..60);
-        let sec = f.rng().random_range(0..60);
-        let nano = f.rng().random_range(0..1000000000);
+        let hour = f.rng().random_range(0..HOURS_PER_DAY);
+        let min = f.rng().random_range(0..MINS_PER_HOUR);
+        let sec = f.rng().random_range(0..SECS_PER_MIN);
+        let nano = f.rng().random_range(0..NANOS_PER_SEC);
 
         NaiveTime::from_hms_nano_opt(hour, min, sec, nano)
             .expect(EXPECT_VALID_RANGE_MSG)
@@ -131,7 +143,7 @@ impl AutoFixture for DateTime<FixedOffset> {
 
     fn create(f: &mut Fixture) -> Self {
         let naive = NaiveDateTime::create(f);
-        let offset_secs = f.rng().random_range(-43200..=50400);
+        let offset_secs = f.rng().random_range(MIN_UTC_OFFSET_SECS..=MAX_UTC_OFFSET_SECS);
 
         let offset = FixedOffset::east_opt(offset_secs)
             .expect(EXPECT_VALID_RANGE_MSG);
@@ -161,8 +173,11 @@ impl AutoFixture for TimeDelta {
     type Builder<'b> = TimeDeltaBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let secs = f.rng().random_range(-86400 * 365..=86400 * 365);
-        let nanos = f.rng().random_range(0..1000000000);
+        let secs = f
+            .rng()
+            .random_range(-SECS_PER_DAY * DAYS_PER_YEAR as i64..=SECS_PER_DAY * DAYS_PER_YEAR as i64);
+
+        let nanos = f.rng().random_range(0..NANOS_PER_SEC);
         TimeDelta::new(secs, nanos).expect(EXPECT_VALID_RANGE_MSG)
     }
 
@@ -220,8 +235,7 @@ impl AutoFixture for Days {
     type Builder<'b> = DaysBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let num = f.rng().random_range(0..=365 * 100);
-        Days::new(num)
+        Days::new(f.rng().random_range(0..=DAYS_PER_YEAR as u64 * 100))
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -233,8 +247,7 @@ impl AutoFixture for Months {
     type Builder<'b> = MonthsBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let num = f.rng().random_range(0..=12 * 100);
-        Months::new(num)
+        Months::new(f.rng().random_range(0..=12 * 100))
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
