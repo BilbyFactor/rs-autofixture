@@ -10,7 +10,7 @@ keywords = ["testing", "fixture", "autofixture", "random", "mock"]
 categories = ["development-tools::testing"]
 
 [features]
-chrono = ["chrono"]
+chrono = ["dep:chrono"]
 derive = ["rs-autofixture-derive"]
 nightly-float = []
 double-tuples = []
