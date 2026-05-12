@@ -185,6 +185,7 @@ macro_rules! create_numeric_builder {
     };
 }
 
+#[allow(dead_code)] // Supress warnings stemming from lack of features...
 macro_rules! create_basic_builder {
     ($($ty:ty => $builder:ident), *) => {
         $(
@@ -209,4 +210,3 @@ macro_rules! create_basic_builder {
 
 pub(crate) use create_general_builder;
 pub(crate) use create_numeric_builder;
-pub(crate) use create_basic_builder;
