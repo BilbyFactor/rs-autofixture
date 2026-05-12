@@ -12,7 +12,8 @@ impl_autofixture_random!(
     u16 => u16Builder,
     u32 => u32Builder,
     u64 => u64Builder,
-    u128 => u128Builder);
+    u128 => u128Builder
+);
 
 create_general_builder!(usize);
 impl_autofixture_random_dyn!(usize => usizeBuilder);

@@ -17,7 +17,12 @@ enum StringGeneration {
     Alphbetic,
     Alphanumeric,
     Uuid4,
+    Domain,
+    Url,
 }
+
+const URL_TLDS: &[&str] = &["com", "org", "net", "io", "dev"];
+const URL_SCHEMES: &[&str] = &["http", "https"];
 
 pub struct StringBuilder<'b, S> {
     fixture: &'b mut Fixture,
@@ -62,12 +67,32 @@ impl<'b, S> StringBuilder<'b, S> {
     }
 
     /// Sets the String generator to use `rand::dist::Alphanumeric` generation.
-    /// 
+    ///
     /// `with()` and `without()` builder calls are additive to the default set.
-    /// 
+    ///
     /// Default generator is UUID v4.
     pub fn with_alphanumeric_generator(&mut self) -> &mut Self {
         self.string_generation = StringGeneration::Alphanumeric;
+
+        self
+    }
+
+    /// Sets the String generator to produce a random domain name
+    /// (e.g. `"xkqfmt.dev"`).
+    ///
+    /// Ignores `with_size()`.
+    pub fn with_domain_generator(&mut self) -> &mut Self {
+        self.string_generation = StringGeneration::Domain;
+
+        self
+    }
+
+    /// Sets the String generator to produce a fully qualified URL
+    /// (e.g. `"https://xkqfmt.dev/abcde"`).
+    ///
+    /// Ignores `with_size()`.
+    pub fn with_url_generator(&mut self) -> &mut Self {
+        self.string_generation = StringGeneration::Url;
 
         self
     }
@@ -136,6 +161,64 @@ where
                     .map(char::from)
                     .collect::<String>()
                     .into(),
+            StringGeneration::Domain => {
+                let tld_idx = self.fixture
+                    .rng()
+                    .random_range(0..URL_TLDS.len());
+
+                let label_len = self.fixture
+                    .rng()
+                    .random_range(4..10);
+
+                let label: String = self.fixture
+                    .rng()
+                    .sample_iter(&Alphabetic)
+                    .take(label_len)
+                    .map(|c| char::from(c).to_ascii_lowercase())
+                    .collect();
+
+                format!("{}.{}", label, URL_TLDS[tld_idx]).into()
+            },
+            StringGeneration::Url => {
+                let scheme_idx = self.fixture
+                    .rng()
+                    .random_range(0..URL_SCHEMES.len());
+
+                let tld_idx = self.fixture
+                    .rng()
+                    .random_range(0..URL_TLDS.len());
+
+                let label_len = self.fixture
+                    .rng()
+                    .random_range(4..10);
+
+                let path_len = self.fixture
+                    .rng()
+                    .random_range(3..8);
+
+                let label: String = self.fixture
+                    .rng()
+                    .sample_iter(&Alphabetic)
+                    .take(label_len)
+                    .map(|c| char::from(c).to_ascii_lowercase())
+                    .collect();
+
+                let path: String = self.fixture
+                    .rng()
+                    .sample_iter(&Alphanumeric)
+                    .take(path_len)
+                    .map(char::from)
+                    .collect();
+
+                format!(
+                    "{}://{}.{}/{}",
+                    URL_SCHEMES[scheme_idx],
+                    label,
+                    URL_TLDS[tld_idx],
+                    path,
+                )
+                    .into()
+            },
         }
     }
 }
@@ -171,5 +254,3 @@ macro_rules! impl_autofixture_string_like {
 }
 
 impl_autofixture_string_like!(Box<str>, Arc<str>, Rc<str>);
-
-// TODO: Work out how to `impl Autofixture for &str`...
