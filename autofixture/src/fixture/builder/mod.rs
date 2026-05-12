@@ -173,5 +173,28 @@ macro_rules! create_numeric_builder {
     };
 }
 
+macro_rules! create_basic_builder {
+    ($($ty:ty => $builder:ident), *) => {
+        $(
+            pub struct $builder<'b> {
+                fixture: &'b mut crate::fixture::Fixture,
+            }
+
+            impl<'b> crate::fixture::builder::FixtureBuilder<'b> for $builder<'b> {
+                type F = $ty;
+
+                fn new(f: &'b mut crate::fixture::Fixture) -> Self {
+                    Self { fixture: f }
+                }
+
+                fn create(&mut self) -> Self::F {
+                    <$ty as crate::fixture::auto_fixture::AutoFixture>::create(self.fixture)
+                }
+            }
+        )*
+    };
+}
+
 pub(crate) use create_general_builder;
 pub(crate) use create_numeric_builder;
+pub(crate) use create_basic_builder;
