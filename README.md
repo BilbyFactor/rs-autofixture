@@ -133,6 +133,7 @@ let customer = Customer {
  * ~~Unit testing~~
  * ~~Docstrings~~
  * ~~Cargo crate submission~~
+ * Struct derive with/without builders
  * Github Actions release pipeline
  * AutoMoq implementation
  * Fixture freezing
