@@ -15,6 +15,8 @@ categories = ["development-tools::testing"]
 chrono = ["dep:chrono"]
 # AutoFixture impls for lettre types (Mailbox, AddressBook, etc.)
 lettre = ["dep:lettre"]
+# RustDecimal impls for rust_decimal Decimal type.
+rust-decimal = ["dep:rust_decimal"]
 # === 3rd party features ===
 # Extends the Uuid builder with version selection (v1, v3, v5, v6, v7, v8).
 uuid-extra = ["uuid/v1", "uuid/v3", "uuid/v5", "uuid/v6", "uuid/v7", "uuid/v8"]
@@ -38,4 +40,5 @@ num-traits = "0.2"
 paste = "1.0"
 rand = "0.10"
 rs-autofixture-derive = { version = "0.1.1", path = "../autofixture_derive", optional = true }
+rust_decimal = { version = "1.42", optional = true, features = ["rand"] }
 uuid = { version = "1.0", features = ["v4"] }
