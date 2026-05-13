@@ -180,6 +180,13 @@
 //! #     tags: Vec<String>,
 //! # }
 //! #
+//! # #[derive(AutoFixture)]
+//! # pub enum PaymentMethod {
+//! #     CreditCard { number: String, expiry: String },
+//! #     BankTransfer(String),
+//! #     Cash,
+//! # }
+//! #
 //! let mut fixture = Fixture::new();
 //!
 //! // Fully populate a struct automatically, including nested types:
