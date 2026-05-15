@@ -41,15 +41,13 @@ impl AutoFixture for RoundingStrategy {
     type Builder<'b> = RoundingStrategyBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        *vec![
-            RoundingStrategy::MidpointNearestEven,
+        *[RoundingStrategy::MidpointNearestEven,
             RoundingStrategy::MidpointAwayFromZero,
             RoundingStrategy::MidpointTowardZero,
             RoundingStrategy::ToZero,
             RoundingStrategy::AwayFromZero,
             RoundingStrategy::ToNegativeInfinity,
-            RoundingStrategy::ToPositiveInfinity,
-        ]
+            RoundingStrategy::ToPositiveInfinity]
             .choose(&mut f.rng)
             .unwrap_or(&RoundingStrategy::MidpointNearestEven)
     }
