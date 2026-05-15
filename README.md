@@ -96,30 +96,20 @@ pub enum PaymentMethod {
 
 let mut fixture = Fixture::new();
 
-// Fully populated automatically, including nested types:
+// Fully populate a struct automatically, including nested types:
 let customer: Customer = fixture.create();
+
+// Populate a random enum variant:
 let method: PaymentMethod = fixture.create();
 
-// Or build with constrained fields:
+// Populate with one or more constrained fields:
 let customer = Customer {
     name: fixture
         .build::<String>()
         .with_alphabetic_generator()
         .with_size(12)
         .create(),
-    age: fixture
-        .build::<u8>()
-        .with_range(18..=99)
-        .create(),
-    address: fixture.create(),
-    loyalty_points: fixture
-        .build::<Option<u32>>()
-        .with(500)
-        .create(),
-    tags: fixture
-        .build::<Vec<String>>()
-        .with_size(2)
-        .create(),
+    ..fixture.create()
 };
 ```
 
@@ -131,6 +121,7 @@ let customer = Customer {
 | `chrono` | Adds `AutoFixture` implementations for [`chrono`](https://docs.rs/chrono) types: `NaiveDate`, `NaiveTime`, `NaiveDateTime`, `DateTime<Utc>`, `DateTime<FixedOffset>`, `DateTime<Local>`, `FixedOffset`, `TimeDelta`, `Weekday`, `Month`, `Days`, and `Months`. |
 | `uuid-extra` | Extends the `Uuid` builder with version selection (`with_v1`, `with_v3`, `with_v5`, `with_v6`, `with_v7`, `with_v8`). Without this feature the builder only produces v4 (random) UUIDs. |
 | `lettre` | Adds `AutoFixture` implementations for [`lettre`](https://docs.rs/lettre) types: `Address`, `Mailbox`, `Mailboxes`, `Envelope`, `Credentials`, and `Mechanism`. |
+| `rust-decimal` | Adds support for the [`rust_decimal`](https://docs.rs/rust_decimal/latest/rust_decimal) types: `Decimal` and `RoundingStrategy`. |
 | `nightly-float` | Enables `f16` and `f128` support (requires nightly Rust). |
 | `double-tuples` | Adds `AutoFixture` for tuples up to 16 elements. |
 | `tripple-tuples` | Adds `AutoFixture` for tuples up to 32 elements. |
@@ -142,6 +133,7 @@ let customer = Customer {
  * ~~Unit testing~~
  * ~~Docstrings~~
  * ~~Cargo crate submission~~
+ * Struct derive with/without builders
  * Github Actions release pipeline
  * AutoMoq implementation
  * Fixture freezing

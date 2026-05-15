@@ -10,6 +10,10 @@ pub mod collections;
 pub mod lettre;
 
 pub mod primitives;
+
+#[cfg(feature = "rust-decimal")]
+pub mod rust_decimal;
+
 pub mod uuid;
 
 use std::any::{Any, TypeId};
@@ -119,7 +123,8 @@ impl FixtureExt for Fixture {
         slice_pool.push(to_register
             .into_iter()
             .collect::<Vec<T>>()
-            .into_boxed_slice());
+            .into_boxed_slice()
+        );
 
         slice_pool
             .last()
