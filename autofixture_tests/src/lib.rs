@@ -13,6 +13,7 @@ mod tests {
     mod third_party {
         mod chrono;
         mod lettre;
+        mod rust_decimal;
         mod uuid;
     }
 }

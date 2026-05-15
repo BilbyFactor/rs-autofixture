@@ -1,0 +1,36 @@
+use rs_autofixture::fixture::Fixture;
+use rust_decimal::{Decimal, RoundingStrategy};
+
+// --- Decimal ---
+
+#[test]
+fn decimal_values_vary() {
+    let mut f = Fixture::new();
+
+    let values: Vec<Decimal> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
+
+    assert!(!all_same, "expected Decimal values to vary");
+}
+
+// --- RoundingStrategy ---
+
+#[test]
+fn rounding_strategy_values_vary() {
+    let mut f = Fixture::new();
+
+    let values: Vec<RoundingStrategy> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
+
+    assert!(!all_same, "expected RoundingStrategy values to vary");
+}
