@@ -213,6 +213,15 @@
 //!     .with_name("Bob Katter".to_string())
 //!     .with_age(30)
 //!     .create();
+//!
+//! // Fields with a well-defined "empty" value (`Option<T>`, `String`,
+//! // and standard collections like `Vec<T>`) also get a `without_<field>`
+//! // setter to force that empty value instead:
+//! let customer = fixture
+//!     .build::<Customer>()
+//!     .without_loyalty_points() // -> None
+//!     .without_tags()           // -> vec![]
+//!     .create();
 //! ```
 //!
 //! ## Feature Flags
