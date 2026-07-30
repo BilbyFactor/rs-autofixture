@@ -1,7 +1,6 @@
 # rs-autofixture
 
 [![Crates.io License](https://img.shields.io/crates/l/rs-autofixture)](LICENSE)
-[![Crates.io Downloads (latest version)](https://img.shields.io/crates/dv/rs-autofixture)](https://crates.io/crates/rs-autofixture)
 [![Crates.io Total Downloads](https://img.shields.io/crates/d/rs-autofixture)](https://crates.io/crates/rs-autofixture)
 
 Rust equivalent of the popular .NET [AutoFixture](https://github.com/AutoFixture/AutoFixture/) library for quickly generating randomised test data fixtures.
