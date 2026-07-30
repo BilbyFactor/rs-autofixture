@@ -5,7 +5,7 @@ edition = "2024"
 publish = false
 
 [dependencies]
-rs-autofixture = { path = "../autofixture", features = ["derive", "chrono", "uuid-extra", "lettre", "rust-decimal"] }
+rs-autofixture = { path = "../autofixture", features = ["derive", "chrono", "uuid-extra", "lettre", "rust-decimal", "tokio"] }
 chrono = "0.4"
 lettre = "0.11"
 paste = "1.0"

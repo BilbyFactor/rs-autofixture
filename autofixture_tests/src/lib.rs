@@ -5,15 +5,18 @@ mod tests {
     mod collections;
     mod enums;
     mod option_result;
+    mod pointers;
     mod primitives;
     mod strings;
     mod structs;
+    mod sync;
     mod unions;
 
     mod third_party {
         mod chrono;
         mod lettre;
         mod rust_decimal;
+        mod tokio;
         mod uuid;
     }
 }
