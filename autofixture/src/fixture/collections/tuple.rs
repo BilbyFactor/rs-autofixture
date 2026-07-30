@@ -6,10 +6,6 @@ use crate::fixture::{
     builder::FixtureBuilder,
 };
 
-trait TupleFixture: Sized {
-    fn create_tuple(f: &mut Fixture) -> Self;
-}
-
 pub struct TupleBuilder<'b, T> {
     fixture: &'b mut Fixture,
     _phantom: PhantomData<T>,
@@ -17,7 +13,7 @@ pub struct TupleBuilder<'b, T> {
 
 impl<'b, T> FixtureBuilder<'b> for TupleBuilder<'b, T>
 where
-    T: TupleFixture + AutoFixture,
+    T: AutoFixture,
 {
     type F = T;
 
@@ -29,33 +25,28 @@ where
     }
 
     fn create(&mut self) -> Self::F {
-        T::create_tuple(self.fixture)
+        T::create(self.fixture)
     }
 }
 
-impl<T> AutoFixture for T
-where
-    T: TupleFixture,
-{
-    type Builder<'b> = TupleBuilder<'b, T>;
-
-    fn create(f: &mut Fixture) -> Self {
-        T::create_tuple(f)
-    }
-
-    fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
-        TupleBuilder::new(f)
-    }
-}
-
+// Each tuple arity gets a direct `AutoFixture` impl (rather than going
+// through a blanket `impl<T> AutoFixture for T` over a marker trait) so
+// that `#[fundamental]` wrapper types like `Box<T>` can also implement
+// `AutoFixture` without an unresolvable coherence conflict.
 macro_rules! impl_tuple_fixture {
     ($($t:ident),+ $(,)?) => {
-        impl<$($t),+> TupleFixture for ($($t,)+)
+        impl<$($t),+> AutoFixture for ($($t,)+)
         where
             $($t: AutoFixture),+
         {
-            fn create_tuple(f: &mut Fixture) -> Self {
+            type Builder<'b> = TupleBuilder<'b, ($($t,)+)>;
+
+            fn create(f: &mut Fixture) -> Self {
                 ($($t::create(f),)+)
+            }
+
+            fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
+                TupleBuilder::new(f)
             }
         }
     };
