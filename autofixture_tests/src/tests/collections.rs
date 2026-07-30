@@ -159,6 +159,34 @@ fn btreemap_builder_with_size() {
         .build::<BTreeMap<u32, bool>>()
         .with_size(4)
         .create();
-    
+
     assert_eq!(v.len(), 4);
+}
+
+#[test]
+fn tuple_creates_successfully() {
+    let mut f = Fixture::new();
+    let _pair: (u32, bool) = f.create();
+}
+
+#[test]
+fn tuple_builder_creates_successfully() {
+    let mut f = Fixture::new();
+    let mut builder = f.build::<(u32, bool)>();
+    let _pair = builder.create();
+}
+
+#[test]
+fn tuple_values_vary() {
+    let mut f = Fixture::new();
+
+    let values: Vec<(u32, u32)> = f
+        .create_many(10)
+        .collect();
+
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
+
+    assert!(!all_same, "expected tuple values to vary");
 }

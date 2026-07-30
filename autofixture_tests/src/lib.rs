@@ -2,18 +2,23 @@
 #[allow(dead_code)] // Supress warnings stemming from test fixtures...
 mod tests {
     mod builders;
+    mod cell;
     mod collections;
     mod enums;
+    mod nonzero;
     mod option_result;
+    mod pointers;
     mod primitives;
     mod strings;
     mod structs;
+    mod sync;
     mod unions;
 
     mod third_party {
         mod chrono;
         mod lettre;
         mod rust_decimal;
+        mod tokio;
         mod uuid;
     }
 }

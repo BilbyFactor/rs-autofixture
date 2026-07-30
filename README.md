@@ -21,6 +21,30 @@ let values: Vec<i64> = fixture
     .collect();
 ```
 
+Smart pointers, interior mutability wrappers, and synchronisation primitives
+around any `AutoFixture` type are supported out of the box too, no feature
+flag required:
+
+```rust
+use std::cell::RefCell;
+use std::num::NonZeroU32;
+use std::sync::{Arc, Mutex};
+use std::sync::atomic::AtomicU32;
+
+use rs_autofixture::fixture::Fixture;
+
+let mut fixture = Fixture::new();
+
+let boxed: Box<u32> = fixture.create();
+let shared: Arc<Vec<String>> = fixture.create();
+let locked: Mutex<u32> = fixture.create();
+let atomic: AtomicU32 = fixture.create();
+let cell: RefCell<u32> = fixture.create();
+
+// Guaranteed never zero:
+let nonzero: NonZeroU32 = fixture.create();
+```
+
 ## Builder Pattern
 
 Use builders to constrain generated values:
@@ -144,6 +168,7 @@ let customer = fixture
 | `uuid-extra` | Extends the `Uuid` builder with version selection (`with_v1`, `with_v3`, `with_v5`, `with_v6`, `with_v7`, `with_v8`). Without this feature the builder only produces v4 (random) UUIDs. |
 | `lettre` | Adds `AutoFixture` implementations for [`lettre`](https://docs.rs/lettre) types: `Address`, `Mailbox`, `Mailboxes`, `Envelope`, `Credentials`, and `Mechanism`. |
 | `rust-decimal` | Adds support for the [`rust_decimal`](https://docs.rs/rust_decimal/latest/rust_decimal) types: `Decimal` and `RoundingStrategy`. |
+| `tokio` | Adds `AutoFixture` implementations for `tokio::sync::Mutex<T>` and `tokio::sync::RwLock<T>`. |
 | `nightly-float` | Enables `f16` and `f128` support (requires nightly Rust). |
 | `double-tuples` | Adds `AutoFixture` for tuples up to 16 elements. |
 | `tripple-tuples` | Adds `AutoFixture` for tuples up to 32 elements. |

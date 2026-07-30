@@ -1,6 +1,8 @@
 pub mod auto_fixture;
 pub mod builder;
 
+pub mod cell;
+
 #[cfg(feature = "chrono")]
 pub mod chrono;
 
@@ -9,12 +11,20 @@ pub mod collections;
 #[cfg(feature = "lettre")]
 pub mod lettre;
 
+pub mod nonzero;
+pub mod pointers;
 pub mod primitives;
 
 #[cfg(feature = "rust-decimal")]
 pub mod rust_decimal;
 
+pub mod sync;
+
+#[cfg(feature = "tokio")]
+pub mod tokio;
+
 pub mod uuid;
+pub mod wrapper;
 
 use std::any::{Any, TypeId};
 use std::collections::HashMap;
