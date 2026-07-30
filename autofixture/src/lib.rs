@@ -204,6 +204,15 @@
 //!         .create(),
 //!     ..fixture.create()
 //! };
+//!
+//! // Or use the derived builder directly, which gets a `with_<field>` setter
+//! // for every field to fix it to a specific value (any unset fields are
+//! // still randomly generated):
+//! let customer = fixture
+//!     .build::<Customer>()
+//!     .with_name("Bob Katter".to_string())
+//!     .with_age(30)
+//!     .create();
 //! ```
 //!
 //! ## Feature Flags

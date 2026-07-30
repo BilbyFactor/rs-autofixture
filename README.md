@@ -111,6 +111,15 @@ let customer = Customer {
         .create(),
     ..fixture.create()
 };
+
+// Or use the derived builder directly, which gets a `with_<field>` setter
+// for every field to fix it to a specific value (any unset fields are
+// still randomly generated):
+let customer = fixture
+    .build::<Customer>()
+    .with_name("Bob Katter".to_string())
+    .with_age(30)
+    .create();
 ```
 
 ## Feature Flags
@@ -134,6 +143,8 @@ let customer = Customer {
  * ~~Docstrings~~
  * ~~Cargo crate submission~~
  * Struct derive with/without builders
+   * ~~`with_<field>` setters to fix a field to a specific value~~
+   * `without_<field>` setters (e.g. forcing an `Option<T>` field to `None`, mirroring `OptionBuilder::without`)
  * Github Actions release pipeline
  * AutoMoq implementation
  * Fixture freezing
