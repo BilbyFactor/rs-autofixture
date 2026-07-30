@@ -1,4 +1,9 @@
 pub mod conditions;
+mod empty_fixture;
+mod field_override;
+
+pub use empty_fixture::EmptyFixture;
+pub use field_override::FieldOverride;
 
 use crate::fixture::{AutoFixture, Fixture};
 
