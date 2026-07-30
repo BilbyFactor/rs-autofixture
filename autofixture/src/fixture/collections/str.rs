@@ -223,6 +223,12 @@ where
     }
 }
 
+impl crate::fixture::builder::EmptyFixture for String {
+    fn empty() -> Self {
+        String::new()
+    }
+}
+
 impl AutoFixture for String {
     type Builder<'b> = StringBuilder<'b, String>;
 

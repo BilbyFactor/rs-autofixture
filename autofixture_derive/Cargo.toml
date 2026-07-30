@@ -1,6 +1,6 @@
 [package]
 name = "rs-autofixture-derive"
-version = "0.1.1"
+version = "0.2.0"
 edition = "2024"
 description = "Derive macro for rs-autofixture - automatically implement AutoFixture for structs, enums, and unions"
 license = "MIT"
@@ -16,4 +16,4 @@ case = "1.0"
 convert_case = "0.11"
 proc-macro2 = "1.0"
 quote = "1.0"
-syn = "2.0"
+syn = "3.0"

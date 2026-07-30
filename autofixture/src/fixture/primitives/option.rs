@@ -79,6 +79,15 @@ where
     }
 }
 
+impl<T> crate::fixture::builder::EmptyFixture for Option<T>
+where
+    T: AutoFixture + Clone,
+{
+    fn empty() -> Self {
+        None
+    }
+}
+
 impl<T> AutoFixture for Option<T>
 where
     T: AutoFixture + Clone,

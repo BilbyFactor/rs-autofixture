@@ -1,6 +1,6 @@
 [package]
 name = "rs-autofixture"
-version = "0.3.3"
+version = "0.4.0"
 edition = "2024"
 description = "Rust equivalent of .NET AutoFixture - quickly generate randomised test data fixtures"
 license = "MIT"
@@ -39,6 +39,6 @@ lettre = { version = "0.11", optional = true }
 num-traits = "0.2"
 paste = "1.0"
 rand = "0.10"
-rs-autofixture-derive = { version = "0.1.1", path = "../autofixture_derive", optional = true }
+rs-autofixture-derive = { version = "0.2.0", path = "../autofixture_derive", optional = true }
 rust_decimal = { version = "1.42", optional = true }
 uuid = { version = "1.0", features = ["v4"] }

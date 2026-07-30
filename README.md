@@ -111,6 +111,24 @@ let customer = Customer {
         .create(),
     ..fixture.create()
 };
+
+// Or use the derived builder directly, which gets a `with_<field>` setter
+// for every field to fix it to a specific value (any unset fields are
+// still randomly generated):
+let customer = fixture
+    .build::<Customer>()
+    .with_name("Bob Katter".to_string())
+    .with_age(30)
+    .create();
+
+// Fields with a well-defined "empty" value (`Option<T>`, `String`,
+// and standard collections like `Vec<T>`) also get a `without_<field>`
+// setter to force that empty value instead:
+let customer = fixture
+    .build::<Customer>()
+    .without_loyalty_points() // -> None
+    .without_tags()           // -> vec![]
+    .create();
 ```
 
 ## Feature Flags
@@ -133,7 +151,9 @@ let customer = Customer {
  * ~~Unit testing~~
  * ~~Docstrings~~
  * ~~Cargo crate submission~~
- * Struct derive with/without builders
+ * ~~Struct derive with/without builders~~
+   * ~~`with_<field>` setters to fix a field to a specific value~~
+   * ~~`without_<field>` setters for types with a well-defined "empty" value (`Option<T>`, `String`, standard collections)~~
  * Github Actions release pipeline
  * AutoMoq implementation
  * Fixture freezing

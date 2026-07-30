@@ -53,6 +53,15 @@ where
     }
 }
 
+impl<T> crate::fixture::builder::EmptyFixture for Vec<T>
+where
+    T: AutoFixture,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
+    }
+}
+
 impl<T> AutoFixture for Vec<T>
 where
     T: AutoFixture,
@@ -65,6 +74,15 @@ where
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         CollectionBuilder::new(f)
+    }
+}
+
+impl<T> crate::fixture::builder::EmptyFixture for VecDeque<T>
+where
+    T: AutoFixture,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
     }
 }
 
@@ -83,6 +101,15 @@ where
     }
 }
 
+impl<T> crate::fixture::builder::EmptyFixture for LinkedList<T>
+where
+    T: AutoFixture,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
+    }
+}
+
 impl<T> AutoFixture for LinkedList<T>
 where
     T: AutoFixture,
@@ -95,6 +122,15 @@ where
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         CollectionBuilder::new(f)
+    }
+}
+
+impl<T> crate::fixture::builder::EmptyFixture for HashSet<T>
+where
+    T: AutoFixture + Eq + Hash,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
     }
 }
 
@@ -113,6 +149,15 @@ where
     }
 }
 
+impl<T> crate::fixture::builder::EmptyFixture for BTreeSet<T>
+where
+    T: AutoFixture + Ord,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
+    }
+}
+
 impl<T> AutoFixture for BTreeSet<T>
 where
     T: AutoFixture + Ord,
@@ -125,6 +170,15 @@ where
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         CollectionBuilder::new(f)
+    }
+}
+
+impl<T> crate::fixture::builder::EmptyFixture for BinaryHeap<T>
+where
+    T: AutoFixture + Ord,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
     }
 }
 
@@ -143,6 +197,16 @@ where
     }
 }
 
+impl<K, V> crate::fixture::builder::EmptyFixture for HashMap<K, V>
+where
+    K: AutoFixture + Eq + Hash,
+    V: AutoFixture,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
+    }
+}
+
 impl<K, V> AutoFixture for HashMap<K, V>
 where
     K: AutoFixture + Eq + Hash,
@@ -156,6 +220,16 @@ where
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
         CollectionBuilder::new(f)
+    }
+}
+
+impl<K, V> crate::fixture::builder::EmptyFixture for BTreeMap<K, V>
+where
+    K: AutoFixture + Ord,
+    V: AutoFixture,
+{
+    fn empty() -> Self {
+        std::iter::empty().collect()
     }
 }
 
