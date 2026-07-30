@@ -1,6 +1,8 @@
 pub mod auto_fixture;
 pub mod builder;
 
+pub mod cell;
+
 #[cfg(feature = "chrono")]
 pub mod chrono;
 
@@ -9,6 +11,7 @@ pub mod collections;
 #[cfg(feature = "lettre")]
 pub mod lettre;
 
+pub mod nonzero;
 pub mod pointers;
 pub mod primitives;
 

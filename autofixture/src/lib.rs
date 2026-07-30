@@ -18,10 +18,13 @@
 //! let values: Vec<i64> = fixture.create_many(5).collect();
 //! ```
 //!
-//! Smart pointer and synchronisation wrappers around any `AutoFixture` type
-//! are supported out of the box too, no feature flag required:
+//! Smart pointers, interior mutability wrappers, and synchronisation
+//! primitives around any `AutoFixture` type are supported out of the box
+//! too, no feature flag required:
 //!
 //! ```rust
+//! use std::cell::RefCell;
+//! use std::num::NonZeroU32;
 //! use std::sync::{Arc, Mutex};
 //! use std::sync::atomic::AtomicU32;
 //!
@@ -33,6 +36,10 @@
 //! let shared: Arc<Vec<String>> = fixture.create();
 //! let locked: Mutex<u32> = fixture.create();
 //! let atomic: AtomicU32 = fixture.create();
+//! let cell: RefCell<u32> = fixture.create();
+//!
+//! // Guaranteed never zero:
+//! let nonzero: NonZeroU32 = fixture.create();
 //! ```
 //!
 //! ## Builder Pattern
