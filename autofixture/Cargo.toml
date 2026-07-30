@@ -41,7 +41,7 @@ lettre = { version = "0.11", optional = true }
 num-traits = "0.2"
 paste = "1.0"
 rand = "0.10"
-rs-autofixture-derive = { version = "0.2.0", path = "../autofixture_derive", optional = true }
+rs-autofixture-derive = { version = "0.3.0", path = "../autofixture_derive", optional = true }
 rust_decimal = { version = "1.42", optional = true }
 tokio = { version = "1", default-features = false, features = ["sync"], optional = true }
 uuid = { version = "1.0", features = ["v4"] }
