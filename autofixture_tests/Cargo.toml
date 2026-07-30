@@ -10,4 +10,5 @@ chrono = "0.4"
 lettre = "0.11"
 paste = "1.0"
 rust_decimal = { version = "1.42" }
+tokio = { version = "1", features = ["sync", "rt", "macros"] }
 uuid = "1.0"
