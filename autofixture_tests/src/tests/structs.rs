@@ -147,3 +147,89 @@ fn tuple_struct_builder_with_field_fixes_value() {
     assert_eq!(instance.0, 1);
     assert_eq!(instance.2, 99);
 }
+
+#[derive(AutoFixture)]
+pub struct EmptyableFields {
+    label: String,
+    nickname: Option<String>,
+    tags: Vec<String>,
+}
+
+#[derive(AutoFixture)]
+pub struct EmptyableTupleFields(Option<u32>, Vec<u8>);
+
+#[test]
+fn named_struct_builder_without_string_field_is_blank() {
+    use rs_autofixture::fixture::builder::FixtureBuilder;
+
+    let mut f = Fixture::new();
+
+    let instance = f
+        .build::<EmptyableFields>()
+        .without_label()
+        .create();
+
+    assert_eq!(instance.label, "");
+}
+
+#[test]
+fn named_struct_builder_without_option_field_is_none() {
+    use rs_autofixture::fixture::builder::FixtureBuilder;
+
+    let mut f = Fixture::new();
+
+    let instance = f
+        .build::<EmptyableFields>()
+        .without_nickname()
+        .create();
+
+    assert_eq!(instance.nickname, None);
+}
+
+#[test]
+fn named_struct_builder_without_vec_field_is_empty() {
+    use rs_autofixture::fixture::builder::FixtureBuilder;
+
+    let mut f = Fixture::new();
+
+    let instance = f
+        .build::<EmptyableFields>()
+        .without_tags()
+        .create();
+
+    assert!(instance.tags.is_empty());
+}
+
+#[test]
+fn named_struct_builder_combines_with_and_without() {
+    use rs_autofixture::fixture::builder::FixtureBuilder;
+
+    let mut f = Fixture::new();
+
+    let instance = f
+        .build::<EmptyableFields>()
+        .with_label("fixed".to_string())
+        .without_nickname()
+        .without_tags()
+        .create();
+
+    assert_eq!(instance.label, "fixed");
+    assert_eq!(instance.nickname, None);
+    assert!(instance.tags.is_empty());
+}
+
+#[test]
+fn tuple_struct_builder_without_field_uses_empty_value() {
+    use rs_autofixture::fixture::builder::FixtureBuilder;
+
+    let mut f = Fixture::new();
+
+    let instance = f
+        .build::<EmptyableTupleFields>()
+        .without_0()
+        .without_1()
+        .create();
+
+    assert_eq!(instance.0, None);
+    assert!(instance.1.is_empty());
+}
