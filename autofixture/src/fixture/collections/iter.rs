@@ -1,21 +1,9 @@
-use std::collections::{
-    BTreeMap,
-    BTreeSet,
-    BinaryHeap,
-    HashMap,
-    HashSet,
-    LinkedList,
-    VecDeque,
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
 use std::hash::Hash;
 use std::marker::PhantomData;
 
-use crate::fixture::{
-    Fixture,
-    auto_fixture::AutoFixture,
-    builder::FixtureBuilder,
-};
+use crate::fixture::{Fixture, auto_fixture::AutoFixture, builder::FixtureBuilder};
 
 pub struct CollectionBuilder<'b, C, T> {
     fixture: &'b mut Fixture,
@@ -49,7 +37,9 @@ where
     }
 
     fn create(&mut self) -> Self::F {
-        (0..self.size).map(|_| T::create(self.fixture)).collect()
+        (0..self.size)
+            .map(|_| T::create(self.fixture))
+            .collect()
     }
 }
 

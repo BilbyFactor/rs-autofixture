@@ -1,15 +1,7 @@
-use std::collections::{
-    BTreeMap,
-    BTreeSet,
-    BinaryHeap,
-    HashMap,
-    HashSet,
-    LinkedList,
-    VecDeque,
-};
+use std::collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque};
 
-use rs_autofixture::fixture::builder::FixtureBuilder;
 use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::builder::FixtureBuilder;
 
 #[test]
 fn vec_creates_with_default_size() {

@@ -16,9 +16,7 @@ use lettre::{
 use rand::RngExt;
 
 use crate::fixture::{
-    AutoFixture,
-    Fixture,
-    FixtureExt,
+    AutoFixture, Fixture, FixtureExt,
     builder::{FixtureBuilder, create_basic_builder},
 };
 
@@ -35,7 +33,9 @@ impl AutoFixture for Address {
     type Builder<'b> = AddressBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let size = f.rng().random_range(4..12);
+        let size = f
+            .rng()
+            .random_range(4..12);
 
         let user: String = f
             .build::<String>()
@@ -49,8 +49,7 @@ impl AutoFixture for Address {
             .with_domain_generator()
             .create();
 
-        Address::new(user, domain)
-            .expect("generated address parts should be valid")
+        Address::new(user, domain).expect("generated address parts should be valid")
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -62,17 +61,21 @@ impl AutoFixture for Mailbox {
     type Builder<'b> = MailboxBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let has_name = f.rng().random_range(0..2) == 1;
+        let has_name = f
+            .rng()
+            .random_range(0..2)
+            == 1;
 
         let name = if has_name {
-            let size = f.rng().random_range(3..12);
+            let size = f
+                .rng()
+                .random_range(3..12);
 
             Some(
-                f
-                    .build::<String>()
+                f.build::<String>()
                     .with_alphabetic_generator()
                     .with_size(size)
-                    .create()
+                    .create(),
             )
         } else {
             None
@@ -91,7 +94,9 @@ impl AutoFixture for Mailboxes {
     type Builder<'b> = MailboxesBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let count = f.rng().random_range(1..4);
+        let count = f
+            .rng()
+            .random_range(1..4);
         let mut mbs = Mailboxes::new();
 
         for _ in 0..count {
@@ -113,8 +118,7 @@ impl AutoFixture for Envelope {
         let from = Address::create(f);
         let to = Address::create(f);
 
-        Envelope::new(Some(from), vec![to])
-            .expect("generated envelope should be valid")
+        Envelope::new(Some(from), vec![to]).expect("generated envelope should be valid")
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -126,8 +130,12 @@ impl AutoFixture for Credentials {
     type Builder<'b> = CredentialsBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        let user_size = f.rng().random_range(4..12);
-        let pass_size = f.rng().random_range(8..20);
+        let user_size = f
+            .rng()
+            .random_range(4..12);
+        let pass_size = f
+            .rng()
+            .random_range(8..20);
 
         let user = f
             .build::<String>()
@@ -135,7 +143,7 @@ impl AutoFixture for Credentials {
             .with_size(user_size)
             .create()
             .to_lowercase();
-        
+
         let password = f
             .build::<String>()
             .with_alphanumeric_generator()
@@ -154,7 +162,10 @@ impl AutoFixture for Mechanism {
     type Builder<'b> = MechanismBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
-        match f.rng().random_range(0..3) {
+        match f
+            .rng()
+            .random_range(0..3)
+        {
             0 => Mechanism::Plain,
             1 => Mechanism::Login,
             _ => Mechanism::Xoauth2,

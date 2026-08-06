@@ -1,0 +1,3 @@
+# Always break method chains onto one call per line instead of packing them
+# onto a single line when they happen to fit under the default width.
+chain_width = 0

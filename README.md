@@ -183,9 +183,10 @@ let customer = fixture
  * ~~Struct derive with/without builders~~
    * ~~`with_<field>` setters to fix a field to a specific value~~
    * ~~`without_<field>` setters for types with a well-defined "empty" value (`Option<T>`, `String`, standard collections)~~
- * Github Actions release pipeline
+ * ~~Github Actions release pipeline~~
  * AutoMoq implementation
  * Fixture freezing
+ * SQL fixture building
 
 ## License
 MIT License

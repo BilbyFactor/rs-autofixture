@@ -1,6 +1,6 @@
-use rs_autofixture::fixture::auto_fixture::AutoFixture;
-use rs_autofixture::fixture::Fixture;
 use rs_autofixture::AutoFixture;
+use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::auto_fixture::AutoFixture;
 
 #[derive(AutoFixture)]
 pub struct NamedFields {
@@ -27,7 +27,10 @@ fn named_struct_fields_vary() {
         .windows(2)
         .all(|w| w[0].a == w[1].a);
 
-    assert!(!all_same_a, "expected field `a` to vary across 10 instances");
+    assert!(
+        !all_same_a,
+        "expected field `a` to vary across 10 instances"
+    );
 }
 
 #[derive(AutoFixture)]
@@ -50,8 +53,11 @@ fn tuple_struct_fields_vary() {
     let all_same = instances
         .windows(2)
         .all(|w| w[0].2 == w[1].2);
-    
-    assert!(!all_same, "expected tuple field 2 to vary across 10 instances");
+
+    assert!(
+        !all_same,
+        "expected tuple field 2 to vary across 10 instances"
+    );
 }
 
 #[derive(AutoFixture)]
@@ -129,7 +135,10 @@ fn named_struct_builder_leaves_unset_fields_random() {
         .windows(2)
         .all(|w| w[0].b == w[1].b);
 
-    assert!(!all_same_b, "expected unset field `b` to still vary across 10 instances");
+    assert!(
+        !all_same_b,
+        "expected unset field `b` to still vary across 10 instances"
+    );
 }
 
 #[test]
@@ -197,7 +206,11 @@ fn named_struct_builder_without_vec_field_is_empty() {
         .without_tags()
         .create();
 
-    assert!(instance.tags.is_empty());
+    assert!(
+        instance
+            .tags
+            .is_empty()
+    );
 }
 
 #[test]
@@ -215,7 +228,11 @@ fn named_struct_builder_combines_with_and_without() {
 
     assert_eq!(instance.label, "fixed");
     assert_eq!(instance.nickname, None);
-    assert!(instance.tags.is_empty());
+    assert!(
+        instance
+            .tags
+            .is_empty()
+    );
 }
 
 #[test]
@@ -231,5 +248,9 @@ fn tuple_struct_builder_without_field_uses_empty_value() {
         .create();
 
     assert_eq!(instance.0, None);
-    assert!(instance.1.is_empty());
+    assert!(
+        instance
+            .1
+            .is_empty()
+    );
 }

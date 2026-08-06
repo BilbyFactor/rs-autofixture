@@ -1,16 +1,6 @@
 use chrono::{
-    DateTime,
-    Days,
-    FixedOffset,
-    Local,
-    Month,
-    Months,
-    NaiveDate,
-    NaiveDateTime,
-    NaiveTime,
-    TimeDelta,
-    Utc,
-    Weekday,
+    DateTime, Days, FixedOffset, Local, Month, Months, NaiveDate, NaiveDateTime, NaiveTime,
+    TimeDelta, Utc, Weekday,
 };
 
 use rs_autofixture::fixture::Fixture;

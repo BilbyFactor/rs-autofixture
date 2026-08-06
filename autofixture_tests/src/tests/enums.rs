@@ -1,6 +1,6 @@
-use rs_autofixture::fixture::auto_fixture::AutoFixture;
-use rs_autofixture::fixture::Fixture;
 use rs_autofixture::AutoFixture;
+use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::auto_fixture::AutoFixture;
 
 #[derive(AutoFixture, Debug, PartialEq)]
 pub enum SimpleEnum {

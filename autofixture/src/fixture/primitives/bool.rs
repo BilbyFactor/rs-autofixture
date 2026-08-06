@@ -6,7 +6,6 @@ use crate::fixture::{
     builder::FixtureBuilder,
 };
 
-
 // Requires a very basic builder...
 pub struct boolBuilder<'b> {
     fixture: &'b mut Fixture,

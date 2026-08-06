@@ -1,5 +1,5 @@
-use rs_autofixture::fixture::builder::FixtureBuilder;
 use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::builder::FixtureBuilder;
 
 #[test]
 fn option_creates_successfully() {
@@ -81,6 +81,6 @@ fn result_builder_with_err_none_creates_random_err() {
         .build::<Result<u32, i32>>()
         .with_err(None)
         .create();
-    
+
     assert!(result.is_err());
 }

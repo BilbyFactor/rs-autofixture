@@ -1,18 +1,8 @@
 use std::sync::{Mutex, RwLock};
 
 use std::sync::atomic::{
-    AtomicBool,
-    AtomicI8,
-    AtomicI16,
-    AtomicI32,
-    AtomicI64,
-    AtomicIsize,
-    AtomicU8,
-    AtomicU16,
-    AtomicU32,
-    AtomicU64,
-    AtomicUsize,
-    Ordering,
+    AtomicBool, AtomicI8, AtomicI16, AtomicI32, AtomicI64, AtomicIsize, AtomicU8, AtomicU16,
+    AtomicU32, AtomicU64, AtomicUsize, Ordering,
 };
 
 // `AtomicBool` is excluded from `test_atomic!` below: with only two possible
@@ -40,7 +30,9 @@ use rs_autofixture::fixture::builder::FixtureBuilder;
 fn mutex_creates_successfully() {
     let mut f = Fixture::new();
     let m: Mutex<u32> = f.create();
-    let _value = *m.lock().unwrap();
+    let _value = *m
+        .lock()
+        .unwrap();
 }
 
 #[test]
@@ -54,7 +46,9 @@ fn mutex_builder_creates_successfully() {
 fn rwlock_creates_successfully() {
     let mut f = Fixture::new();
     let l: RwLock<u32> = f.create();
-    let _value = *l.read().unwrap();
+    let _value = *l
+        .read()
+        .unwrap();
 }
 
 #[test]
