@@ -2,12 +2,7 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{DataEnum, Fields, Generics, Ident};
 
-pub fn expand(
-    name: &Ident,
-    generics: &Generics,
-    data: &DataEnum,
-    can_freeze: bool,
-) -> TokenStream {
+pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum, can_freeze: bool) -> TokenStream {
     let variant_count = data
         .variants
         .len();
@@ -89,11 +84,7 @@ pub fn expand(
     }
 }
 
-fn variant_create_body(
-    enum_name: &Ident,
-    variant_name: &Ident,
-    fields: &Fields,
-) -> TokenStream {
+fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields) -> TokenStream {
     match fields {
         Fields::Named(named) => {
             let field_inits = named.named.iter().map(|f| {

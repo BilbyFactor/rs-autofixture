@@ -124,7 +124,7 @@ impl Fixture {
     ///
     /// Public so that `#[derive(AutoFixture)]` generated code can call
     /// into the pool checker.
-    /// 
+    ///
     /// I can't think of a good way around this,
     /// but if coming across this as a downstream user (yes, you),
     /// this probably isn't what you're looking for...

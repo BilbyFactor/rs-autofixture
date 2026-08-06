@@ -305,22 +305,30 @@ fn freeze_clone_struct_shares_every_field_but_not_unrelated_values() {
     let book2: Book = f.create();
 
     assert_eq!(
-        book1.author.name,
+        book1
+            .author
+            .name,
         frozen_author.name,
     );
 
     assert_eq!(
-        book1.author.age,
+        book1
+            .author
+            .age,
         frozen_author.age,
     );
 
     assert_eq!(
-        book2.author.name,
+        book2
+            .author
+            .name,
         frozen_author.name,
     );
 
     assert_eq!(
-        book2.author.age,
+        book2
+            .author
+            .age,
         frozen_author.age,
     );
 

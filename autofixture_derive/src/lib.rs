@@ -26,15 +26,15 @@ fn can_freeze(attrs: &[Attribute]) -> bool {
     attrs
         .iter()
         .filter(|attr| {
-            attr
-                .path()
+            attr.path()
                 .is_ident("fixture")
         })
         .any(|attr| {
             let mut found = false;
 
             let _ = attr.parse_nested_meta(|meta| {
-                if meta.path
+                if meta
+                    .path
                     .is_ident("can_freeze")
                 {
                     found = true;
