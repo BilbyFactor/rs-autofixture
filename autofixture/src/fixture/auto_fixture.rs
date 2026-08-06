@@ -24,6 +24,10 @@ macro_rules! impl_autofixture_random{
 
                 #[inline]
                 fn create(f: &mut crate::fixture::Fixture) -> Self {
+                    if let Some(frozen) = f.frozen::<Self>() {
+                        return frozen;
+                    }
+
                     use rand::RngExt;
 
                     use crate::fixture::FixtureExt;
@@ -52,6 +56,10 @@ macro_rules! impl_autofixture_random_dyn {
 
                 #[inline]
                 fn create(f: &mut crate::fixture::Fixture) -> Self {
+                    if let Some(frozen) = f.frozen::<Self>() {
+                        return frozen;
+                    }
+
                     use rand::RngExt;
 
                     use crate::fixture::FixtureExt;

@@ -2,10 +2,16 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{DataEnum, Fields, Generics, Ident};
 
-pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream {
+pub fn expand(
+    name: &Ident,
+    generics: &Generics,
+    data: &DataEnum,
+    can_freeze: bool,
+) -> TokenStream {
     let variant_count = data
         .variants
         .len();
+
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
@@ -20,6 +26,18 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
             quote! { #i => #body }
         });
 
+    // Only emitted for `#[fixture(can_freeze)]` items, which must also
+    // derive `Clone` themselves.
+    //
+    // Returning a frozen value means cloning it back out of the frozen pool.
+    let frozen_check = can_freeze.then(|| {
+        quote! {
+            if let Some(frozen) = f.frozen::<Self>() {
+                return frozen;
+            }
+        }
+    });
+
     quote! {
         impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
             #ty_generics
@@ -31,6 +49,8 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
                 use rs_autofixture::fixture::FixtureExt;
                 use rs_autofixture::rand::RngExt;
+
+                #frozen_check
 
                 let variant: usize = f.rng().random_range(0..#variant_count);
 
@@ -69,7 +89,11 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
     }
 }
 
-fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields) -> TokenStream {
+fn variant_create_body(
+    enum_name: &Ident,
+    variant_name: &Ident,
+    fields: &Fields,
+) -> TokenStream {
     match fields {
         Fields::Named(named) => {
             let field_inits = named.named.iter().map(|f| {

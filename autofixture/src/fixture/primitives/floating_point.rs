@@ -29,6 +29,10 @@ pub mod nightly_float {
 
                         #[inline]
                         fn create(f: &mut Fixture) -> Self {
+                            if let Some(frozen) = f.frozen::<Self>() {
+                                return frozen;
+                            }
+
                             use rand::RngExt;
 
                             f.rng().random::<f64>() as $prim

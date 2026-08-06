@@ -122,3 +122,13 @@ fn uuid_builder_v8() {
 
     assert_eq!(id.get_version_num(), 8);
 }
+
+#[test]
+fn freeze_uuid_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: Uuid = f.freeze();
+    let created: Uuid = f.create();
+
+    assert_eq!(frozen, created);
+}

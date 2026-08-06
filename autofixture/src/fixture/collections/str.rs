@@ -240,6 +240,10 @@ impl AutoFixture for String {
     type Builder<'b> = StringBuilder<'b, String>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         StringBuilder::new(f).create()
     }
 
@@ -255,6 +259,10 @@ macro_rules! impl_autofixture_string_like {
                 type Builder<'b> = StringBuilder<'b, $ty>;
 
                 fn create(f: &mut Fixture) -> Self {
+                    if let Some(frozen) = f.frozen::<Self>() {
+                        return frozen;
+                    }
+
                     StringBuilder::new(f).create()
                 }
 

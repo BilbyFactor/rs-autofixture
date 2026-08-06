@@ -150,7 +150,11 @@ impl<'b> FixtureBuilder<'b> for UuidBuilder<'b> {
 impl AutoFixture for Uuid {
     type Builder<'b> = UuidBuilder<'b>;
 
-    fn create(_f: &mut Fixture) -> Self {
+    fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         Uuid::new_v4()
     }
 

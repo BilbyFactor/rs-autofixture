@@ -1,6 +1,7 @@
 use std::rc::Rc;
 use std::sync::Arc;
 
+use rs_autofixture::AutoFixture;
 use rs_autofixture::fixture::Fixture;
 use rs_autofixture::fixture::builder::FixtureBuilder;
 
@@ -78,4 +79,42 @@ fn arc_values_vary() {
 fn nested_box_creates_successfully() {
     let mut f = Fixture::new();
     let _value: Box<Vec<u32>> = f.create();
+}
+
+#[derive(AutoFixture)]
+pub struct Author {
+    name: String,
+}
+
+#[derive(AutoFixture)]
+pub struct Book {
+    title: String,
+    author: Rc<Author>,
+}
+
+#[test]
+fn freeze_rc_shares_same_instance() {
+    let mut f = Fixture::new();
+
+    let frozen_author: Rc<Author> = f.freeze();
+
+    let book1: Book = f.create();
+    let book2: Book = f.create();
+
+    assert!(Rc::ptr_eq(&frozen_author, &book1.author));
+    assert!(Rc::ptr_eq(&frozen_author, &book2.author));
+    assert!(Rc::ptr_eq(&book1.author, &book2.author));
+}
+
+#[test]
+fn freeze_arc_shares_same_instance() {
+    let mut f = Fixture::new();
+
+    let frozen: Arc<u32> = f.freeze();
+
+    let a: Arc<u32> = f.create();
+    let b: Arc<u32> = f.create();
+
+    assert!(Arc::ptr_eq(&frozen, &a));
+    assert!(Arc::ptr_eq(&frozen, &b));
 }

@@ -254,3 +254,79 @@ fn tuple_struct_builder_without_field_uses_empty_value() {
             .is_empty()
     );
 }
+
+#[derive(AutoFixture)]
+pub struct HasName {
+    name: String,
+    id: u32,
+}
+
+#[test]
+fn freeze_propagates_into_derived_struct_fields() {
+    // The derive macro's generated `create()` calls `String::create(f)` and
+    // `u32::create(f)` directly for these fields.
+    //
+    // Since those types now check the frozen registry themselves,
+    // freezing them here propagates into every struct that has a field of
+    // that exact type.
+    let mut f = Fixture::new();
+
+    let frozen_name: String = f.freeze();
+    let frozen_id: u32 = f.freeze();
+
+    let a: HasName = f.create();
+    let b: HasName = f.create();
+
+    assert_eq!(a.name, frozen_name);
+    assert_eq!(b.name, frozen_name);
+    assert_eq!(a.id, frozen_id);
+    assert_eq!(b.id, frozen_id);
+}
+
+#[derive(AutoFixture, Clone)]
+#[fixture(can_freeze)]
+pub struct Author {
+    name: String,
+    age: u32,
+}
+
+#[derive(AutoFixture)]
+pub struct Book {
+    title: String,
+    author: Author,
+}
+
+#[test]
+fn freeze_clone_struct_shares_every_field_but_not_unrelated_values() {
+    let mut f = Fixture::new();
+
+    let frozen_author: Author = f.freeze();
+    let book1: Book = f.create();
+    let book2: Book = f.create();
+
+    assert_eq!(
+        book1.author.name,
+        frozen_author.name,
+    );
+
+    assert_eq!(
+        book1.author.age,
+        frozen_author.age,
+    );
+
+    assert_eq!(
+        book2.author.name,
+        frozen_author.name,
+    );
+
+    assert_eq!(
+        book2.author.age,
+        frozen_author.age,
+    );
+
+    // Freezing `Author` as a whole doesn't also freeze the `String` type
+    // globally.
+    //
+    // Each book's own, unrelated `title` field still varies.
+    assert_ne!(book1.title, book2.title);
+}

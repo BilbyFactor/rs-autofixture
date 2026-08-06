@@ -187,3 +187,13 @@ fn mechanism_values_vary() {
         "expected Mechanism values to vary across 20 instances"
     );
 }
+
+#[test]
+fn freeze_address_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: Address = f.freeze();
+    let created: Address = f.create();
+
+    assert_eq!(frozen, created);
+}

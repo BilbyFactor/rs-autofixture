@@ -186,3 +186,23 @@ fn rc_str_creates_successfully() {
     let s: Rc<str> = f.create();
     assert!(!s.is_empty());
 }
+
+#[test]
+fn freeze_string_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: String = f.freeze();
+    let created: String = f.create();
+
+    assert_eq!(frozen, created);
+}
+
+#[test]
+fn freeze_rc_str_shares_same_instance() {
+    let mut f = Fixture::new();
+
+    let frozen: Rc<str> = f.freeze();
+    let created: Rc<str> = f.create();
+
+    assert!(Rc::ptr_eq(&frozen, &created));
+}

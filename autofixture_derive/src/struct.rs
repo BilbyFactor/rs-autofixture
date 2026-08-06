@@ -40,7 +40,12 @@ fn is_empty_fixture_type(ty: &Type) -> bool {
         })
 }
 
-pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStream {
+pub fn expand(
+    name: &Ident,
+    generics: &Generics,
+    data: &DataStruct,
+    can_freeze: bool,
+) -> TokenStream {
     let create_body = struct_create_body(&data.fields);
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
@@ -51,6 +56,18 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStre
     let without_methods = builder_without_methods(&data.fields);
     let builder_create_body = builder_create_body(name, &data.fields);
 
+    // Only emitted for `#[fixture(can_freeze)]` items, which must also
+    // derive `Clone` themselves.
+    //
+    // Returning a frozen value means cloning it back out of the frozen pool.
+    let frozen_check = can_freeze.then(|| {
+        quote! {
+            if let Some(frozen) = f.frozen::<Self>() {
+                return frozen;
+            }
+        }
+    });
+
     quote! {
         impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
             #ty_generics
@@ -60,6 +77,8 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStre
 
             fn create(f: &mut rs_autofixture::fixture::Fixture) -> Self {
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
+
+                #frozen_check
 
                 #create_body
             }

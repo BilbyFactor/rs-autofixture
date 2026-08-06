@@ -33,6 +33,10 @@ impl AutoFixture for Address {
     type Builder<'b> = AddressBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         let size = f
             .rng()
             .random_range(4..12);
@@ -61,6 +65,10 @@ impl AutoFixture for Mailbox {
     type Builder<'b> = MailboxBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         let has_name = f
             .rng()
             .random_range(0..2)
@@ -94,6 +102,10 @@ impl AutoFixture for Mailboxes {
     type Builder<'b> = MailboxesBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         let count = f
             .rng()
             .random_range(1..4);
@@ -115,6 +127,10 @@ impl AutoFixture for Envelope {
     type Builder<'b> = EnvelopeBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         let from = Address::create(f);
         let to = Address::create(f);
 
@@ -130,6 +146,10 @@ impl AutoFixture for Credentials {
     type Builder<'b> = CredentialsBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         let user_size = f
             .rng()
             .random_range(4..12);
@@ -162,6 +182,10 @@ impl AutoFixture for Mechanism {
     type Builder<'b> = MechanismBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         match f
             .rng()
             .random_range(0..3)

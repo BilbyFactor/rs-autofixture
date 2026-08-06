@@ -34,3 +34,13 @@ fn rounding_strategy_values_vary() {
 
     assert!(!all_same, "expected RoundingStrategy values to vary");
 }
+
+#[test]
+fn freeze_decimal_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: Decimal = f.freeze();
+    let created: Decimal = f.create();
+
+    assert_eq!(frozen, created);
+}
