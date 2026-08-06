@@ -1,5 +1,9 @@
 # rs-autofixture
 
+![GitHub Release](https://img.shields.io/github/v/release/BilbyFactor/rs-autofixture)
+[![Publish release](https://github.com/BilbyFactor/rs-autofixture/actions/workflows/publish.yml/badge.svg)](https://github.com/BilbyFactor/rs-autofixture/actions/workflows/publish.yml)
+[![Validation](https://github.com/BilbyFactor/rs-autofixture/actions/workflows/pr-main.yml/badge.svg)](https://github.com/BilbyFactor/rs-autofixture/actions/workflows/pr-main.yml)
+
 [![Crates.io License](https://img.shields.io/crates/l/rs-autofixture)](LICENSE)
 [![Crates.io Total Downloads](https://img.shields.io/crates/d/rs-autofixture)](https://crates.io/crates/rs-autofixture)
 
