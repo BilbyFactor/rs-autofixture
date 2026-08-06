@@ -129,14 +129,12 @@ impl Fixture {
     /// but if coming across this as a downstream user (yes, you),
     /// this probably isn't what you're looking for...
     pub fn frozen<F: Clone + 'static>(&self) -> Option<F> {
-        self.frozen_pool
-            .get(&TypeId::of::<F>())
-            .map(|boxed| {
-                boxed
-                    .downcast_ref::<F>()
-                    .expect("`TypeId` should always guarantee `F` downcast succeeds...")
-                    .clone()
-            })
+        self.frozen_pool.get(&TypeId::of::<F>()).map(|boxed| {
+            boxed
+                .downcast_ref::<F>()
+                .expect("`TypeId` should always guarantee `F` downcast succeeds...")
+                .clone()
+        })
     }
 }
 

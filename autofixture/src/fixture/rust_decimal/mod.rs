@@ -26,16 +26,11 @@ impl AutoFixture for Decimal {
         }
 
         Decimal::from_parts(
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .random(),
-            f.rng()
-                .random_range(0..=Decimal::MAX_SCALE),
+            f.rng().next_u32(),
+            f.rng().next_u32(),
+            f.rng().next_u32(),
+            f.rng().random(),
+            f.rng().random_range(0..=Decimal::MAX_SCALE),
         )
     }
 

@@ -30,14 +30,7 @@ fn is_empty_fixture_type(ty: &Type) -> bool {
         .path
         .segments
         .last()
-        .is_some_and(|segment| {
-            EMPTY_FIXTURE_TYPES.contains(
-                &segment
-                    .ident
-                    .to_string()
-                    .as_str(),
-            )
-        })
+        .is_some_and(|segment| EMPTY_FIXTURE_TYPES.contains(&segment.ident.to_string().as_str()))
 }
 
 pub fn expand(
@@ -142,16 +135,13 @@ fn struct_create_body(fields: &Fields) -> TokenStream {
             }
         }
         Fields::Unnamed(unnamed) => {
-            let field_inits = unnamed
-                .unnamed
-                .iter()
-                .map(|f| {
-                    let ty = &f.ty;
+            let field_inits = unnamed.unnamed.iter().map(|f| {
+                let ty = &f.ty;
 
-                    quote! {
-                        <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
-                    }
-                });
+                quote! {
+                    <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
+                }
+            });
 
             quote! {
                 Self(#(#field_inits),*)
@@ -177,10 +167,7 @@ fn builder_field_declarations(fields: &Fields) -> Vec<TokenStream> {
             .named
             .iter()
             .map(|f| {
-                let field_name = f
-                    .ident
-                    .as_ref()
-                    .unwrap();
+                let field_name = f.ident.as_ref().unwrap();
                 let ty = &f.ty;
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride<#ty> }
@@ -208,17 +195,12 @@ fn builder_field_inits(fields: &Fields) -> Vec<TokenStream> {
             .named
             .iter()
             .map(|f| {
-                let field_name = f
-                    .ident
-                    .as_ref()
-                    .unwrap();
+                let field_name = f.ident.as_ref().unwrap();
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride::NotSet }
             })
             .collect(),
-        Fields::Unnamed(unnamed) => (0..unnamed
-            .unnamed
-            .len())
+        Fields::Unnamed(unnamed) => (0..unnamed.unnamed.len())
             .map(|i| {
                 let field_name = unnamed_field_ident(i);
 

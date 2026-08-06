@@ -11,10 +11,7 @@ fn option_creates_successfully() {
 fn option_builder_with_forces_some() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Option<u32>>()
-        .with(42)
-        .create();
+    let result = f.build::<Option<u32>>().with(42).create();
 
     assert_eq!(result, Some(42));
 }
@@ -23,10 +20,7 @@ fn option_builder_with_forces_some() {
 fn option_builder_without_forces_none() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Option<u32>>()
-        .without()
-        .create();
+    let result = f.build::<Option<u32>>().without().create();
 
     assert_eq!(result, None);
 }
@@ -41,10 +35,7 @@ fn result_creates_successfully() {
 fn result_builder_with_ok_forces_ok() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Result<u32, i32>>()
-        .with_ok(Some(99))
-        .create();
+    let result = f.build::<Result<u32, i32>>().with_ok(Some(99)).create();
 
     assert_eq!(result, Ok(99));
 }
@@ -53,10 +44,7 @@ fn result_builder_with_ok_forces_ok() {
 fn result_builder_with_ok_none_creates_random_ok() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Result<u32, i32>>()
-        .with_ok(None)
-        .create();
+    let result = f.build::<Result<u32, i32>>().with_ok(None).create();
 
     assert!(result.is_ok());
 }
@@ -65,10 +53,7 @@ fn result_builder_with_ok_none_creates_random_ok() {
 fn result_builder_with_err_forces_err() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Result<u32, i32>>()
-        .with_err(Some(-1))
-        .create();
+    let result = f.build::<Result<u32, i32>>().with_err(Some(-1)).create();
 
     assert_eq!(result, Err(-1));
 }
@@ -77,10 +62,7 @@ fn result_builder_with_err_forces_err() {
 fn result_builder_with_err_none_creates_random_err() {
     let mut f = Fixture::new();
 
-    let result = f
-        .build::<Result<u32, i32>>()
-        .with_err(None)
-        .create();
+    let result = f.build::<Result<u32, i32>>().with_err(None).create();
 
     assert!(result.is_err());
 }

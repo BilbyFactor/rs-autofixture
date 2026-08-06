@@ -51,14 +51,7 @@ where
     /// for a `start` range. (This is impossible with std syntax)
     pub fn range<R: RangeBounds<T>>(&mut self, range: R) {
         self.range = Some(
-            match (
-                range
-                    .start_bound()
-                    .cloned(),
-                range
-                    .end_bound()
-                    .cloned(),
-            ) {
+            match (range.start_bound().cloned(), range.end_bound().cloned()) {
                 (Bound::Included(s), Bound::Included(e)) => StdRangeType::RangeInclusive(s..=e),
                 (Bound::Included(s), Bound::Excluded(e)) => StdRangeType::Range(s..e),
                 (Bound::Included(s), Bound::Unbounded) => {
@@ -82,16 +75,10 @@ where
     T: SampleUniform + AutoFixture + PartialOrd + Clone,
 {
     fn apply(&self, f: &mut Fixture) -> Option<T> {
-        self.range
-            .as_ref()
-            .map(|range| match range {
-                StdRangeType::Range(r) => f
-                    .rng()
-                    .random_range(r.clone()),
-                StdRangeType::RangeInclusive(ri) => f
-                    .rng()
-                    .random_range(ri.clone()),
-            })
+        self.range.as_ref().map(|range| match range {
+            StdRangeType::Range(r) => f.rng().random_range(r.clone()),
+            StdRangeType::RangeInclusive(ri) => f.rng().random_range(ri.clone()),
+        })
     }
 
     fn clear(&mut self) {

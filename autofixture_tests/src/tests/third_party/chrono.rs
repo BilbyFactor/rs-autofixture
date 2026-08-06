@@ -65,9 +65,7 @@ test_chrono_varies!(
 fn create_many_naive_dates() {
     let mut f = Fixture::new();
 
-    let dates: Vec<NaiveDate> = f
-        .create_many(5)
-        .collect();
+    let dates: Vec<NaiveDate> = f.create_many(5).collect();
 
     assert_eq!(dates.len(), 5);
 }
@@ -76,9 +74,7 @@ fn create_many_naive_dates() {
 fn create_many_date_time_utc() {
     let mut f = Fixture::new();
 
-    let dates: Vec<DateTime<Utc>> = f
-        .create_many(5)
-        .collect();
+    let dates: Vec<DateTime<Utc>> = f.create_many(5).collect();
 
     assert_eq!(dates.len(), 5);
 }

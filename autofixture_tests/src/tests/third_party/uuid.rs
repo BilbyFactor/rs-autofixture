@@ -13,13 +13,9 @@ fn uuid_creates_successfully() {
 fn uuid_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Uuid> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Uuid> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected Uuid values to vary");
 }
@@ -28,9 +24,7 @@ fn uuid_values_vary() {
 fn create_many_uuids() {
     let mut f = Fixture::new();
 
-    let ids: Vec<Uuid> = f
-        .create_many(5)
-        .collect();
+    let ids: Vec<Uuid> = f.create_many(5).collect();
 
     assert_eq!(ids.len(), 5);
 }
@@ -38,9 +32,7 @@ fn create_many_uuids() {
 #[test]
 fn uuid_builder_default_is_v4() {
     let mut f = Fixture::new();
-    let id = f
-        .build::<Uuid>()
-        .create();
+    let id = f.build::<Uuid>().create();
     assert_eq!(id.get_version_num(), 4);
 }
 
@@ -48,10 +40,7 @@ fn uuid_builder_default_is_v4() {
 fn uuid_builder_v1() {
     let mut f = Fixture::new();
 
-    let id = f
-        .build::<Uuid>()
-        .with_v1()
-        .create();
+    let id = f.build::<Uuid>().with_v1().create();
 
     assert_eq!(id.get_version_num(), 1);
 }
@@ -61,10 +50,7 @@ fn uuid_builder_v3() {
     let mut f = Fixture::new();
     let ns = Uuid::NAMESPACE_DNS;
 
-    let id = f
-        .build::<Uuid>()
-        .with_v3(ns, b"example.com")
-        .create();
+    let id = f.build::<Uuid>().with_v3(ns, b"example.com").create();
 
     assert_eq!(id.get_version_num(), 3);
 }
@@ -86,10 +72,7 @@ fn uuid_builder_v5() {
 fn uuid_builder_v6() {
     let mut f = Fixture::new();
 
-    let id = f
-        .build::<Uuid>()
-        .with_v6()
-        .create();
+    let id = f.build::<Uuid>().with_v6().create();
 
     assert_eq!(id.get_version_num(), 6);
 }
@@ -98,10 +81,7 @@ fn uuid_builder_v6() {
 fn uuid_builder_v7() {
     let mut f = Fixture::new();
 
-    let id = f
-        .build::<Uuid>()
-        .with_v7()
-        .create();
+    let id = f.build::<Uuid>().with_v7().create();
 
     assert_eq!(id.get_version_num(), 7);
 }
@@ -115,10 +95,7 @@ fn uuid_builder_v8() {
         0x10,
     ];
 
-    let id = f
-        .build::<Uuid>()
-        .with_v8(buf)
-        .create();
+    let id = f.build::<Uuid>().with_v8(buf).create();
 
     assert_eq!(id.get_version_num(), 8);
 }

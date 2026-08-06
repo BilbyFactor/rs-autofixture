@@ -14,10 +14,7 @@ fn vec_creates_with_default_size() {
 fn vec_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<Vec<u32>>()
-        .with_size(7)
-        .create();
+    let v = f.build::<Vec<u32>>().with_size(7).create();
 
     assert_eq!(v.len(), 7);
 }
@@ -33,10 +30,7 @@ fn vec_deque_creates_with_default_size() {
 fn vec_deque_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<VecDeque<u32>>()
-        .with_size(5)
-        .create();
+    let v = f.build::<VecDeque<u32>>().with_size(5).create();
 
     assert_eq!(v.len(), 5);
 }
@@ -52,10 +46,7 @@ fn linked_list_creates_with_default_size() {
 fn linked_list_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<LinkedList<u32>>()
-        .with_size(4)
-        .create();
+    let v = f.build::<LinkedList<u32>>().with_size(4).create();
 
     assert_eq!(v.len(), 4);
 }
@@ -71,10 +62,7 @@ fn hashset_creates_with_default_size() {
 fn hashset_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<HashSet<u32>>()
-        .with_size(6)
-        .create();
+    let v = f.build::<HashSet<u32>>().with_size(6).create();
 
     assert_eq!(v.len(), 6);
 }
@@ -90,10 +78,7 @@ fn btreeset_creates_with_default_size() {
 fn btreeset_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<BTreeSet<u32>>()
-        .with_size(5)
-        .create();
+    let v = f.build::<BTreeSet<u32>>().with_size(5).create();
 
     assert_eq!(v.len(), 5);
 }
@@ -109,10 +94,7 @@ fn binary_heap_creates_with_default_size() {
 fn binary_heap_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<BinaryHeap<u32>>()
-        .with_size(8)
-        .create();
+    let v = f.build::<BinaryHeap<u32>>().with_size(8).create();
 
     assert_eq!(v.len(), 8);
 }
@@ -128,10 +110,7 @@ fn hashmap_creates_with_default_size() {
 fn hashmap_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<HashMap<u32, bool>>()
-        .with_size(5)
-        .create();
+    let v = f.build::<HashMap<u32, bool>>().with_size(5).create();
 
     assert_eq!(v.len(), 5);
 }
@@ -147,10 +126,7 @@ fn btreemap_creates_with_default_size() {
 fn btreemap_builder_with_size() {
     let mut f = Fixture::new();
 
-    let v = f
-        .build::<BTreeMap<u32, bool>>()
-        .with_size(4)
-        .create();
+    let v = f.build::<BTreeMap<u32, bool>>().with_size(4).create();
 
     assert_eq!(v.len(), 4);
 }
@@ -172,13 +148,9 @@ fn tuple_builder_creates_successfully() {
 fn tuple_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<(u32, u32)> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<(u32, u32)> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected tuple values to vary");
 }

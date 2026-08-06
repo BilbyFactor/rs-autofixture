@@ -10,29 +10,17 @@ fn address_creates_successfully() {
     let mut f = Fixture::new();
     let addr: Address = f.create();
 
-    assert!(
-        !addr
-            .user()
-            .is_empty()
-    );
-    assert!(
-        !addr
-            .domain()
-            .is_empty()
-    );
+    assert!(!addr.user().is_empty());
+    assert!(!addr.domain().is_empty());
 }
 
 #[test]
 fn address_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Address> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Address> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
     assert!(!all_same, "expected Address values to vary");
 }
 
@@ -42,8 +30,7 @@ fn address_has_valid_domain() {
     let addr: Address = f.create();
 
     assert!(
-        addr.domain()
-            .contains('.'),
+        addr.domain().contains('.'),
         "domain should contain a dot: {}",
         addr.domain(),
     );
@@ -52,24 +39,16 @@ fn address_has_valid_domain() {
 #[test]
 fn address_builder_creates_successfully() {
     let mut f = Fixture::new();
-    let addr = f
-        .build::<Address>()
-        .create();
+    let addr = f.build::<Address>().create();
 
-    assert!(
-        !addr
-            .user()
-            .is_empty()
-    );
+    assert!(!addr.user().is_empty());
 }
 
 #[test]
 fn create_many_addresses() {
     let mut f = Fixture::new();
 
-    let addrs: Vec<Address> = f
-        .create_many(5)
-        .collect();
+    let addrs: Vec<Address> = f.create_many(5).collect();
 
     assert_eq!(addrs.len(), 5);
 }
@@ -78,10 +57,7 @@ fn create_many_addresses() {
 fn create_many_addresses_from_builder() {
     let mut f = Fixture::new();
 
-    let addrs: Vec<Address> = f
-        .build::<Address>()
-        .create_many(5)
-        .collect();
+    let addrs: Vec<Address> = f.build::<Address>().create_many(5).collect();
 
     assert_eq!(addrs.len(), 5);
 }
@@ -92,24 +68,16 @@ fn mailbox_creates_successfully() {
 
     let mb: Mailbox = f.create();
 
-    assert!(
-        !mb.email
-            .user()
-            .is_empty()
-    );
+    assert!(!mb.email.user().is_empty());
 }
 
 #[test]
 fn mailbox_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Mailbox> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Mailbox> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0].email == w[1].email);
+    let all_same = values.windows(2).all(|w| w[0].email == w[1].email);
 
     assert!(!all_same, "expected Mailbox values to vary");
 }
@@ -120,11 +88,7 @@ fn mailbox_values_vary() {
 fn mailboxes_creates_successfully() {
     let mut f = Fixture::new();
     let mbs: Mailboxes = f.create();
-    assert!(
-        !mbs.into_iter()
-            .collect::<Vec<_>>()
-            .is_empty()
-    );
+    assert!(!mbs.into_iter().collect::<Vec<_>>().is_empty());
 }
 
 // --- Envelope ---
@@ -133,27 +97,17 @@ fn mailboxes_creates_successfully() {
 fn envelope_creates_successfully() {
     let mut f = Fixture::new();
     let env: Envelope = f.create();
-    assert!(
-        env.from()
-            .is_some()
-    );
-    assert!(
-        !env.to()
-            .is_empty()
-    );
+    assert!(env.from().is_some());
+    assert!(!env.to().is_empty());
 }
 
 #[test]
 fn envelope_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Envelope> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Envelope> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0].from() == w[1].from());
+    let all_same = values.windows(2).all(|w| w[0].from() == w[1].from());
 
     assert!(!all_same, "expected Envelope values to vary");
 }
@@ -174,13 +128,9 @@ fn mechanism_creates_successfully() {
 fn mechanism_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Mechanism> = f
-        .create_many(20)
-        .collect();
+    let values: Vec<Mechanism> = f.create_many(20).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(
         !all_same,

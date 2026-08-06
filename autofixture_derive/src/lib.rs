@@ -25,18 +25,12 @@ pub fn derive_request(item: TokenStream) -> TokenStream {
 fn can_freeze(attrs: &[Attribute]) -> bool {
     attrs
         .iter()
-        .filter(|attr| {
-            attr.path()
-                .is_ident("fixture")
-        })
+        .filter(|attr| attr.path().is_ident("fixture"))
         .any(|attr| {
             let mut found = false;
 
             let _ = attr.parse_nested_meta(|meta| {
-                if meta
-                    .path
-                    .is_ident("can_freeze")
-                {
+                if meta.path.is_ident("can_freeze") {
                     found = true;
                 }
 

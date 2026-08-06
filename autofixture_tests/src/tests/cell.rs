@@ -21,9 +21,7 @@ fn cell_values_vary() {
         })
         .collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected Cell<u32> values to vary");
 }
@@ -53,9 +51,7 @@ fn refcell_values_vary() {
         })
         .collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected RefCell<u32> values to vary");
 }

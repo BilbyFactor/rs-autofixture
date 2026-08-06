@@ -37,9 +37,7 @@ impl AutoFixture for Address {
             return frozen;
         }
 
-        let size = f
-            .rng()
-            .random_range(4..12);
+        let size = f.rng().random_range(4..12);
 
         let user: String = f
             .build::<String>()
@@ -48,10 +46,7 @@ impl AutoFixture for Address {
             .create()
             .to_lowercase();
 
-        let domain: String = f
-            .build::<String>()
-            .with_domain_generator()
-            .create();
+        let domain: String = f.build::<String>().with_domain_generator().create();
 
         Address::new(user, domain).expect("generated address parts should be valid")
     }
@@ -69,15 +64,10 @@ impl AutoFixture for Mailbox {
             return frozen;
         }
 
-        let has_name = f
-            .rng()
-            .random_range(0..2)
-            == 1;
+        let has_name = f.rng().random_range(0..2) == 1;
 
         let name = if has_name {
-            let size = f
-                .rng()
-                .random_range(3..12);
+            let size = f.rng().random_range(3..12);
 
             Some(
                 f.build::<String>()
@@ -106,9 +96,7 @@ impl AutoFixture for Mailboxes {
             return frozen;
         }
 
-        let count = f
-            .rng()
-            .random_range(1..4);
+        let count = f.rng().random_range(1..4);
         let mut mbs = Mailboxes::new();
 
         for _ in 0..count {
@@ -150,12 +138,8 @@ impl AutoFixture for Credentials {
             return frozen;
         }
 
-        let user_size = f
-            .rng()
-            .random_range(4..12);
-        let pass_size = f
-            .rng()
-            .random_range(8..20);
+        let user_size = f.rng().random_range(4..12);
+        let pass_size = f.rng().random_range(8..20);
 
         let user = f
             .build::<String>()
@@ -186,10 +170,7 @@ impl AutoFixture for Mechanism {
             return frozen;
         }
 
-        match f
-            .rng()
-            .random_range(0..3)
-        {
+        match f.rng().random_range(0..3) {
             0 => Mechanism::Plain,
             1 => Mechanism::Login,
             _ => Mechanism::Xoauth2,

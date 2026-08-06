@@ -15,13 +15,9 @@ fn box_creates_successfully() {
 fn box_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Box<u32>> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Box<u32>> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected Box<u32> values to vary");
 }
@@ -43,13 +39,9 @@ fn rc_creates_successfully() {
 fn rc_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Rc<u32>> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Rc<u32>> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected Rc<u32> values to vary");
 }
@@ -64,13 +56,9 @@ fn arc_creates_successfully() {
 fn arc_values_vary() {
     let mut f = Fixture::new();
 
-    let values: Vec<Arc<u32>> = f
-        .create_many(10)
-        .collect();
+    let values: Vec<Arc<u32>> = f.create_many(10).collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected Arc<u32> values to vary");
 }

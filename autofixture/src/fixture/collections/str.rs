@@ -103,8 +103,7 @@ impl<'b, S> StringBuilder<'b, S> {
     where
         I: IntoIterator<Item = char>,
     {
-        self.with
-            .extend(chars);
+        self.with.extend(chars);
 
         unimplemented!("Not yet implemented :(")
     }
@@ -117,8 +116,7 @@ impl<'b, S> StringBuilder<'b, S> {
     where
         I: IntoIterator<Item = char>,
     {
-        self.without
-            .extend(chars);
+        self.without.extend(chars);
 
         unimplemented!("Not yet implemented :(")
     }
@@ -143,9 +141,7 @@ where
 
     fn create(&mut self) -> Self::F {
         match self.string_generation {
-            StringGeneration::Uuid4 => Uuid::new_v4()
-                .to_string()
-                .into(),
+            StringGeneration::Uuid4 => Uuid::new_v4().to_string().into(),
             StringGeneration::Alphanumeric => self
                 .fixture
                 .rng()
@@ -163,15 +159,9 @@ where
                 .collect::<String>()
                 .into(),
             StringGeneration::Domain => {
-                let tld_idx = self
-                    .fixture
-                    .rng()
-                    .random_range(0..URL_TLDS.len());
+                let tld_idx = self.fixture.rng().random_range(0..URL_TLDS.len());
 
-                let label_len = self
-                    .fixture
-                    .rng()
-                    .random_range(4..10);
+                let label_len = self.fixture.rng().random_range(4..10);
 
                 let label: String = self
                     .fixture
@@ -184,25 +174,13 @@ where
                 format!("{}.{}", label, URL_TLDS[tld_idx]).into()
             }
             StringGeneration::Url => {
-                let scheme_idx = self
-                    .fixture
-                    .rng()
-                    .random_range(0..URL_SCHEMES.len());
+                let scheme_idx = self.fixture.rng().random_range(0..URL_SCHEMES.len());
 
-                let tld_idx = self
-                    .fixture
-                    .rng()
-                    .random_range(0..URL_TLDS.len());
+                let tld_idx = self.fixture.rng().random_range(0..URL_TLDS.len());
 
-                let label_len = self
-                    .fixture
-                    .rng()
-                    .random_range(4..10);
+                let label_len = self.fixture.rng().random_range(4..10);
 
-                let path_len = self
-                    .fixture
-                    .rng()
-                    .random_range(3..8);
+                let path_len = self.fixture.rng().random_range(3..8);
 
                 let label: String = self
                     .fixture

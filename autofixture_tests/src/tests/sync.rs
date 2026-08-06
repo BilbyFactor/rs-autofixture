@@ -30,9 +30,7 @@ use rs_autofixture::fixture::builder::FixtureBuilder;
 fn mutex_creates_successfully() {
     let mut f = Fixture::new();
     let m: Mutex<u32> = f.create();
-    let _value = *m
-        .lock()
-        .unwrap();
+    let _value = *m.lock().unwrap();
 }
 
 #[test]
@@ -46,9 +44,7 @@ fn mutex_builder_creates_successfully() {
 fn rwlock_creates_successfully() {
     let mut f = Fixture::new();
     let l: RwLock<u32> = f.create();
-    let _value = *l
-        .read()
-        .unwrap();
+    let _value = *l.read().unwrap();
 }
 
 #[test]

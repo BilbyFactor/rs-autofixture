@@ -55,12 +55,8 @@ impl AutoFixture for NaiveDate {
             return frozen;
         }
 
-        let year = f
-            .rng()
-            .random_range(1970..=2100);
-        let ordinal = f
-            .rng()
-            .random_range(1..=DAYS_PER_YEAR);
+        let year = f.rng().random_range(1970..=2100);
+        let ordinal = f.rng().random_range(1..=DAYS_PER_YEAR);
 
         NaiveDate::from_yo_opt(year, ordinal)
             .unwrap_or(NaiveDate::from_yo_opt(year, 1).expect(EXPECT_VALID_RANGE_MSG))
@@ -79,18 +75,10 @@ impl AutoFixture for NaiveTime {
             return frozen;
         }
 
-        let hour = f
-            .rng()
-            .random_range(0..HOURS_PER_DAY);
-        let min = f
-            .rng()
-            .random_range(0..MINS_PER_HOUR);
-        let sec = f
-            .rng()
-            .random_range(0..SECS_PER_MIN);
-        let nano = f
-            .rng()
-            .random_range(0..NANOS_PER_SEC);
+        let hour = f.rng().random_range(0..HOURS_PER_DAY);
+        let min = f.rng().random_range(0..MINS_PER_HOUR);
+        let sec = f.rng().random_range(0..SECS_PER_MIN);
+        let nano = f.rng().random_range(0..NANOS_PER_SEC);
 
         NaiveTime::from_hms_nano_opt(hour, min, sec, nano).expect(EXPECT_VALID_RANGE_MSG)
     }
@@ -183,15 +171,11 @@ impl AutoFixture for TimeDelta {
             return frozen;
         }
 
-        let secs = f
-            .rng()
-            .random_range(
-                -SECS_PER_DAY * DAYS_PER_YEAR as i64..=SECS_PER_DAY * DAYS_PER_YEAR as i64,
-            );
+        let secs = f.rng().random_range(
+            -SECS_PER_DAY * DAYS_PER_YEAR as i64..=SECS_PER_DAY * DAYS_PER_YEAR as i64,
+        );
 
-        let nanos = f
-            .rng()
-            .random_range(0..NANOS_PER_SEC);
+        let nanos = f.rng().random_range(0..NANOS_PER_SEC);
         TimeDelta::new(secs, nanos).expect(EXPECT_VALID_RANGE_MSG)
     }
 
@@ -208,11 +192,7 @@ impl AutoFixture for Weekday {
             return frozen;
         }
 
-        Weekday::try_from(
-            f.rng()
-                .random_range(0..7u8),
-        )
-        .expect(EXPECT_VALID_RANGE_MSG)
+        Weekday::try_from(f.rng().random_range(0..7u8)).expect(EXPECT_VALID_RANGE_MSG)
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -228,11 +208,7 @@ impl AutoFixture for Month {
             return frozen;
         }
 
-        Month::try_from(
-            f.rng()
-                .random_range(1..=12u8),
-        )
-        .expect(EXPECT_VALID_RANGE_MSG)
+        Month::try_from(f.rng().random_range(1..=12u8)).expect(EXPECT_VALID_RANGE_MSG)
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -248,10 +224,7 @@ impl AutoFixture for Days {
             return frozen;
         }
 
-        Days::new(
-            f.rng()
-                .random_range(0..=DAYS_PER_YEAR as u64 * 100),
-        )
+        Days::new(f.rng().random_range(0..=DAYS_PER_YEAR as u64 * 100))
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
@@ -267,10 +240,7 @@ impl AutoFixture for Months {
             return frozen;
         }
 
-        Months::new(
-            f.rng()
-                .random_range(0..=12 * 100),
-        )
+        Months::new(f.rng().random_range(0..=12 * 100))
     }
 
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b> {
