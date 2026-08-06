@@ -235,7 +235,7 @@ A few things to know:
    * ~~`without_<field>` setters for types with a well-defined "empty" value (`Option<T>`, `String`, standard collections)~~
  * ~~Github Actions release pipeline~~
  * AutoMoq implementation
- * Fixture freezing
+ * ~~Fixture freezing~~
  * SQL fixture building
 
 ## License
