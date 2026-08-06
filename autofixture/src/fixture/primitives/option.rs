@@ -98,9 +98,7 @@ where
     /// Use the builder `with()` and `without()` methods if you instead always
     /// need `Some` or `None` respectively.
     fn create(f: &mut crate::fixture::Fixture) -> Self {
-        let some: bool = f
-            .rng()
-            .random();
+        let some: bool = f.rng().random();
 
         if some { Some(T::create(f)) } else { None }
     }

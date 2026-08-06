@@ -18,13 +18,9 @@ fn simple_union_creates_successfully() {
 fn simple_union_fields_vary() {
     let mut f = Fixture::new();
 
-    let instances: Vec<SimpleUnion> = f
-        .create_many(10)
-        .collect();
+    let instances: Vec<SimpleUnion> = f.create_many(10).collect();
 
-    let all_same = instances
-        .windows(2)
-        .all(|w| unsafe { w[0].a == w[1].a });
+    let all_same = instances.windows(2).all(|w| unsafe { w[0].a == w[1].a });
 
     assert!(
         !all_same,

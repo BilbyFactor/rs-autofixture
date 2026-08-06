@@ -21,17 +21,16 @@ impl AutoFixture for Decimal {
     type Builder<'b> = DecimalBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         Decimal::from_parts(
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .next_u32(),
-            f.rng()
-                .random(),
-            f.rng()
-                .random_range(0..=Decimal::MAX_SCALE),
+            f.rng().next_u32(),
+            f.rng().next_u32(),
+            f.rng().next_u32(),
+            f.rng().random(),
+            f.rng().random_range(0..=Decimal::MAX_SCALE),
         )
     }
 
@@ -44,6 +43,10 @@ impl AutoFixture for RoundingStrategy {
     type Builder<'b> = RoundingStrategyBuilder<'b>;
 
     fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         *[
             RoundingStrategy::MidpointNearestEven,
             RoundingStrategy::MidpointAwayFromZero,

@@ -26,6 +26,10 @@ macro_rules! impl_autofixture_nonzero {
                 type Builder<'b> = WrapperBuilder<'b, $w, $t>;
 
                 fn create(f: &mut Fixture) -> Self {
+                    if let Some(frozen) = f.frozen::<Self>() {
+                        return frozen;
+                    }
+
                     WrapperBuilder::<$w, $t>::new(f).create()
                 }
 

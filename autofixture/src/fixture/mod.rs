@@ -61,6 +61,7 @@ pub trait FixtureExt {
 pub struct Fixture {
     rng: ThreadRng,
     ref_pool: HashMap<TypeId, Box<dyn Any>>,
+    frozen_pool: HashMap<TypeId, Box<dyn Any>>,
 }
 
 impl Fixture {
@@ -69,6 +70,7 @@ impl Fixture {
         Self {
             rng: ThreadRng::default(),
             ref_pool: HashMap::new(),
+            frozen_pool: HashMap::new(),
         }
     }
 
@@ -94,6 +96,52 @@ impl Fixture {
     /// * `n`: The number of items to pre-populate.
     pub fn create_many<F: AutoFixture>(&mut self, n: usize) -> impl Iterator<Item = F> {
         (0..n).map(|_| F::create(self))
+    }
+
+    /// Generates (or reuses) a single instance of `F` and remembers it, so
+    /// that it can be handed out again later.
+    ///
+    /// For a type without `Clone`, freezing only caches and
+    /// returns that one instance.
+    /// It has no effect on unrelated `create()` calls,
+    /// since Rust has no way to retroactively make two independently
+    /// owned values the same instance.
+    pub fn freeze<F: AutoFixture + Clone + 'static>(&mut self) -> F {
+        if let Some(existing) = self.frozen::<F>() {
+            return existing;
+        }
+
+        let value = F::create(self);
+        self.inject(value.clone());
+
+        value
+    }
+
+    /// Registers `value` as the frozen instance for `F`, the same as
+    /// `freeze` would, but without generating anything first.
+    ///
+    /// Unlike `freeze`, this always overwrites whatever was frozen for `F`
+    /// before, since the whole point is forcing a *specific* instance.
+    pub fn inject<F: Clone + 'static>(&mut self, value: F) {
+        self.frozen_pool.insert(TypeId::of::<F>(), Box::new(value));
+    }
+
+    /// Returns a clone of the frozen value for `F`,
+    /// provided one has been frozen via `freeze`.
+    ///
+    /// Public so that `#[derive(AutoFixture)]` generated code can call
+    /// into the pool checker.
+    ///
+    /// I can't think of a good way around this,
+    /// but if coming across this as a downstream user (yes, you),
+    /// this probably isn't what you're looking for...
+    pub fn frozen<F: Clone + 'static>(&self) -> Option<F> {
+        self.frozen_pool.get(&TypeId::of::<F>()).map(|boxed| {
+            boxed
+                .downcast_ref::<F>()
+                .expect("`TypeId` should always guarantee `F` downcast succeeds...")
+                .clone()
+        })
     }
 }
 

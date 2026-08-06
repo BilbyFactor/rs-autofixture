@@ -2,23 +2,30 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{DataEnum, Fields, Generics, Ident};
 
-pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream {
-    let variant_count = data
-        .variants
-        .len();
+pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum, can_freeze: bool) -> TokenStream {
+    let variant_count = data.variants.len();
+
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
-    let variant_arms = data
-        .variants
-        .iter()
-        .enumerate()
-        .map(|(i, v)| {
-            let variant_name = &v.ident;
-            let body = variant_create_body(name, variant_name, &v.fields);
+    let variant_arms = data.variants.iter().enumerate().map(|(i, v)| {
+        let variant_name = &v.ident;
+        let body = variant_create_body(name, variant_name, &v.fields);
 
-            quote! { #i => #body }
-        });
+        quote! { #i => #body }
+    });
+
+    // Only emitted for `#[fixture(can_freeze)]` items, which must also
+    // derive `Clone` themselves.
+    //
+    // Returning a frozen value means cloning it back out of the frozen pool.
+    let frozen_check = can_freeze.then(|| {
+        quote! {
+            if let Some(frozen) = f.frozen::<Self>() {
+                return frozen;
+            }
+        }
+    });
 
     quote! {
         impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
@@ -31,6 +38,8 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
                 use rs_autofixture::fixture::FixtureExt;
                 use rs_autofixture::rand::RngExt;
+
+                #frozen_check
 
                 let variant: usize = f.rng().random_range(0..#variant_count);
 
@@ -86,16 +95,13 @@ fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields)
             }
         }
         Fields::Unnamed(unnamed) => {
-            let field_inits = unnamed
-                .unnamed
-                .iter()
-                .map(|f| {
-                    let ty = &f.ty;
+            let field_inits = unnamed.unnamed.iter().map(|f| {
+                let ty = &f.ty;
 
-                    quote! {
-                        <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
-                    }
-                });
+                quote! {
+                    <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
+                }
+            });
 
             quote! {
                 #enum_name::#variant_name(#(#field_inits),*)

@@ -6,9 +6,7 @@ use tokio::sync::{Mutex, RwLock};
 async fn tokio_mutex_creates_successfully() {
     let mut f = Fixture::new();
     let m: Mutex<u32> = f.create();
-    let _value = *m
-        .lock()
-        .await;
+    let _value = *m.lock().await;
 }
 
 #[tokio::test]
@@ -22,9 +20,7 @@ async fn tokio_mutex_builder_creates_successfully() {
 async fn tokio_rwlock_creates_successfully() {
     let mut f = Fixture::new();
     let l: RwLock<u32> = f.create();
-    let _value = *l
-        .read()
-        .await;
+    let _value = *l.read().await;
 }
 
 #[tokio::test]
@@ -43,18 +39,13 @@ async fn tokio_mutex_values_vary() {
 
         for _ in 0..10 {
             let m: Mutex<u32> = f.create();
-            collected.push(
-                *m.lock()
-                    .await,
-            );
+            collected.push(*m.lock().await);
         }
 
         collected
     };
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
 
     assert!(!all_same, "expected tokio::sync::Mutex<u32> values to vary");
 }

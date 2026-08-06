@@ -36,8 +36,7 @@ where
     /// # Examples
     /// `options(vec![1, 3, 5, 9])`
     pub fn options(&mut self, options: &mut Vec<T>) {
-        self.options
-            .append(options);
+        self.options.append(options);
     }
 }
 
@@ -46,13 +45,10 @@ where
     T: AutoFixture + Clone,
 {
     fn apply(&self, f: &mut Fixture) -> Option<T> {
-        self.options
-            .choose(f.rng())
-            .cloned()
+        self.options.choose(f.rng()).cloned()
     }
 
     fn clear(&mut self) {
-        self.options
-            .clear();
+        self.options.clear();
     }
 }

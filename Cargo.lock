@@ -993,7 +993,7 @@ dependencies = [
 
 [[package]]
 name = "rs-autofixture"
-version = "0.5.2"
+version = "0.6.0"
 dependencies = [
  "chrono",
  "lettre",
@@ -1008,7 +1008,7 @@ dependencies = [
 
 [[package]]
 name = "rs-autofixture-derive"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "case",
  "convert_case",
@@ -1019,7 +1019,7 @@ dependencies = [
 
 [[package]]
 name = "rs-autofixture-tests"
-version = "0.5.1"
+version = "0.6.0"
 dependencies = [
  "chrono",
  "lettre",

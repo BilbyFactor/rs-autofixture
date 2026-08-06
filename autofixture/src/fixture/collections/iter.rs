@@ -37,9 +37,7 @@ where
     }
 
     fn create(&mut self) -> Self::F {
-        (0..self.size)
-            .map(|_| T::create(self.fixture))
-            .collect()
+        (0..self.size).map(|_| T::create(self.fixture)).collect()
     }
 }
 

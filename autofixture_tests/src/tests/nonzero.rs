@@ -60,3 +60,13 @@ test_nonzero!(
     NonZeroU128, nonzero_u128;
     NonZeroUsize, nonzero_usize;
 );
+
+#[test]
+fn freeze_nonzero_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: NonZeroU32 = f.freeze();
+    let created: NonZeroU32 = f.create();
+
+    assert_eq!(frozen, created);
+}

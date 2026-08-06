@@ -118,10 +118,7 @@ impl<'b> FixtureBuilder<'b> for UuidBuilder<'b> {
                 UuidVersion::V4 => Uuid::new_v4(),
                 UuidVersion::V1 => {
                     let ts = Timestamp::now(uuid::NoContext);
-                    let node_id: [u8; 6] = self
-                        .fixture
-                        .rng()
-                        .random();
+                    let node_id: [u8; 6] = self.fixture.rng().random();
 
                     Uuid::new_v1(ts, &node_id)
                 }
@@ -129,10 +126,7 @@ impl<'b> FixtureBuilder<'b> for UuidBuilder<'b> {
                 UuidVersion::V5 { namespace, name } => Uuid::new_v5(namespace, name),
                 UuidVersion::V6 => {
                     let ts = Timestamp::now(uuid::NoContext);
-                    let node_id: [u8; 6] = self
-                        .fixture
-                        .rng()
-                        .random();
+                    let node_id: [u8; 6] = self.fixture.rng().random();
 
                     Uuid::new_v6(ts, &node_id)
                 }
@@ -150,7 +144,11 @@ impl<'b> FixtureBuilder<'b> for UuidBuilder<'b> {
 impl AutoFixture for Uuid {
     type Builder<'b> = UuidBuilder<'b>;
 
-    fn create(_f: &mut Fixture) -> Self {
+    fn create(f: &mut Fixture) -> Self {
+        if let Some(frozen) = f.frozen::<Self>() {
+            return frozen;
+        }
+
         Uuid::new_v4()
     }
 

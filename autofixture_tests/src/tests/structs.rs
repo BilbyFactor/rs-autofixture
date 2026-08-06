@@ -19,13 +19,9 @@ fn named_struct_creates_successfully() {
 fn named_struct_fields_vary() {
     let mut f = Fixture::new();
 
-    let instances: Vec<NamedFields> = f
-        .create_many(10)
-        .collect();
+    let instances: Vec<NamedFields> = f.create_many(10).collect();
 
-    let all_same_a = instances
-        .windows(2)
-        .all(|w| w[0].a == w[1].a);
+    let all_same_a = instances.windows(2).all(|w| w[0].a == w[1].a);
 
     assert!(
         !all_same_a,
@@ -46,13 +42,9 @@ fn tuple_struct_creates_successfully() {
 fn tuple_struct_fields_vary() {
     let mut f = Fixture::new();
 
-    let instances: Vec<TupleStruct> = f
-        .create_many(10)
-        .collect();
+    let instances: Vec<TupleStruct> = f.create_many(10).collect();
 
-    let all_same = instances
-        .windows(2)
-        .all(|w| w[0].2 == w[1].2);
+    let all_same = instances.windows(2).all(|w| w[0].2 == w[1].2);
 
     assert!(
         !all_same,
@@ -85,9 +77,7 @@ fn nested_struct_creates_successfully() {
 fn create_many_returns_correct_count() {
     let mut f = Fixture::new();
 
-    let items: Vec<NamedFields> = f
-        .create_many(5)
-        .collect();
+    let items: Vec<NamedFields> = f.create_many(5).collect();
 
     assert_eq!(items.len(), 5);
 }
@@ -107,11 +97,7 @@ fn named_struct_builder_with_field_fixes_value() {
 
     let mut f = Fixture::new();
 
-    let instance = f
-        .build::<NamedFields>()
-        .with_a(42)
-        .with_b(-7)
-        .create();
+    let instance = f.build::<NamedFields>().with_a(42).with_b(-7).create();
 
     assert_eq!(instance.a, 42);
     assert_eq!(instance.b, -7);
@@ -124,16 +110,10 @@ fn named_struct_builder_leaves_unset_fields_random() {
     let mut f = Fixture::new();
 
     let instances: Vec<NamedFields> = (0..10)
-        .map(|_| {
-            f.build::<NamedFields>()
-                .with_a(1)
-                .create()
-        })
+        .map(|_| f.build::<NamedFields>().with_a(1).create())
         .collect();
 
-    let all_same_b = instances
-        .windows(2)
-        .all(|w| w[0].b == w[1].b);
+    let all_same_b = instances.windows(2).all(|w| w[0].b == w[1].b);
 
     assert!(
         !all_same_b,
@@ -147,11 +127,7 @@ fn tuple_struct_builder_with_field_fixes_value() {
 
     let mut f = Fixture::new();
 
-    let instance = f
-        .build::<TupleStruct>()
-        .with_0(1)
-        .with_2(99)
-        .create();
+    let instance = f.build::<TupleStruct>().with_0(1).with_2(99).create();
 
     assert_eq!(instance.0, 1);
     assert_eq!(instance.2, 99);
@@ -173,10 +149,7 @@ fn named_struct_builder_without_string_field_is_blank() {
 
     let mut f = Fixture::new();
 
-    let instance = f
-        .build::<EmptyableFields>()
-        .without_label()
-        .create();
+    let instance = f.build::<EmptyableFields>().without_label().create();
 
     assert_eq!(instance.label, "");
 }
@@ -187,10 +160,7 @@ fn named_struct_builder_without_option_field_is_none() {
 
     let mut f = Fixture::new();
 
-    let instance = f
-        .build::<EmptyableFields>()
-        .without_nickname()
-        .create();
+    let instance = f.build::<EmptyableFields>().without_nickname().create();
 
     assert_eq!(instance.nickname, None);
 }
@@ -201,16 +171,9 @@ fn named_struct_builder_without_vec_field_is_empty() {
 
     let mut f = Fixture::new();
 
-    let instance = f
-        .build::<EmptyableFields>()
-        .without_tags()
-        .create();
+    let instance = f.build::<EmptyableFields>().without_tags().create();
 
-    assert!(
-        instance
-            .tags
-            .is_empty()
-    );
+    assert!(instance.tags.is_empty());
 }
 
 #[test]
@@ -228,11 +191,7 @@ fn named_struct_builder_combines_with_and_without() {
 
     assert_eq!(instance.label, "fixed");
     assert_eq!(instance.nickname, None);
-    assert!(
-        instance
-            .tags
-            .is_empty()
-    );
+    assert!(instance.tags.is_empty());
 }
 
 #[test]
@@ -248,9 +207,91 @@ fn tuple_struct_builder_without_field_uses_empty_value() {
         .create();
 
     assert_eq!(instance.0, None);
-    assert!(
-        instance
-            .1
-            .is_empty()
-    );
+    assert!(instance.1.is_empty());
+}
+
+#[derive(AutoFixture)]
+pub struct HasName {
+    name: String,
+    id: u32,
+}
+
+#[test]
+fn freeze_propagates_into_derived_struct_fields() {
+    // The derive macro's generated `create()` calls `String::create(f)` and
+    // `u32::create(f)` directly for these fields.
+    //
+    // Since those types now check the frozen registry themselves,
+    // freezing them here propagates into every struct that has a field of
+    // that exact type.
+    let mut f = Fixture::new();
+
+    let frozen_name: String = f.freeze();
+    let frozen_id: u32 = f.freeze();
+
+    let a: HasName = f.create();
+    let b: HasName = f.create();
+
+    assert_eq!(a.name, frozen_name);
+    assert_eq!(b.name, frozen_name);
+    assert_eq!(a.id, frozen_id);
+    assert_eq!(b.id, frozen_id);
+}
+
+#[derive(AutoFixture, Clone)]
+#[fixture(can_freeze)]
+pub struct Author {
+    name: String,
+    age: u32,
+}
+
+#[derive(AutoFixture)]
+pub struct Book {
+    title: String,
+    author: Author,
+}
+
+#[test]
+fn freeze_clone_struct_shares_every_field_but_not_unrelated_values() {
+    let mut f = Fixture::new();
+
+    let frozen_author: Author = f.freeze();
+    let book1: Book = f.create();
+    let book2: Book = f.create();
+
+    assert_eq!(book1.author.name, frozen_author.name,);
+
+    assert_eq!(book1.author.age, frozen_author.age,);
+
+    assert_eq!(book2.author.name, frozen_author.name,);
+
+    assert_eq!(book2.author.age, frozen_author.age,);
+
+    // Freezing `Author` as a whole doesn't also freeze the `String` type
+    // globally.
+    //
+    // Each book's own, unrelated `title` field still varies.
+    assert_ne!(book1.title, book2.title);
+}
+
+#[test]
+fn inject_registers_the_exact_given_instance() {
+    // Unlike `freeze`, `inject` never calls `create()` - it just registers
+    // the instance the caller already built.
+    let mut f = Fixture::new();
+
+    let author = Author {
+        name: "Keanu Reeves".to_string(),
+        age: 42,
+    };
+
+    f.inject(author.clone());
+
+    let book1: Book = f.create();
+    let book2: Book = f.create();
+
+    assert_eq!(book1.author.name, "Keanu Reeves");
+    assert_eq!(book1.author.age, 42);
+    assert_eq!(book2.author.name, "Keanu Reeves");
+    assert_eq!(book2.author.age, 42);
 }

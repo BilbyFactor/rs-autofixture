@@ -109,9 +109,7 @@ where
     /// Use the builder `with_ok()` and `with_err()` methods if you instead always
     /// need `Ok` or `Err` respectively.
     fn create(f: &mut crate::fixture::Fixture) -> Self {
-        let ok: bool = f
-            .rng()
-            .random();
+        let ok: bool = f.rng().random();
 
         if ok {
             Ok(T::create(f))

@@ -30,17 +30,15 @@ fn is_empty_fixture_type(ty: &Type) -> bool {
         .path
         .segments
         .last()
-        .is_some_and(|segment| {
-            EMPTY_FIXTURE_TYPES.contains(
-                &segment
-                    .ident
-                    .to_string()
-                    .as_str(),
-            )
-        })
+        .is_some_and(|segment| EMPTY_FIXTURE_TYPES.contains(&segment.ident.to_string().as_str()))
 }
 
-pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStream {
+pub fn expand(
+    name: &Ident,
+    generics: &Generics,
+    data: &DataStruct,
+    can_freeze: bool,
+) -> TokenStream {
     let create_body = struct_create_body(&data.fields);
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
@@ -51,6 +49,18 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStre
     let without_methods = builder_without_methods(&data.fields);
     let builder_create_body = builder_create_body(name, &data.fields);
 
+    // Only emitted for `#[fixture(can_freeze)]` items, which must also
+    // derive `Clone` themselves.
+    //
+    // Returning a frozen value means cloning it back out of the frozen pool.
+    let frozen_check = can_freeze.then(|| {
+        quote! {
+            if let Some(frozen) = f.frozen::<Self>() {
+                return frozen;
+            }
+        }
+    });
+
     quote! {
         impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
             #ty_generics
@@ -60,6 +70,8 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStre
 
             fn create(f: &mut rs_autofixture::fixture::Fixture) -> Self {
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
+
+                #frozen_check
 
                 #create_body
             }
@@ -123,16 +135,13 @@ fn struct_create_body(fields: &Fields) -> TokenStream {
             }
         }
         Fields::Unnamed(unnamed) => {
-            let field_inits = unnamed
-                .unnamed
-                .iter()
-                .map(|f| {
-                    let ty = &f.ty;
+            let field_inits = unnamed.unnamed.iter().map(|f| {
+                let ty = &f.ty;
 
-                    quote! {
-                        <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
-                    }
-                });
+                quote! {
+                    <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
+                }
+            });
 
             quote! {
                 Self(#(#field_inits),*)
@@ -158,10 +167,7 @@ fn builder_field_declarations(fields: &Fields) -> Vec<TokenStream> {
             .named
             .iter()
             .map(|f| {
-                let field_name = f
-                    .ident
-                    .as_ref()
-                    .unwrap();
+                let field_name = f.ident.as_ref().unwrap();
                 let ty = &f.ty;
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride<#ty> }
@@ -189,17 +195,12 @@ fn builder_field_inits(fields: &Fields) -> Vec<TokenStream> {
             .named
             .iter()
             .map(|f| {
-                let field_name = f
-                    .ident
-                    .as_ref()
-                    .unwrap();
+                let field_name = f.ident.as_ref().unwrap();
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride::NotSet }
             })
             .collect(),
-        Fields::Unnamed(unnamed) => (0..unnamed
-            .unnamed
-            .len())
+        Fields::Unnamed(unnamed) => (0..unnamed.unnamed.len())
             .map(|i| {
                 let field_name = unnamed_field_ident(i);
 

@@ -2,11 +2,13 @@ use proc_macro2::TokenStream;
 use quote::quote;
 use syn::{DataUnion, Generics, Ident};
 
-pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStream {
-    let field_count = data
-        .fields
-        .named
-        .len();
+pub fn expand(
+    name: &Ident,
+    generics: &Generics,
+    data: &DataUnion,
+    can_freeze: bool,
+) -> TokenStream {
+    let field_count = data.fields.named.len();
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
@@ -17,6 +19,18 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStrea
         quote! {
             #i => Self {
                 #field_name: <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f),
+            }
+        }
+    });
+
+    // Only emitted for `#[fixture(can_freeze)]` items, which must also
+    // derive `Clone` themselves.
+    //
+    // Returning a frozen value means cloning it back out of the frozen pool.
+    let frozen_check = can_freeze.then(|| {
+        quote! {
+            if let Some(frozen) = f.frozen::<Self>() {
+                return frozen;
             }
         }
     });
@@ -32,6 +46,8 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStrea
                 use rs_autofixture::fixture::auto_fixture::AutoFixture;
                 use rs_autofixture::fixture::FixtureExt;
                 use rs_autofixture::rand::RngExt;
+
+                #frozen_check
 
                 let field: usize = f.rng().random_range(0..#field_count);
 

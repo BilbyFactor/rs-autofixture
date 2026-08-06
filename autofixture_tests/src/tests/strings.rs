@@ -26,42 +26,25 @@ fn string_default_is_uuid_format() {
 
     // Check UUID v4 format:
     assert_eq!(s.len(), 36);
-    assert_eq!(
-        s.chars()
-            .filter(|c| *c == '-')
-            .count(),
-        4
-    );
+    assert_eq!(s.chars().filter(|c| *c == '-').count(), 4);
 }
 
 #[test]
 fn string_builder_alphabetic_generator() {
     let mut f = Fixture::new();
 
-    let s = f
-        .build::<String>()
-        .with_alphabetic_generator()
-        .create();
+    let s = f.build::<String>().with_alphabetic_generator().create();
 
-    assert!(
-        s.chars()
-            .all(|c| c.is_alphabetic())
-    );
+    assert!(s.chars().all(|c| c.is_alphabetic()));
 }
 
 #[test]
 fn string_builder_alphanumeric_generator() {
     let mut f = Fixture::new();
 
-    let s = f
-        .build::<String>()
-        .with_alphanumeric_generator()
-        .create();
+    let s = f.build::<String>().with_alphanumeric_generator().create();
 
-    assert!(
-        s.chars()
-            .all(|c| c.is_alphanumeric())
-    );
+    assert!(s.chars().all(|c| c.is_alphanumeric()));
 }
 
 #[test]
@@ -81,10 +64,7 @@ fn string_builder_with_size() {
 fn string_builder_uuid_v4_generator() {
     let mut f = Fixture::new();
 
-    let s = f
-        .build::<String>()
-        .with_uuid_v4_generator()
-        .create();
+    let s = f.build::<String>().with_uuid_v4_generator().create();
 
     assert_eq!(s.len(), 36);
 }
@@ -93,21 +73,12 @@ fn string_builder_uuid_v4_generator() {
 fn string_builder_domain_generator() {
     let mut f = Fixture::new();
 
-    let s = f
-        .build::<String>()
-        .with_domain_generator()
-        .create();
+    let s = f.build::<String>().with_domain_generator().create();
 
     assert!(s.contains('.'), "domain should contain a dot: {s}");
 
-    let parts: Vec<&str> = s
-        .splitn(2, '.')
-        .collect();
-    assert!(
-        parts[0]
-            .chars()
-            .all(|c| c.is_ascii_lowercase())
-    );
+    let parts: Vec<&str> = s.splitn(2, '.').collect();
+    assert!(parts[0].chars().all(|c| c.is_ascii_lowercase()));
     assert!(["com", "org", "net", "io", "dev"].contains(&parts[1]));
 }
 
@@ -121,9 +92,7 @@ fn string_builder_domain_values_vary() {
         .create_many(10)
         .collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
     assert!(!all_same, "expected domain values to vary");
 }
 
@@ -131,10 +100,7 @@ fn string_builder_domain_values_vary() {
 fn string_builder_url_generator() {
     let mut f = Fixture::new();
 
-    let s = f
-        .build::<String>()
-        .with_url_generator()
-        .create();
+    let s = f.build::<String>().with_url_generator().create();
 
     assert!(
         s.starts_with("http://") || s.starts_with("https://"),
@@ -143,8 +109,7 @@ fn string_builder_url_generator() {
 
     assert!(s.contains('.'), "url should contain a domain dot: {s}");
     assert_eq!(
-        s.matches('/')
-            .count(),
+        s.matches('/').count(),
         3,
         "url should have scheme + path slashes: {s}"
     );
@@ -160,9 +125,7 @@ fn string_builder_url_values_vary() {
         .create_many(10)
         .collect();
 
-    let all_same = values
-        .windows(2)
-        .all(|w| w[0] == w[1]);
+    let all_same = values.windows(2).all(|w| w[0] == w[1]);
     assert!(!all_same, "expected url values to vary");
 }
 
@@ -185,4 +148,24 @@ fn rc_str_creates_successfully() {
     let mut f = Fixture::new();
     let s: Rc<str> = f.create();
     assert!(!s.is_empty());
+}
+
+#[test]
+fn freeze_string_repeats_on_subsequent_creates() {
+    let mut f = Fixture::new();
+
+    let frozen: String = f.freeze();
+    let created: String = f.create();
+
+    assert_eq!(frozen, created);
+}
+
+#[test]
+fn freeze_rc_str_shares_same_instance() {
+    let mut f = Fixture::new();
+
+    let frozen: Rc<str> = f.freeze();
+    let created: Rc<str> = f.create();
+
+    assert!(Rc::ptr_eq(&frozen, &created));
 }
