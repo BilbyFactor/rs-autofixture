@@ -1,8 +1,8 @@
 use std::rc::Rc;
 use std::sync::Arc;
 
-use rs_autofixture::fixture::builder::FixtureBuilder;
 use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::builder::FixtureBuilder;
 
 #[test]
 fn string_creates_successfully() {
@@ -26,7 +26,12 @@ fn string_default_is_uuid_format() {
 
     // Check UUID v4 format:
     assert_eq!(s.len(), 36);
-    assert_eq!(s.chars().filter(|c| *c == '-').count(), 4);
+    assert_eq!(
+        s.chars()
+            .filter(|c| *c == '-')
+            .count(),
+        4
+    );
 }
 
 #[test]
@@ -38,7 +43,10 @@ fn string_builder_alphabetic_generator() {
         .with_alphabetic_generator()
         .create();
 
-    assert!(s.chars().all(|c| c.is_alphabetic()));
+    assert!(
+        s.chars()
+            .all(|c| c.is_alphabetic())
+    );
 }
 
 #[test]
@@ -50,7 +58,10 @@ fn string_builder_alphanumeric_generator() {
         .with_alphanumeric_generator()
         .create();
 
-    assert!(s.chars().all(|c| c.is_alphanumeric()));
+    assert!(
+        s.chars()
+            .all(|c| c.is_alphanumeric())
+    );
 }
 
 #[test]
@@ -89,8 +100,14 @@ fn string_builder_domain_generator() {
 
     assert!(s.contains('.'), "domain should contain a dot: {s}");
 
-    let parts: Vec<&str> = s.splitn(2, '.').collect();
-    assert!(parts[0].chars().all(|c| c.is_ascii_lowercase()));
+    let parts: Vec<&str> = s
+        .splitn(2, '.')
+        .collect();
+    assert!(
+        parts[0]
+            .chars()
+            .all(|c| c.is_ascii_lowercase())
+    );
     assert!(["com", "org", "net", "io", "dev"].contains(&parts[1]));
 }
 
@@ -104,7 +121,9 @@ fn string_builder_domain_values_vary() {
         .create_many(10)
         .collect();
 
-    let all_same = values.windows(2).all(|w| w[0] == w[1]);
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
     assert!(!all_same, "expected domain values to vary");
 }
 
@@ -123,7 +142,12 @@ fn string_builder_url_generator() {
     );
 
     assert!(s.contains('.'), "url should contain a domain dot: {s}");
-    assert_eq!(s.matches('/').count(), 3, "url should have scheme + path slashes: {s}");
+    assert_eq!(
+        s.matches('/')
+            .count(),
+        3,
+        "url should have scheme + path slashes: {s}"
+    );
 }
 
 #[test]
@@ -136,7 +160,9 @@ fn string_builder_url_values_vary() {
         .create_many(10)
         .collect();
 
-    let all_same = values.windows(2).all(|w| w[0] == w[1]);
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
     assert!(!all_same, "expected url values to vary");
 }
 

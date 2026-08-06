@@ -79,7 +79,7 @@ macro_rules! create_general_builder {
                     #[inline]
                     fn create(&mut self) -> Self::F {
                         use crate::fixture::builder::conditions::BuilderCondition;
-                        
+
                         if let Some(c) = self.options_condition.apply(self.fixture) {
                             c
                         }
@@ -171,7 +171,7 @@ macro_rules! create_numeric_builder {
                     #[inline]
                     fn create(&mut self) -> Self::F {
                         use crate::fixture::builder::conditions::BuilderCondition;
-                        
+
                         if let Some(c) = self.range_condition.apply(self.fixture) {
                             c
                         }

@@ -4,13 +4,13 @@ pub trait AutoFixture {
     type Builder<'b>: FixtureBuilder<'b, F = Self>;
 
     /// Creates a new randomly populated implementation of Self.
-    /// 
+    ///
     /// # Arguments
     /// * `f` - the base `Fixture` struct.
     fn create(f: &mut Fixture) -> Self;
 
     /// Creates the FixtureBuilder implementation for Self.
-    /// 
+    ///
     /// # Arguments
     /// * `f` - the base `Fixture` struct.
     fn build<'b>(f: &'b mut Fixture) -> Self::Builder<'b>;
@@ -25,7 +25,7 @@ macro_rules! impl_autofixture_random{
                 #[inline]
                 fn create(f: &mut crate::fixture::Fixture) -> Self {
                     use rand::RngExt;
-                    
+
                     use crate::fixture::FixtureExt;
 
                     f.rng().random()
@@ -64,7 +64,7 @@ macro_rules! impl_autofixture_random_dyn {
                     -> Self::Builder<'b>
                 {
                     use crate::fixture::builder::FixtureBuilder;
-                    
+
                     <$b>::new(f)
                 }
             }

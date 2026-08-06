@@ -1,6 +1,6 @@
-use rs_autofixture::fixture::auto_fixture::AutoFixture;
-use rs_autofixture::fixture::Fixture;
 use rs_autofixture::AutoFixture;
+use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::auto_fixture::AutoFixture;
 
 #[derive(AutoFixture, Clone, Copy)]
 pub union SimpleUnion {
@@ -25,8 +25,11 @@ fn simple_union_fields_vary() {
     let all_same = instances
         .windows(2)
         .all(|w| unsafe { w[0].a == w[1].a });
-    
-    assert!(!all_same, "expected union values to vary across 10 instances");
+
+    assert!(
+        !all_same,
+        "expected union values to vary across 10 instances"
+    );
 }
 
 #[derive(AutoFixture, Clone, Copy)]

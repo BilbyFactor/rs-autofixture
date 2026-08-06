@@ -1,5 +1,5 @@
-use rs_autofixture::fixture::builder::FixtureBuilder;
 use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::builder::FixtureBuilder;
 
 #[test]
 fn numeric_builder_with_range_exclusive() {
@@ -126,10 +126,7 @@ fn float_builder_with_range() {
             .with_range(0.0..1.0)
             .create();
 
-        assert!(
-            (0.0..1.0).contains(&v),
-            "expected {v} in 0.0..1.0"
-        );
+        assert!((0.0..1.0).contains(&v), "expected {v} in 0.0..1.0");
     }
 }
 
@@ -144,7 +141,7 @@ fn char_builder_with_options() {
         let v = builder
             .with_options(&mut opts)
             .create();
-        
+
         assert!(
             ['x', 'y', 'z'].contains(&v),
             "expected {v} to be one of ['x', 'y', 'z']"

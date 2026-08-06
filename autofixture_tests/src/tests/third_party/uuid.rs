@@ -38,7 +38,9 @@ fn create_many_uuids() {
 #[test]
 fn uuid_builder_default_is_v4() {
     let mut f = Fixture::new();
-    let id = f.build::<Uuid>().create();
+    let id = f
+        .build::<Uuid>()
+        .create();
     assert_eq!(id.get_version_num(), 4);
 }
 
@@ -109,16 +111,14 @@ fn uuid_builder_v8() {
     let mut f = Fixture::new();
 
     let buf = [
-        0x01, 0x02, 0x03, 0x04,
-        0x05, 0x06, 0x07, 0x08,
-        0x09, 0x0a, 0x0b, 0x0c,
-        0x0d, 0x0e, 0x0f, 0x10,
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+        0x10,
     ];
 
     let id = f
         .build::<Uuid>()
         .with_v8(buf)
         .create();
-    
+
     assert_eq!(id.get_version_num(), 8);
 }

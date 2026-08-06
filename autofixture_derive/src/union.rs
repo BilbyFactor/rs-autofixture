@@ -1,9 +1,12 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{DataUnion, Ident, Generics};
+use syn::{DataUnion, Generics, Ident};
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataUnion) -> TokenStream {
-    let field_count = data.fields.named.len();
+    let field_count = data
+        .fields
+        .named
+        .len();
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 

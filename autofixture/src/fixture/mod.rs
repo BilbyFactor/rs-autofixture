@@ -31,9 +31,7 @@ use std::collections::HashMap;
 
 use rand::rngs::ThreadRng;
 
-use crate::fixture::{
-    auto_fixture::AutoFixture,
-};
+use crate::fixture::auto_fixture::AutoFixture;
 
 /// Methods intended for extending the internal functionality of `Fixture`.
 pub trait FixtureExt {
@@ -43,7 +41,7 @@ pub trait FixtureExt {
     /// Register a `&str` internally that will live for the lifetime of
     /// this instance.
     /// Will return the `&str` instance registered.
-    /// 
+    ///
     /// # Arguments
     /// * `to_register`: The `String` to register as a `&str`.
     fn register_str_ref(&mut self, to_register: String) -> &str;
@@ -51,7 +49,7 @@ pub trait FixtureExt {
     /// Register a `T` slice internally that will live for the lifetime of
     /// this instance.
     /// Will return the `&[T]` instance registered.
-    /// 
+    ///
     /// # Arguments
     /// * `to_register`: An iterator of type `T` to register as a `&[T]`.
     fn register_slice_ref<T: 'static, I>(&mut self, to_register: I) -> &[T]
@@ -91,12 +89,10 @@ impl Fixture {
     /// Creates a new iterator with `n` items pre-populated of the given type `F`
     /// where `F` implements `AutoFixture`. This includes all Rust primitive
     /// types, and can be derived on a struct or enum with `#[derive(AutoFixture)]`
-    /// 
+    ///
     /// # Arguments
     /// * `n`: The number of items to pre-populate.
-    pub fn create_many<F: AutoFixture>(&mut self, n: usize)
-        -> impl Iterator<Item = F>
-    {
+    pub fn create_many<F: AutoFixture>(&mut self, n: usize) -> impl Iterator<Item = F> {
         (0..n).map(|_| F::create(self))
     }
 }
@@ -105,9 +101,10 @@ impl FixtureExt for Fixture {
     fn rng(&mut self) -> &mut ThreadRng {
         &mut self.rng
     }
-    
+
     fn register_str_ref(&mut self, to_register: String) -> &str {
-        let str_pool = self.ref_pool
+        let str_pool = self
+            .ref_pool
             .entry(TypeId::of::<Vec<Box<str>>>())
             .or_insert_with(|| Box::new(Vec::<Box<str>>::new()))
             .downcast_mut::<Vec<Box<str>>>()
@@ -119,21 +116,23 @@ impl FixtureExt for Fixture {
             .last()
             .expect("expecting one &str to have just been registered...")
     }
-    
+
     fn register_slice_ref<T: 'static, I>(&mut self, to_register: I) -> &[T]
     where
         I: IntoIterator<Item = T>,
     {
-        let slice_pool = self.ref_pool
+        let slice_pool = self
+            .ref_pool
             .entry(TypeId::of::<Vec<Box<[T]>>>())
             .or_insert_with(|| Box::new(Vec::<Box<[T]>>::new()))
             .downcast_mut::<Vec<Box<[T]>>>()
             .expect("expecting `TypeId` to match or be inserted as `Vec<Box<T>>`...");
 
-        slice_pool.push(to_register
-            .into_iter()
-            .collect::<Vec<T>>()
-            .into_boxed_slice()
+        slice_pool.push(
+            to_register
+                .into_iter()
+                .collect::<Vec<T>>()
+                .into_boxed_slice(),
         );
 
         slice_pool

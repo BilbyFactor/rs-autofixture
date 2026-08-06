@@ -1,10 +1,6 @@
 use std::marker::PhantomData;
 
-use crate::fixture::{
-    Fixture,
-    auto_fixture::AutoFixture,
-    builder::FixtureBuilder,
-};
+use crate::fixture::{Fixture, auto_fixture::AutoFixture, builder::FixtureBuilder};
 
 pub struct TupleBuilder<'b, T> {
     fixture: &'b mut Fixture,

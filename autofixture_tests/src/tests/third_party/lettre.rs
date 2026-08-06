@@ -1,17 +1,25 @@
-use rs_autofixture::fixture::Fixture;
-use rs_autofixture::fixture::builder::FixtureBuilder;
 use lettre::Address;
 use lettre::address::Envelope;
 use lettre::message::{Mailbox, Mailboxes};
 use lettre::transport::smtp::authentication::{Credentials, Mechanism};
+use rs_autofixture::fixture::Fixture;
+use rs_autofixture::fixture::builder::FixtureBuilder;
 
 #[test]
 fn address_creates_successfully() {
     let mut f = Fixture::new();
     let addr: Address = f.create();
 
-    assert!(!addr.user().is_empty());
-    assert!(!addr.domain().is_empty());
+    assert!(
+        !addr
+            .user()
+            .is_empty()
+    );
+    assert!(
+        !addr
+            .domain()
+            .is_empty()
+    );
 }
 
 #[test]
@@ -22,7 +30,9 @@ fn address_values_vary() {
         .create_many(10)
         .collect();
 
-    let all_same = values.windows(2).all(|w| w[0] == w[1]);
+    let all_same = values
+        .windows(2)
+        .all(|w| w[0] == w[1]);
     assert!(!all_same, "expected Address values to vary");
 }
 
@@ -32,7 +42,8 @@ fn address_has_valid_domain() {
     let addr: Address = f.create();
 
     assert!(
-        addr.domain().contains('.'),
+        addr.domain()
+            .contains('.'),
         "domain should contain a dot: {}",
         addr.domain(),
     );
@@ -41,9 +52,15 @@ fn address_has_valid_domain() {
 #[test]
 fn address_builder_creates_successfully() {
     let mut f = Fixture::new();
-    let addr = f.build::<Address>().create();
+    let addr = f
+        .build::<Address>()
+        .create();
 
-    assert!(!addr.user().is_empty());
+    assert!(
+        !addr
+            .user()
+            .is_empty()
+    );
 }
 
 #[test]
@@ -75,7 +92,11 @@ fn mailbox_creates_successfully() {
 
     let mb: Mailbox = f.create();
 
-    assert!(!mb.email.user().is_empty());
+    assert!(
+        !mb.email
+            .user()
+            .is_empty()
+    );
 }
 
 #[test]
@@ -99,7 +120,11 @@ fn mailbox_values_vary() {
 fn mailboxes_creates_successfully() {
     let mut f = Fixture::new();
     let mbs: Mailboxes = f.create();
-    assert!(!mbs.into_iter().collect::<Vec<_>>().is_empty());
+    assert!(
+        !mbs.into_iter()
+            .collect::<Vec<_>>()
+            .is_empty()
+    );
 }
 
 // --- Envelope ---
@@ -108,8 +133,14 @@ fn mailboxes_creates_successfully() {
 fn envelope_creates_successfully() {
     let mut f = Fixture::new();
     let env: Envelope = f.create();
-    assert!(env.from().is_some());
-    assert!(!env.to().is_empty());
+    assert!(
+        env.from()
+            .is_some()
+    );
+    assert!(
+        !env.to()
+            .is_empty()
+    );
 }
 
 #[test]
@@ -150,6 +181,9 @@ fn mechanism_values_vary() {
     let all_same = values
         .windows(2)
         .all(|w| w[0] == w[1]);
-    
-    assert!(!all_same, "expected Mechanism values to vary across 20 instances");
+
+    assert!(
+        !all_same,
+        "expected Mechanism values to vary across 20 instances"
+    );
 }

@@ -1,10 +1,7 @@
 use rand::seq::IndexedRandom;
 
 use crate::fixture::{
-    Fixture,
-    FixtureExt,
-    auto_fixture::AutoFixture,
-    builder::conditions::BuilderCondition,
+    Fixture, FixtureExt, auto_fixture::AutoFixture, builder::conditions::BuilderCondition,
 };
 
 /// Condition for allowing the builder call `with_options(vec![1, 2, 3])` before apply
@@ -31,15 +28,16 @@ where
     T: AutoFixture + Clone,
 {
     /// Specifies the builder pick from a set of given options on `apply()`.
-    /// 
+    ///
     /// # Arguments
     /// * `options` - a mutable `Vec` of `T` values to add as options,
     ///   where `T` is the base type for the builder.
-    /// 
+    ///
     /// # Examples
     /// `options(vec![1, 3, 5, 9])`
     pub fn options(&mut self, options: &mut Vec<T>) {
-        self.options.append(options);
+        self.options
+            .append(options);
     }
 }
 
@@ -54,6 +52,7 @@ where
     }
 
     fn clear(&mut self) {
-        self.options.clear();
+        self.options
+            .clear();
     }
 }

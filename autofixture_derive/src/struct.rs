@@ -1,11 +1,11 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{DataStruct, Fields, Ident, Generics, Type};
+use syn::{DataStruct, Fields, Generics, Ident, Type};
 
 /// Field types recognised as having a well-defined "empty" value:
 /// `rs_autofixture::fixture::builder::EmptyFixture`,
 /// matched by their last path segment.
-/// 
+///
 /// Only fields of these types get a `without_<field>`
 /// setter generated on the derived builder.
 const EMPTY_FIXTURE_TYPES: &[&str] = &[
@@ -26,12 +26,18 @@ fn is_empty_fixture_type(ty: &Type) -> bool {
         return false;
     };
 
-    type_path.path
+    type_path
+        .path
         .segments
         .last()
-        .is_some_and(|segment| EMPTY_FIXTURE_TYPES
-            .contains(&segment.ident.to_string().as_str())
-        )
+        .is_some_and(|segment| {
+            EMPTY_FIXTURE_TYPES.contains(
+                &segment
+                    .ident
+                    .to_string()
+                    .as_str(),
+            )
+        })
 }
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataStruct) -> TokenStream {
@@ -115,9 +121,10 @@ fn struct_create_body(fields: &Fields) -> TokenStream {
                     #(#field_inits),*
                 }
             }
-        },
+        }
         Fields::Unnamed(unnamed) => {
-            let field_inits = unnamed.unnamed
+            let field_inits = unnamed
+                .unnamed
                 .iter()
                 .map(|f| {
                     let ty = &f.ty;
@@ -130,10 +137,10 @@ fn struct_create_body(fields: &Fields) -> TokenStream {
             quote! {
                 Self(#(#field_inits),*)
             }
-        },
+        }
         Fields::Unit => {
             quote! { Self }
-        },
+        }
     }
 }
 
@@ -147,16 +154,21 @@ fn unnamed_field_ident(i: usize) -> Ident {
 /// via a `with_*`/`without_*` setter.
 fn builder_field_declarations(fields: &Fields) -> Vec<TokenStream> {
     match fields {
-        Fields::Named(named) => named.named
+        Fields::Named(named) => named
+            .named
             .iter()
             .map(|f| {
-                let field_name = f.ident.as_ref().unwrap();
+                let field_name = f
+                    .ident
+                    .as_ref()
+                    .unwrap();
                 let ty = &f.ty;
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride<#ty> }
             })
             .collect(),
-        Fields::Unnamed(unnamed) => unnamed.unnamed
+        Fields::Unnamed(unnamed) => unnamed
+            .unnamed
             .iter()
             .enumerate()
             .map(|(i, f)| {
@@ -173,15 +185,21 @@ fn builder_field_declarations(fields: &Fields) -> Vec<TokenStream> {
 /// Initialises every stashed field override to `NotSet` in `Builder::new`.
 fn builder_field_inits(fields: &Fields) -> Vec<TokenStream> {
     match fields {
-        Fields::Named(named) => named.named
+        Fields::Named(named) => named
+            .named
             .iter()
             .map(|f| {
-                let field_name = f.ident.as_ref().unwrap();
+                let field_name = f
+                    .ident
+                    .as_ref()
+                    .unwrap();
 
                 quote! { #field_name: rs_autofixture::fixture::builder::FieldOverride::NotSet }
             })
             .collect(),
-        Fields::Unnamed(unnamed) => (0..unnamed.unnamed.len())
+        Fields::Unnamed(unnamed) => (0..unnamed
+            .unnamed
+            .len())
             .map(|i| {
                 let field_name = unnamed_field_ident(i);
 
@@ -237,7 +255,7 @@ fn builder_with_methods(fields: &Fields) -> Vec<TokenStream> {
 /// (`without_0`, `without_1`, ... for tuple structs)
 /// that force a field to its "empty" value, e.g:
 /// `None`, `""`, or an empty collection.
-/// 
+///
 /// Only generated for field types recognised by `is_empty_fixture_type`.
 fn builder_without_methods(fields: &Fields) -> Vec<TokenStream> {
     match fields {
@@ -284,60 +302,55 @@ fn builder_without_methods(fields: &Fields) -> Vec<TokenStream> {
 fn builder_create_body(name: &Ident, fields: &Fields) -> TokenStream {
     match fields {
         Fields::Named(named) => {
-            let field_inits = named.named
-                .iter()
-                .map(|f| {
-                    let field_name = f.ident.as_ref().unwrap();
-                    let ty = &f.ty;
-                    let without_arm = builder_without_arm(field_name, ty);
+            let field_inits = named.named.iter().map(|f| {
+                let field_name = f.ident.as_ref().unwrap();
+                let ty = &f.ty;
+                let without_arm = builder_without_arm(field_name, ty);
 
-                    quote! {
-                        #field_name: match std::mem::take(&mut self.#field_name) {
-                            rs_autofixture::fixture::builder::FieldOverride::SetWith(value) => value,
-                            rs_autofixture::fixture::builder::FieldOverride::SetWithout => #without_arm,
-                            rs_autofixture::fixture::builder::FieldOverride::NotSet
-                                => <#ty as AutoFixture>::create(self.fixture),
-                        }
+                quote! {
+                    #field_name: match std::mem::take(&mut self.#field_name) {
+                        rs_autofixture::fixture::builder::FieldOverride::SetWith(value) => value,
+                        rs_autofixture::fixture::builder::FieldOverride::SetWithout => #without_arm,
+                        rs_autofixture::fixture::builder::FieldOverride::NotSet
+                            => <#ty as AutoFixture>::create(self.fixture),
                     }
-                });
+                }
+            });
 
             quote! {
                 #name {
                     #(#field_inits),*
                 }
             }
-        },
+        }
         Fields::Unnamed(u) => {
-            let field_inits = u.unnamed
-                .iter()
-                .enumerate()
-                .map(|(i, f)| {
-                    let field_name = unnamed_field_ident(i);
-                    let ty = &f.ty;
-                    let without_arm = builder_without_arm(&field_name, ty);
+            let field_inits = u.unnamed.iter().enumerate().map(|(i, f)| {
+                let field_name = unnamed_field_ident(i);
+                let ty = &f.ty;
+                let without_arm = builder_without_arm(&field_name, ty);
 
-                    quote! {
-                        match std::mem::take(&mut self.#field_name) {
-                            rs_autofixture::fixture::builder::FieldOverride::SetWith(value) => value,
-                            rs_autofixture::fixture::builder::FieldOverride::SetWithout => #without_arm,
-                            rs_autofixture::fixture::builder::FieldOverride::NotSet
-                                => <#ty as AutoFixture>::create(self.fixture),
-                        }
+                quote! {
+                    match std::mem::take(&mut self.#field_name) {
+                        rs_autofixture::fixture::builder::FieldOverride::SetWith(value) => value,
+                        rs_autofixture::fixture::builder::FieldOverride::SetWithout => #without_arm,
+                        rs_autofixture::fixture::builder::FieldOverride::NotSet
+                            => <#ty as AutoFixture>::create(self.fixture),
                     }
-                });
+                }
+            });
 
             quote! {
                 #name(#(#field_inits),*)
             }
-        },
+        }
         Fields::Unit => {
             quote! { #name }
-        },
+        }
     }
 }
 
 /// The expression used for a field's `SetWithout` match arm.
-/// 
+///
 /// Only field types recognised by `is_empty_fixture_type` can actually reach this
 /// state (that's the only way `FieldOverride::SetWithout` gets
 /// constructed...),
@@ -348,8 +361,7 @@ fn builder_without_arm(field_name: &Ident, ty: &Type) -> TokenStream {
         quote! {
             <#ty as rs_autofixture::fixture::builder::EmptyFixture>::empty()
         }
-    }
-    else {
+    } else {
         let message = format!("without_{field_name} is not supported for this field type");
 
         quote! { unreachable!(#message) }

@@ -1,18 +1,24 @@
 use proc_macro2::TokenStream;
 use quote::quote;
-use syn::{DataEnum, Fields, Ident, Generics};
+use syn::{DataEnum, Fields, Generics, Ident};
 
 pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream {
-    let variant_count = data.variants.len();
+    let variant_count = data
+        .variants
+        .len();
     let builder_name = quote::format_ident!("{name}Builder");
     let (impl_generics, ty_generics, where_clause) = generics.split_for_impl();
 
-    let variant_arms = data.variants.iter().enumerate().map(|(i, v)| {
-        let variant_name = &v.ident;
-        let body = variant_create_body(name, variant_name, &v.fields);
+    let variant_arms = data
+        .variants
+        .iter()
+        .enumerate()
+        .map(|(i, v)| {
+            let variant_name = &v.ident;
+            let body = variant_create_body(name, variant_name, &v.fields);
 
-        quote! { #i => #body }
-    });
+            quote! { #i => #body }
+        });
 
     quote! {
         impl #impl_generics rs_autofixture::fixture::auto_fixture::AutoFixture for #name
@@ -63,9 +69,7 @@ pub fn expand(name: &Ident, generics: &Generics, data: &DataEnum) -> TokenStream
     }
 }
 
-fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields)
-    -> TokenStream
-{
+fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields) -> TokenStream {
     match fields {
         Fields::Named(named) => {
             let field_inits = named.named.iter().map(|f| {
@@ -80,22 +84,25 @@ fn variant_create_body(enum_name: &Ident, variant_name: &Ident, fields: &Fields)
             quote! {
                 #enum_name::#variant_name { #(#field_inits),* }
             }
-        },
+        }
         Fields::Unnamed(unnamed) => {
-            let field_inits = unnamed.unnamed.iter().map(|f| {
-                let ty = &f.ty;
+            let field_inits = unnamed
+                .unnamed
+                .iter()
+                .map(|f| {
+                    let ty = &f.ty;
 
-                quote! {
-                    <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
-                }
-            });
+                    quote! {
+                        <#ty as rs_autofixture::fixture::auto_fixture::AutoFixture>::create(f)
+                    }
+                });
 
             quote! {
                 #enum_name::#variant_name(#(#field_inits),*)
             }
-        },
+        }
         Fields::Unit => {
             quote! { #enum_name::#variant_name }
-        },
+        }
     }
 }

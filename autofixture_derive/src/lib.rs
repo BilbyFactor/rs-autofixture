@@ -3,7 +3,7 @@ mod r#struct;
 mod r#union;
 
 use proc_macro::TokenStream;
-use syn::{parse_macro_input, DeriveInput, Data};
+use syn::{Data, DeriveInput, parse_macro_input};
 
 #[proc_macro_derive(AutoFixture, attributes(serde, sfs))]
 pub fn derive_request(item: TokenStream) -> TokenStream {

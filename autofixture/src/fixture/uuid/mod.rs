@@ -7,11 +7,7 @@
 
 use uuid::Uuid;
 
-use crate::fixture::{
-    AutoFixture,
-    Fixture,
-    builder::FixtureBuilder,
-};
+use crate::fixture::{AutoFixture, Fixture, builder::FixtureBuilder};
 
 #[cfg(feature = "uuid-extra")]
 use crate::fixture::FixtureExt;
@@ -46,7 +42,7 @@ impl<'b> UuidBuilder<'b> {
 
     /// Generate a v3 `Uuid` (MD5 namespace + name).
     /// Uses a random namespace and name if either are not specified.
-    /// 
+    ///
     /// # Arguments
     /// * `namespace` - the MD5 namespace to use.
     /// * `name` - the MD5 name to use.
@@ -61,7 +57,7 @@ impl<'b> UuidBuilder<'b> {
 
     /// Generate a v5 `Uuid` (SHA-1 namespace + name).
     /// Uses a random namespace and name if not specified.
-    /// 
+    ///
     /// # Arguments
     /// * `namespace` - the SHA-1 namespace to use.
     /// * `name` - the SHA-1 name to use.
@@ -87,7 +83,7 @@ impl<'b> UuidBuilder<'b> {
     }
 
     /// Generate a v8 `Uuid` from a given 16-byte buffer.
-    /// 
+    ///
     /// # Arguments
     /// * `buf` - the 16-byte input buffer to generate using.
     pub fn with_v8(&mut self, buf: [u8; 16]) -> &mut Self {
@@ -122,23 +118,29 @@ impl<'b> FixtureBuilder<'b> for UuidBuilder<'b> {
                 UuidVersion::V4 => Uuid::new_v4(),
                 UuidVersion::V1 => {
                     let ts = Timestamp::now(uuid::NoContext);
-                    let node_id: [u8; 6] = self.fixture.rng().random();
+                    let node_id: [u8; 6] = self
+                        .fixture
+                        .rng()
+                        .random();
 
                     Uuid::new_v1(ts, &node_id)
-                },
+                }
                 UuidVersion::V3 { namespace, name } => Uuid::new_v3(namespace, name),
                 UuidVersion::V5 { namespace, name } => Uuid::new_v5(namespace, name),
                 UuidVersion::V6 => {
                     let ts = Timestamp::now(uuid::NoContext);
-                    let node_id: [u8; 6] = self.fixture.rng().random();
+                    let node_id: [u8; 6] = self
+                        .fixture
+                        .rng()
+                        .random();
 
                     Uuid::new_v6(ts, &node_id)
-                },
+                }
                 UuidVersion::V7 => {
                     let ts = Timestamp::now(uuid::NoContext);
-                    
+
                     Uuid::new_v7(ts)
-                },
+                }
                 UuidVersion::V8 { buf } => Uuid::new_v8(*buf),
             }
         }
