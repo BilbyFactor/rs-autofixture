@@ -24,7 +24,9 @@ jobs:
         run: |
           VERSION=$(grep -m1 '^version = ' autofixture_derive/Cargo.toml | sed -E 's/version = "(.*)"/\1/')
 
-          if curl -sf "https://crates.io/api/v1/crates/rs-autofixture-derive/$VERSION" >/dev/null; then
+          # crates.io's API 403s the default Curl User-Agent...
+          # It needs something that identifies the caller before it'll respond.
+          if curl -sf -A "rs-autofixture-ci" "https://crates.io/api/v1/crates/rs-autofixture-derive/$VERSION" >/dev/null; then
             echo "rs-autofixture-derive $VERSION already published, skipping"
           else
             cargo publish -p rs-autofixture-derive --locked
@@ -36,7 +38,7 @@ jobs:
         run: |
           VERSION=$(grep -m1 '^version = ' autofixture/Cargo.toml | sed -E 's/version = "(.*)"/\1/')
 
-          if curl -sf "https://crates.io/api/v1/crates/rs-autofixture/$VERSION" >/dev/null; then
+          if curl -sf -A "rs-autofixture-ci" "https://crates.io/api/v1/crates/rs-autofixture/$VERSION" >/dev/null; then
             echo "rs-autofixture $VERSION already published, skipping"
           else
             cargo publish -p rs-autofixture --locked
