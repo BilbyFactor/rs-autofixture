@@ -201,6 +201,19 @@ assert_eq!(book2.author.age, frozen_author.age);
 
 // `Book.title` isn't frozen, so it still varies normally:
 assert_ne!(book1.title, book2.title);
+
+// `inject` does the same thing as `freeze`, but with an instance you
+// already have instead of a freshly generated one.
+//
+// It overwrites whatever was frozen before:
+fixture.inject(Author {
+    name: "Keanu Reeves".to_string(),
+    age: 42,
+});
+
+let book3: Book = fixture.create();
+assert_eq!(book3.author.name, "Keanu Reeves");
+assert_eq!(book3.author.age, 42);
 ```
 
 A few things to know:
