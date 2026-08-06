@@ -112,11 +112,18 @@ impl Fixture {
         }
 
         let value = F::create(self);
-
-        self.frozen_pool
-            .insert(TypeId::of::<F>(), Box::new(value.clone()));
+        self.inject(value.clone());
 
         value
+    }
+
+    /// Registers `value` as the frozen instance for `F`, the same as
+    /// `freeze` would, but without generating anything first.
+    ///
+    /// Unlike `freeze`, this always overwrites whatever was frozen for `F`
+    /// before, since the whole point is forcing a *specific* instance.
+    pub fn inject<F: Clone + 'static>(&mut self, value: F) {
+        self.frozen_pool.insert(TypeId::of::<F>(), Box::new(value));
     }
 
     /// Returns a clone of the frozen value for `F`,

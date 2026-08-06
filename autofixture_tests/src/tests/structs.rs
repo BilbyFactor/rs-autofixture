@@ -273,3 +273,25 @@ fn freeze_clone_struct_shares_every_field_but_not_unrelated_values() {
     // Each book's own, unrelated `title` field still varies.
     assert_ne!(book1.title, book2.title);
 }
+
+#[test]
+fn inject_registers_the_exact_given_instance() {
+    // Unlike `freeze`, `inject` never calls `create()` - it just registers
+    // the instance the caller already built.
+    let mut f = Fixture::new();
+
+    let author = Author {
+        name: "Keanu Reeves".to_string(),
+        age: 42,
+    };
+
+    f.inject(author.clone());
+
+    let book1: Book = f.create();
+    let book2: Book = f.create();
+
+    assert_eq!(book1.author.name, "Keanu Reeves");
+    assert_eq!(book1.author.age, 42);
+    assert_eq!(book2.author.name, "Keanu Reeves");
+    assert_eq!(book2.author.age, 42);
+}
